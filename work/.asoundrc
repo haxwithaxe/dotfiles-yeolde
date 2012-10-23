@@ -1,0 +1,78 @@
+pcm.card0 {
+  type hw
+  card 0
+}
+pcm.duplex_sink {
+  ## This provides software mixing for audio out
+  type dmix
+  ipc_key 1024
+  slave {
+  pcm "card0"
+  ## period_size and buffer_size
+  ## can be modified to reduce
+  ## latency or add more 'cusion'
+  ## through the buffer
+  period_size 1024
+  buffer_size 4096
+  rate 44100
+  }
+}
+pcm.duplex_source {
+  ## this provides software mixing for audio in
+  type dsnoop
+  ipc_key 2048
+  slave {
+  pcm "card0"
+  period_size 1024
+  buffer_size 4096
+  rate 44100
+  }
+}
+pcm.duplex {
+  ## this plugin allows you to bind both
+  ## the dmix and dsnoop plugins together
+  type asym
+  playback.pcm "duplex_sink"
+  capture.pcm "duplex_source"
+}
+pcm.duplex_plugin {
+  ## if you do not want to use use
+  ## mixing by default, you can delete
+  ## !default entry below and direct
+  ## apps to use this 'device' as a
+  ## extra option
+  type plug
+  slave.pcm "duplex"
+}
+pcm.dsp0 {
+  ## this allows most OSS-only apps
+  ## to use this mixing stuff
+  ## through the use of the aoss wrapper
+  type plug
+  slave.pcm "duplex"
+}
+pcm.!default {
+  ## this makes alsa apps default
+  ## to use this config
+  type plug
+  slave.pcm "duplex"
+}
+pcm.mono_source {
+	  # multiplexing for incoming audio
+	  type route
+	  slave.pcm "duplex_source"
+     ttable.0.1 1
+     ttable.1.0 1
+}
+pcm.mono_sink {
+	# cross-mixing for outgoing mono audio
+	type route
+	slave.pcm "duplex_sink"
+	slave.channels 2
+	# ttable.0.1 1
+	# ttable.0.0 1
+}
+pcm.mono {
+	playback.pcm "mono_sink"
+	capture.pcm "mono_source"
+}
