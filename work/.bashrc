@@ -35,6 +35,8 @@ export SCALA_HOME=/usr/lib64/scala
 # I HATE NANO :(
 export EDITOR=vim
 
+export WMIIBIN="$HOME/.wmii/bin"
+
 # compressed prompt with path and hostname
 small_pwd(){
 	if [[ `pwd` == $HOME ]] ;then
