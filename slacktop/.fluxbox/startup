@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# fluxbox startup-script:
+#
+# Lines starting with a '#' are ignored.
+QUIET_MODE=${QUIET_MODE:-"false"}
+# Change your keymap:
+xmodmap "/home/hax/.Xmodmap"
+
+# Applications you want to run with fluxbox.
+# MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
+#
+# unclutter -idle 2 &
+# wmnd &
+# wmsmixer -w &
+# idesk &
+
+if [ -z "DBUS_SESSION_BUS_ADDRESS" ] ;then
+	eval $(dbus-launch --sh-syntax --exit-with-session)
+fi
+
+dbus-launch tilda-immortal &
+dbus-launch gkrellm-immortal &
+comms.sh start &
+dbus-launch nm-applet &
+if ! $QUIET_MODE ;then
+	dbus-launch dropboxd &
+fi
+
+
+# Start DBUS session bus:
+#if [ -z "$DBUS_SESSION_BUS_ADDRESS" ]; then
+#   eval $(dbus-launch --sh-syntax --exit-with-session)
+#fi
+
+# And last but not least we start fluxbox.
+# Because it is the last app you have to run it with ''exec'' before it.
+
+exec fluxbox
+# or if you want to keep a log:
+# exec fluxbox -log "/home/hax/.fluxbox/log"
