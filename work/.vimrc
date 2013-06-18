@@ -1,19 +1,28 @@
 "vim behavior
+set magic
 set encoding=utf-8
-set nobackup nowritebackup "no backups
+set mouse-=a "disable mouse
+" no backups
+set noswapfile
+set nobackup
+set nowritebackup
+" shortcuts
 map <leader>pp :setlocal paste!<cr>	" Toggle paste mode on and off
-"ALT+j - move line down 1
+"  ALT+j - move line down 1
 nmap <M-j> mz:m+<cr>`z
 vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-"ALT+k - move line up 1
+"  ALT+k - move line up 1
 nmap <M-k> mz:m-2<cr>`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 "Shiny
 syntax enable
 colorscheme slate
+filetype indent on
+filetype plugin on
 set wrap
-set laststatus=2 statusline=>\ %{HasPaste()}%f%m%r%h\ CWD:%{getcwd()}\ ln:%l\ char:%c\ col:%v
+set laststatus=2
+set statusline=>\ %{HasPaste()}%f%m%r%h\ CWD:%{getcwd()}\ ln:%l\ char:%c\ col:%v
 function! HasPaste()
 	if &paste
 		return '[paste:on]'
@@ -31,8 +40,8 @@ set showmatch
 
 "Tabs ... -_-
 set smarttab
-set ai
-set si
+set autoindent
+set smartindent
 set cin
 set inde=
 set tabstop=4
@@ -50,3 +59,5 @@ map <leader>sn ]s	"next?
 map <leader>sp [s	"previous?
 map <leader>sa zg	"add?
 map <leader>s? z=	"query?
+
+command LB80 :set lbr tw=80
