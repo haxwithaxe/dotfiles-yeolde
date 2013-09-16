@@ -1,0 +1,121 @@
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager
+own_window_colour brown
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# fiddle with window
+use_spacer right
+use_xft yes
+
+# Update interval in seconds
+update_interval 3
+
+# Minimum size of text area
+minimum_size 355 500
+maximum_width 355
+
+override_utf8_locale yes
+
+# Draw shades?
+draw_shades yes
+
+# Text stuff
+draw_outline yes # amplifies text if yes
+draw_borders no
+#font freesans -12
+xftfont Arial:size=9
+uppercase no # set to yes if you want all text to be in uppercase
+
+# Stippled borders?
+stippled_borders 3
+
+# border margins
+border_inner_margin 9
+border_outer_margin 0
+
+# border width
+border_width 10
+
+# Default colors and also border colors, grey90 == #e5e5e5
+default_color cbcbcb
+
+
+# Text alignment, other possible values are commented
+alignment top_left
+#alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+
+# Gap between borders of screen and text
+gap_x 10
+gap_y 30
+
+imlib_cache_size 0
+text_buffer_size 2048
+# stuff after 'TEXT' will be formatted on screen
+
+TEXT
+${texeci 600 bash $HOME/Conky_WeatherCom_metric/weath_com_metric}${font Arial:size=12}${color ffe595}RIGHT NOW${font}(Upd: ${execpi 600 sed -n '1p' $HOME/Conky_WeatherCom_metric/updated}) ${hr 2}
+${font Arial:size=10}${execpi 600 sed -n '8p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${font}${goto 200}${color ffe595}TEMP: $color${alignr}${execpi 600 sed -n '4p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C (${execpi 600 sed -n '5p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C)${image $HOME/Conky_WeatherCom_metric/now.png -p 0,30 -s 120x120}
+${goto 200}${color ffe595}PAST 24-hr PRECIP: $color${alignr}${execpi 600 sed -n '12p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}WIND: $color${alignr}${execpi 600 sed -n '18p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}HUMIDITY: $color${alignr}${execpi 600 sed -n '24p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C
+${goto 200}${color ffe595}UV INDEX: $color${alignr}${execpi 600 sed -n '30p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}PRESSURE: $color${alignr}${execpi 600 sed -n '40p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}DEW POINT: $color${alignr}${execpi 600 sed -n '42p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C
+${goto 200}${color ffe595}VISIBILITY: $color${alignr}${execpi 600 sed -n '44p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}SUN: $color${alignr}${execpi 600 sed -n '45p' $HOME/Conky_WeatherCom_metric/Today/raw_td}/${execpi 600 sed -n '46p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}MOON: $color${alignr}${execpi 600 sed -n '47p' $HOME/Conky_WeatherCom_metric/Today/raw_td}/${execpi 600 sed -n '48p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${goto 200}${color ffe595}MOONPHASE: $color${alignr}${execpi 600 sed -n '49p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+
+${font Arial:size=12}${color ffe595}TODAY - TONIGHT ${font}(Upd: ${execpi 600 sed -n '1p' $HOME/Conky_WeatherCom_metric/updated}) ${hr 2}
+${font Arial:size=11}${color ffe595}${goto 75}Today${goto 240}Tonight${image $HOME/Conky_WeatherCom_metric/TD.png -p 25,215 -s 100x100}${image $HOME/Conky_WeatherCom_metric/TN.png -p 190,215 -s 100x100}${font}${color}
+
+
+${goto 155}${execpi 600 sed -n '6p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C${goto 320}${execpi 600 sed -n '7p' $HOME/Conky_WeatherCom_metric/Today/raw_td}°C
+
+
+
+${execpi 600 sed -n '9p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${goto 200}${execpi 600 sed -n '10p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${color ffe595}${execpi 600 sed -n '13p' $HOME/Conky_WeatherCom_metric/Today/raw_td|tr 'a-z' 'A-Z'} ${color}${execpi 600 sed -n '14p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${goto 200}${color ffe595}${execpi 600 sed -n '15p' $HOME/Conky_WeatherCom_metric/Today/raw_td|tr 'a-z' 'A-Z'} ${color}${execpi 600 sed -n '16p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${color ffe595}${execpi 600 sed -n '19p' $HOME/Conky_WeatherCom_metric/Today/raw_td|tr 'a-z' 'A-Z'} ${color}${execpi 600 sed -n '20p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${goto 200}${color ffe595}WIND ${color}${execpi 600 sed -n '22p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${color ffe595}${execpi 600 sed -n '25p' $HOME/Conky_WeatherCom_metric/Today/raw_td|tr 'a-z' 'A-Z'} ${color}${execpi 600 sed -n '26p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${goto 200}${color ffe595}HUMIDITY ${color}${execpi 600 sed -n '28p' $HOME/Conky_WeatherCom_metric/Today/raw_td}
+${color ffe595}${execpi 600 sed -n '31p' $HOME/Conky_WeatherCom_metric/Today/raw_td|tr 'a-z' 'A-Z'} ${color}${execpi 600 sed -n '32p' $HOME/Conky_WeatherCom_metric/Today/raw_td}${goto 200}${color ffe595}UV-INDEX ${color}-
+${execpi 600 sed -n '36p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c1-30}${goto 200}${execpi 600 sed -n '38p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c1-30}
+${execpi 600 sed -n '36p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c31-60}${goto 200}${execpi 600 sed -n '38p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c31-60}
+${execpi 600 sed -n '36p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c61-90}${goto 200}${execpi 600 sed -n '38p' $HOME/Conky_WeatherCom_metric/Today/raw_td|cut -c61-90}
+
+${font Arial:size=12}${color ffe595}10 DAYS FORECAST ${font}(Upd: ${execpi 600 sed -n '2p' $HOME/Conky_WeatherCom_metric/updated})${hr 2}
+${font Arial:size=11}${color ffe595}${goto 65}${execpi 600 sed -n '1p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 175}${execpi 600 sed -n '8p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 285}${execpi 600 sed -n '15p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${color}${image $HOME/Conky_WeatherCom_metric/10_2.png -p 20,460 -s 70x70}${image $HOME/Conky_WeatherCom_metric/10_9.png -p 130,460 -s 70x70}${image $HOME/Conky_WeatherCom_metric/10_16.png -p 240,460 -s 70x70}
+
+${goto 115}${execpi 600 sed -n '3p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 225}${execpi 600 sed -n '10p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 335}${execpi 600 sed -n '17p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${font}
+${goto 116}${execpi 600 sed -n '4p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 226}${execpi 600 sed -n '11p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 336}${execpi 600 sed -n '18p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+
+${execpi 600 sed -n '5p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}${goto 135}${execpi 600 sed -n '12p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}${goto 260}${execpi 600 sed -n '19p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}
+${color ffe595}PRECIP:${color}${execpi 600 sed -n '6p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 135}${color ffe595}PRECIP:${color}${execpi 600 sed -n '13p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 260}${color ffe595}PRECIP:${color}${execpi 600 sed -n '20p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+${color ffe595}WIND:${color}${execpi 600 sed -n '7p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 135}${color ffe595}WIND:${color}${execpi 600 sed -n '14p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 260}${color ffe595}WIND:${color}${execpi 600 sed -n '21p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+${color ffe595}${hr 1}
+${font Arial:size=11}${goto 65}${execpi 600 sed -n '22p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 175}${execpi 600 sed -n '29p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 285}${execpi 600 sed -n '36p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${color}${image $HOME/Conky_WeatherCom_metric/10_23.png -p 20,600 -s 70x70}${image $HOME/Conky_WeatherCom_metric/10_30.png -p 130,600 -s 70x70}${image $HOME/Conky_WeatherCom_metric/10_37.png -p 240,600 -s 70x70}
+
+${goto 115}${execpi 600 sed -n '24p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 225}${execpi 600 sed -n '31p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 335}${execpi 600 sed -n '38p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${font}
+${goto 116}${execpi 600 sed -n '25p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 226}${execpi 600 sed -n '32p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 336}${execpi 600 sed -n '39p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+
+${execpi 600 sed -n '26p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}${goto 135}${execpi 600 sed -n '33p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}${goto 260}${execpi 600 sed -n '40p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-18}
+${color ffe595}PRECIP:${color}${execpi 600 sed -n '27p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 135}${color ffe595}PRECIP:${color}${execpi 600 sed -n '34p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 260}${color ffe595}PRECIP:${color}${execpi 600 sed -n '41p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+${color ffe595}WIND:${color}${execpi 600 sed -n '28p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 135}${color ffe595}WIND:${color}${execpi 600 sed -n '35p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 260}${color ffe595}WIND:${color}${execpi 600 sed -n '42p' $HOME/Conky_WeatherCom_metric/10days/raw_10}
+${color ffe595}${hr 1}
+${font Arial:size=11}${goto 50}${execpi 600 sed -n '43p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 135}${execpi 600 sed -n '50p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 220}${execpi 600 sed -n '57p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 305}${execpi 600 sed -n '64p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${endif}${color}${image $HOME/Conky_WeatherCom_metric/10_44.png -p 0,740 -s 55x55}${image $HOME/Conky_WeatherCom_metric/10_51.png -p 85,740 -s 55x55}${image $HOME/Conky_WeatherCom_metric/10_58.png -p 170,740 -s 55x55}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${image $HOME/Conky_WeatherCom_metric/10_65.png -p 255,740 -s 55x55}${endif}${font}
+
+${goto 75}${execpi 600 sed -n '45p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 160}${execpi 600 sed -n '52p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 245}${execpi 600 sed -n '59p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 330}${execpi 600 sed -n '66p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${endif}
+${goto 76}${execpi 600 sed -n '45p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 160}${execpi 600 sed -n '53p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 245}${execpi 600 sed -n '60p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 330}${execpi 600 sed -n '67p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${endif}
+
+${execpi 600 sed -n '47p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-12}${goto 95}${execpi 600 sed -n '54p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-12}${goto 180}${execpi 600 sed -n '61p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-12}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 265}${execpi 600 sed -n '68p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c1-12}${endif}
+${execpi 600 sed -n '47p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c13-24}${goto 95}${execpi 600 sed -n '54p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c13-24}${goto 180}${execpi 600 sed -n '61p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c13-24}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 265}${execpi 600 sed -n '68p' $HOME/Conky_WeatherCom_metric/10days/raw_10|cut -c13-24}${endif}
+${color ffe595}PR:${color}${execpi 600 sed -n '48p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 95}${color ffe595}PR:${color}${execpi 600 sed -n '55p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 180}${color ffe595}PR:${color}${execpi 600 sed -n '62p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 265}${color ffe595}PR:${color}${execpi 600 sed -n '69p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${endif}
+${color ffe595}W:${color}${execpi 600 sed -n '49p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 95}${color ffe595}W:${color}${execpi 600 sed -n '56p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${goto 180}${color ffe595}W:${color}${execpi 600 sed -n '63p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${if_existing /home/teo/Conky_WeatherCom_metric/10days/10days_OK}${goto 265}${color ffe595}W:${color}${execpi 600 sed -n '70p' $HOME/Conky_WeatherCom_metric/10days/raw_10}${endif}
+

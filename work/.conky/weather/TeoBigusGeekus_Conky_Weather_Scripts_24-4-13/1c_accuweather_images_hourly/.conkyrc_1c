@@ -1,0 +1,71 @@
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# fiddle with window
+use_spacer yes
+use_xft yes
+
+# Update interval in seconds
+update_interval 3
+
+# Minimum size of text area
+minimum_size 1030 300
+maximum_width 1030
+
+override_utf8_locale yes
+
+# Draw shades?
+draw_shades yes
+
+# Text stuff
+draw_outline yes # amplifies text if yes
+draw_borders no
+#font freesans -12
+xftfont Arial:size=9
+uppercase no # set to yes if you want all text to be in uppercase
+
+# Stippled borders?
+stippled_borders 3
+
+# border margins
+border_margin 9
+
+# border width
+border_width 10
+
+# Default colors and also border colors, grey90 == #e5e5e5
+default_color cbcbcb
+
+own_window_colour brown
+
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+
+# Gap between borders of screen and text
+gap_x 10
+gap_y 30
+
+imlib_cache_size 0
+text_buffer_size 4096
+
+# stuff after 'TEXT' will be formatted on screen
+TEXT
+${font Arial:size=11}${color ffe595}HOURLY WEATHER ${font}${hr 2}${texeci 600 bash $HOME/1c_accuweather_images_hourly/1c}
+
+TIME${goto 100}${execpi 600 sed -n '2p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 160}${execpi 600 sed -n '3p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 220}${execpi 600 sed -n '4p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 280}${execpi 600 sed -n '5p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 340}${execpi 600 sed -n '6p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 400}${execpi 600 sed -n '7p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 460}${execpi 600 sed -n '8p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 520}${execpi 600 sed -n '9p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 580}${execpi 600 sed -n '2p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 640}${execpi 600 sed -n '3p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 700}${execpi 600 sed -n '4p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 760}${execpi 600 sed -n '5p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 820}${execpi 600 sed -n '6p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 880}${execpi 600 sed -n '7p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 940}${execpi 600 sed -n '8p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 1000}${execpi 600 sed -n '9p' $HOME/1c_accuweather_images_hourly/hourly_raw2}
+${image $HOME/1c_accuweather_images_hourly/20.png -s 60x36 -p 70,49}${image $HOME/1c_accuweather_images_hourly/23.png -s 60x36 -p 130,49}${image $HOME/1c_accuweather_images_hourly/26.png -s 60x36 -p 190,49}${image $HOME/1c_accuweather_images_hourly/29.png -s 60x36 -p 250,49}${image $HOME/1c_accuweather_images_hourly/32.png -s 60x36 -p 310,49}${image $HOME/1c_accuweather_images_hourly/35.png -s 60x36 -p 370,49}${image $HOME/1c_accuweather_images_hourly/38.png -s 60x36 -p 430,49}${image $HOME/1c_accuweather_images_hourly/41.png -s 60x36 -p 490,49}${image $HOME/1c_accuweather_images_hourly/120.png -s 60x36 -p 550,49}${image $HOME/1c_accuweather_images_hourly/123.png -s 60x36 -p 610,49}${image $HOME/1c_accuweather_images_hourly/126.png -s 60x36 -p 670,49}${image $HOME/1c_accuweather_images_hourly/129.png -s 60x36 -p 730,49}${image $HOME/1c_accuweather_images_hourly/132.png -s 60x36 -p 790,49}${image $HOME/1c_accuweather_images_hourly/135.png -s 60x36 -p 850,49}${image $HOME/1c_accuweather_images_hourly/138.png -s 60x36 -p 910,49}${image $HOME/1c_accuweather_images_hourly/141.png -s 60x36 -p 970,49}
+
+FORECAST${color}
+${goto 100}${execpi 600 sed -n '21p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 160}${execpi 600 sed -n '25p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 220}${execpi 600 sed -n '29p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 280}${execpi 600 sed -n '33p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 340}${execpi 600 sed -n '37p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 400}${execpi 600 sed -n '41p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 460}${execpi 600 sed -n '45p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 520}${execpi 600 sed -n '49p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 580}${execpi 600 sed -n '21p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 640}${execpi 600 sed -n '25p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 700}${execpi 600 sed -n '29p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 760}${execpi 600 sed -n '33p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 820}${execpi 600 sed -n '37p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 880}${execpi 600 sed -n '41p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 940}${execpi 600 sed -n '45p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 1000}${execpi 600 sed -n '49p' $HOME/1c_accuweather_images_hourly/hourly_raw2}
+${goto 100}${execpi 600 sed -n '22p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 160}${execpi 600 sed -n '26p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 220}${execpi 600 sed -n '30p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 280}${execpi 600 sed -n '34p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 340}${execpi 600 sed -n '38p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 400}${execpi 600 sed -n '42p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 460}${execpi 600 sed -n '46p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 520}${execpi 600 sed -n '50p' $HOME/1c_accuweather_images_hourly/hourly_raw1}${goto 580}${execpi 600 sed -n '22p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 640}${execpi 600 sed -n '26p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 700}${execpi 600 sed -n '30p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 760}${execpi 600 sed -n '34p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 820}${execpi 600 sed -n '38p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 880}${execpi 600 sed -n '42p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 940}${execpi 600 sed -n '46p' $HOME/1c_accuweather_images_hourly/hourly_raw2}${goto 1000}${execpi 600 sed -n '50p' $HOME/1c_accuweather_images_hourly/hourly_raw2}
+${execpi 600 sed -n '1,21p' $HOME/1c_accuweather_images_hourly/altogether}
+

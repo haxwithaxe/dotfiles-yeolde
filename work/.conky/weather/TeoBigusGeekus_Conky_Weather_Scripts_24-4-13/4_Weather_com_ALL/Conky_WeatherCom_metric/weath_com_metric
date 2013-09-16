@@ -1,0 +1,79 @@
+#!/bin/bash
+
+#put your 10 day weather.com address here
+#address10="http://www.weather.com/weather/tenday/Kastoria+GRXX0292:1:GR"
+address10="http://www.weather.com/weather/tenday/Oymyakon+RSXX5470:1:RS"
+
+addr_today=$(echo $address10|sed 's/tenday/today/')
+
+kill -STOP $(pidof conky)
+killall wget
+
+wget --user-agent="Firefox" --load-cookies $HOME/Conky_WeatherCom_metric/cookie -O $HOME/Conky_WeatherCom_metric/Today/raw_td $addr_today
+wget --user-agent="Firefox" --load-cookies $HOME/Conky_WeatherCom_metric/cookie -O $HOME/Conky_WeatherCom_metric/10days/raw_10 $address10
+
+rm $HOME/Conky_WeatherCom_metric/10days/10days_OK
+
+if [[ -s $HOME/Conky_WeatherCom_metric/Today/raw_td ]]; then
+	#############################
+	# Right now, Today, Tonight #
+	#############################
+	grep Updated $HOME/Conky_WeatherCom_metric/Today/raw_td > $HOME/Conky_WeatherCom_metric/updated
+	sed -i -e '/Right Now$/,/Close Weather Details/!d' -e '/wx-social/d' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i '/\/wxicon\/\|&deg;\|wx-phrase\|wx-label\|"wx-data"\|wx-wind-label\|wx-text\|mb$\|am\|pm\|wx-moonphase-label/!d' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i -e 's/\r//g' -e 's/^.*\/wxicon\/120\///g' -e 's/\.png.*$/\.png/g' -e 's/^.*celsius">//g' -e 's/^.*temperature">//g' $HOME/Conky_WeatherCom_metric/Today/raw_td 
+	sed -i -e 's/^.*wx-label">//g' -e 's/<\/h6>.*$//g' -e '/wx-data">$/d' -e 's/^.*wx-data">//g' -e 's/^.*wx-text">//g' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i -e '/barometric-pressure\|wx-astro-title/d' -e 's/^.*wx-moonphase-label">//g' -e 's/^.*wx-wind-label">//g' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i -e 's/^.*wx-phrase ">//g' -e 's/^.*<dd>//g' -e 's/<.*&deg;.*$//g' -e "s/<span class=.*'>//g" -e 's/<span class=.*">//g' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i -e 's/^<\/span>//g' -e 's/<\/span>$//g' -e 's/<\/div>$//g' -e 's/<\/p>$//g' -e 's/<\/dd>$//g' -e 's/<\/span>$//g' -e 's/&deg;$//g' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	sed -i -e '/Snowfall:/,+1d' -e '/Past 24 Hours Snow:/,+1d' $HOME/Conky_WeatherCom_metric/Today/raw_td
+	
+	image=$(sed -n 1p $HOME/Conky_WeatherCom_metric/Today/raw_td)
+    cp $HOME/Conky_WeatherCom_metric/weather_com_images/$image $HOME/Conky_WeatherCom_metric/now.png
+    
+    image=$(sed -n 2p $HOME/Conky_WeatherCom_metric/Today/raw_td)
+    cp $HOME/Conky_WeatherCom_metric/weather_com_images/$image $HOME/Conky_WeatherCom_metric/TD.png
+
+	image=$(sed -n 3p $HOME/Conky_WeatherCom_metric/Today/raw_td)
+    cp $HOME/Conky_WeatherCom_metric/weather_com_images/$image $HOME/Conky_WeatherCom_metric/TN.png
+fi
+
+if [[ -s $HOME/Conky_WeatherCom_metric/10days/raw_10 ]]; then
+	#############
+	#  10 days  #
+	#############
+	grep Updated $HOME/Conky_WeatherCom_metric/10days/raw_10 >> $HOME/Conky_WeatherCom_metric/updated
+	observed_high=$(grep "Observed High" $HOME/Conky_WeatherCom_metric/10days/raw_10|wc -l)
+	sed -i '/"wx-daypart"/,/wx-planmyday10 wx-plan-day/!d' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	sed -i -e '/^[ \t]*$/d' -e 's/\r//g' -e '/^$/d' -e 's/^[ \t]*//g' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	sed -i -e 's/^.*wxicon\/70\///g' -e 's/\.png.*$/\.png/g' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	sed -i -e 's/^.*"wx-temp"> \|"wx-temp-alt"> \|"wx-phrase">\|<dt>\|<dd>\|<h3>\|<p class=//g' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	sed -i -e 's/<sup>&deg;.*$//g' -e 's/<\/p>\|<\/dd>.*$//g' -e 's/<span class=.*$//g' -e '/<\|>\|^$/d' -e 's/ at / /g' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	sed -i 's/ mph/mph/g' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	
+	line1=$(sed -n 1p $HOME/Conky_WeatherCom_metric/10days/raw_10|sed 's/ *$//')
+	if [[ $line1 == Tonight && $observed_high == 0 ]]; then
+		sed -i '3s/$/\n-/' $HOME/Conky_WeatherCom_metric/10days/raw_10
+	fi
+	
+	for (( i=2; i<=65; i+=7 ))
+	    do
+	        image=$(sed -n ${i}p $HOME/Conky_WeatherCom_metric/10days/raw_10)
+	        cp $HOME/Conky_WeatherCom_metric/weather_com_images/$image $HOME/Conky_WeatherCom_metric/10_${i}.png
+	    done
+fi
+
+line_count=$(cat $HOME/Conky_WeatherCom_metric/10days/raw_10|wc -l)
+if [[ $line_count == 70 ]]; then
+	touch $HOME/Conky_WeatherCom_metric/10days/10days_OK
+fi
+
+
+if [[ -s $HOME/Conky_WeatherCom_metric/updated ]]; then
+	##################
+	#  Update times  #
+	##################
+	sed -i -e 's/^.*updated">//g' -e 's/^.*Updated: //g' -e 's/<.*$//g' -e 's/Local\ Time//g' $HOME/Conky_WeatherCom_metric/updated
+fi
+
+kill -CONT $(pidof conky)

@@ -1,0 +1,185 @@
+# conky configuration
+####
+## Use XFT? Required to Force UTF8 (see below)
+#
+use_xft yes
+xftfont monospace:size=9
+xftalpha 0.1
+
+####
+## Force UTF8? Requires XFT (see above)
+## Displays degree symbol, instead of Â°, etc.
+#
+override_utf8_locale yes
+
+####
+## This buffer is used for text, single lines, output from $exec, and other variables.
+## Increasing the text buffer size (too high) will drastically reduce Conky's performance.
+## Decreasing the size (too low) will truncate content and cause strange display output.
+## Standard text buffer size is 256 bytes (cannot be less). Adjust YOUR buffer wisely!
+#
+text_buffer_size 640
+
+####
+## Daemonize Conky, aka 'fork to background'.
+#
+background no
+
+####
+## Update interval in seconds.
+#
+update_interval 3.0
+
+####
+## The number of times Conky will update before quitting.
+## Zero makes Conky run forever.
+#
+total_run_times 0
+
+####
+## Create own window instead of using desktop?
+#
+own_window yes
+own_window_type normal
+own_window_transparent no
+
+####
+## Force images to redraw when they change.
+#
+imlib_cache_size 0
+
+####
+## Use double buffering? Reduces flicker.
+#
+double_buffer yes
+
+####
+## Draw shades?
+#
+draw_shades no
+
+####
+## Draw outlines?
+#
+draw_outline no
+
+####
+## Draw borders around text?
+#
+draw_borders no
+
+####
+## Draw borders around graphs?
+#
+draw_graph_borders yes
+
+####
+## Print text to stdout?
+## Print text in console?
+#
+out_to_ncurses no
+out_to_console no
+
+####
+## Text alignment.
+#
+#alignment top_left
+#alignment top_right
+alignment bottom_left
+#alignment bottom_right
+
+####
+## Minimum and maximum size of text area.
+#
+minimum_size 1020 0
+maximum_width 1020
+
+####
+## Gap between text and screen borders.
+#
+gap_x -5	  ## Left / Right
+gap_y 30
+  ## Top / Bottom
+
+####
+## Shorten MiB/GiB to M/G in stats.
+#
+short_units no
+
+####
+## Pad % symbol spacing after numbers.
+#
+pad_percents 0
+
+####
+## Pad spacing between text and borders.
+#
+border_inner_margin 4
+
+####
+## Limit the length of names in "Top Processes".
+#
+top_name_width 15
+
+####
+## Subtract file system -/+buffers/cache from used memory?
+## Set to yes, to produce meaningful physical memory stats.
+#
+no_buffers yes
+
+####
+## Set to yes, if you want all text to be in UPPERCASE.
+#
+uppercase no
+
+####
+## Number of cpu samples to average.
+## Set to 1 to disable averaging.
+#
+cpu_avg_samples 2
+
+####
+## Number of net samples to average.
+## Set to 1 to disable averaging.
+#
+net_avg_samples 2
+
+####
+## Add spaces to keep things from moving around?
+## Only affects certain objects.
+#
+use_spacer right
+
+# Colors
+#default_color B15100
+#default_color 51010F
+#default_color 86b5ea
+default_color 64A0FF
+#default_color red
+#default_color firebrick
+#default_color green
+#default_color blue
+#default_color deeppink
+#default_color yellow
+#default_color darkslateblue
+#default_color darkviolet
+color0 red
+
+#####
+## Load Lua for shading (optional)
+## Set the path to your script here.
+#
+#lua_load draw_bg_fs.lua
+#lua_draw_hook_pre draw_bg
+
+####
+## Load Lua for bargraphs (required)
+## Set the path to your script here.
+#
+lua_load bargraph_small_fs.lua
+lua_draw_hook_post main_bars
+
+TEXT
+${goto 44}${font monofur:bold:size=10}${color}/                ${color0}${fs_used /}${color} / ${fs_size /}      ${color}HOME           ${color0}${fs_used /home}${color}/ ${fs_size /home}       ${color}STRG           ${color0}${fs_used /mnt/storage}${color}/ ${fs_size /mnt/storage}${goto 0}
+        																																
+

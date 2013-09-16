@@ -1,0 +1,58 @@
+#!/bin/bash
+
+firefoxen(){
+	sleep 2
+	case "$1" in 
+		"work")
+			firefox-work &
+			;;
+		"personal")
+			firefox-personal &
+			;;
+		"anon")
+			firefox-anon &
+			;;
+		"nono")
+			firefox-nono &
+			;;
+		*)
+			firefox-work &
+			firefox-personal &
+			;;
+	esac
+}
+
+# run for any workapce
+on_workspace_n(){
+	echo -n ''
+}
+
+# run for unspecified workspace
+on_workspace_other(){
+	evilvte 2>&1 1>/dev/null &
+}
+
+on_workspace_1(){
+	firefoxen 'work'
+}
+
+on_workspace_2(){
+	firefoxen 'personal'
+}
+
+# run on workspace 3
+on_workspace_3(){
+	thunderbird 2>&1 1>/dev/null &
+	pidgin 2>&1 1>/dev/null &
+	skype 2>&1 1>/dev/null &
+}
+
+case "$1" in
+	"1") on_workspace_1 ;;
+	"2") on_workspace_2 ;;
+	"3") on_workspace_3 ;;
+	*) on_workspace_other ;;
+esac
+on_workspace_n
+
+exit 0

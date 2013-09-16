@@ -1,0 +1,120 @@
+# UBUNTU-CONKY
+
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# fiddle with window
+use_spacer yes
+use_xft yes
+
+# Update interval in seconds
+update_interval 3.0
+
+# Minimum size of text area
+minimum_size 400 5
+
+
+override_utf8_locale yes
+
+# Draw shades?
+draw_shades yes
+
+# Text stuff
+draw_outline yes # amplifies text if yes
+draw_borders no
+#font 
+xftfont Arial:size=9
+uppercase no # set to yes if you want all text to be in uppercase
+
+# Stippled borders?
+stippled_borders 3
+
+# border margins
+border_margin 9
+
+# border width
+border_width 10
+
+# Default colors and also border colors
+default_color cbcbcb
+
+own_window_colour brown
+own_window_transparent yes
+
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+
+# Gap between borders of screen and text
+gap_x 10
+gap_y 80
+
+# stuff after 'TEXT' will be formatted on screen
+
+TEXT
+${execi 600 bash $HOME/conky_wunderground2/wunderground-script}${color 8e8e8e}${execi 600  sed -n '1p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '1p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '2p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '3p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '2p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '4p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '3p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '6p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '7p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '4p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '8p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '9p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '5p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '10p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '11p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '6p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '12p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '7p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '14p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '15p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '8p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '16p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '17p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '9p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '18p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '19p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '10p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '20p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '11p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '22p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '23p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '12p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '24p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '25p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '13p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '26p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '27p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '14p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '28p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '15p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '30p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '31p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '16p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '32p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '33p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '17p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '34p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '35p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '18p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '36p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '19p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '38p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '39p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '20p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '40p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '41p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '21p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '42p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '43p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '22p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '44p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '23p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '46p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '47p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '24p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '48p' $HOME/conky_wunderground2/messages.wun}
+
+
+${color 8e8e8e}${execi 600  sed -n '49p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '25p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '50p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '51p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '26p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '52p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '27p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '54p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '55p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '28p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '56p' $HOME/conky_wunderground2/messages.wun}
+
+
+${if_existing $HOME/conky_wunderground2/yes}${color 8e8e8e}${execi 600  sed -n '57p' $HOME/conky_wunderground2/messages.wun} ${hr 2}$color
+${font conkyweather:size=35}${execi 600  sed -n '29p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '58p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '59p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '30p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '60p' $HOME/conky_wunderground2/messages.wun}
+
+
+${font conkyweather:size=35}${execi 600  sed -n '31p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -22}${execi 600 sed -n '62p' $HOME/conky_wunderground2/messages.wun}${alignc -10}${voffset -15}${font conkyweather:size=35}E${font}${voffset -20}${offset -10}${execi 600 sed -n '63p' $HOME/conky_wunderground2/messages.wun}${alignr 40}${voffset -15}${font ConkyWindNESW:size=35}${execi 600 sed -n '32p' $HOME/conky_wunderground2/weather_icons}${font}${voffset -15}${execi 600 sed -n '64p' $HOME/conky_wunderground2/messages.wun}${endif}
+
+
+
+

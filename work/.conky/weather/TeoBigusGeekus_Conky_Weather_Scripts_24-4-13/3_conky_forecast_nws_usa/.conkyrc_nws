@@ -1,0 +1,117 @@
+# UBUNTU-CONKY
+
+# Create own window instead of using desktop (required in nautilus)
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+
+# Use double buffering (reduces flicker, may not work for everyone)
+double_buffer yes
+
+# fiddle with window
+use_spacer yes
+use_xft yes
+
+# Update interval in seconds
+update_interval 3.0
+
+# Minimum size of text area
+minimum_size 250 5
+
+override_utf8_locale yes
+
+# Draw shades?
+draw_shades yes
+
+# Text stuff
+draw_outline yes # amplifies text if yes
+draw_borders no
+#font FreeSans -11
+xftfont freesans:pixelsize=11
+uppercase no # set to yes if you want all text to be in uppercase
+
+# Stippled borders?
+stippled_borders 3
+
+# border margins
+border_margin 9
+
+# border width
+border_width 10
+
+# Default colors and also border colors, grey90 == #e5e5e5
+default_color Grey
+
+own_window_colour brown
+own_window_transparent yes
+
+# Text alignment, other possible values are commented
+#alignment top_left
+alignment top_right
+#alignment bottom_left
+#alignment bottom_right
+
+# Gap between borders of screen and text
+gap_x 10
+gap_y 100
+
+maximum_width 250
+
+imlib_cache_size 0
+# stuff after 'TEXT' will be formatted on screen
+
+TEXT
+${texeci 600 bash $HOME/conky_forecast_nws/NWSforecast.sh}
+${color Cyan}${execi 600  sed -n '1p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/1.jpg -p 210,30 -s 38x40}
+${execi 600  sed -n '2p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '2p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/2.jpg -p 210,85 -s 38x40}
+${execi 600  sed -n '4p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '3p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/3.jpg -p 210,140 -s 38x40}
+${execi 600  sed -n '6p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '4p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/4.jpg -p 210,200 -s 38x40}
+${execi 600  sed -n '8p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '5p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/5.jpg -p 210,255 -s 38x40}
+${execi 600  sed -n '10p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '6p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/6.jpg -p 210,310 -s 38x40}
+${execi 600  sed -n '12p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '7p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/7.jpg -p 210,365 -s 38x40}
+${execi 600  sed -n '14p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '8p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/8.jpg -p 210,420 -s 38x40}
+${execi 600  sed -n '16p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '9p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/9.jpg -p 210,480 -s 38x40}
+${execi 600  sed -n '18p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '10p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/10.jpg -p 210,535 -s 38x40}
+${execi 600  sed -n '20p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '11p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/11.jpg -p 210,590 -s 38x40}
+${execi 600  sed -n '22p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '12p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/12.jpg -p 210,645 -s 38x40}
+${execi 600  sed -n '24p' $HOME/conky_forecast_nws/d|cut -c1-40}
+
+${color Cyan}${execi 600  sed -n '13p' $HOME/conky_forecast_nws/t} ${hr 2}${color}
+${image $HOME/conky_forecast_nws/13.jpg -p 210,700 -s 38x40}
+${execi 600  sed -n '26p' $HOME/conky_forecast_nws/d|cut -c1-40}
+

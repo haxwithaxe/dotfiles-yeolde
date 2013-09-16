@@ -1,0 +1,251 @@
+#!/bin/bash
+
+#put your Accuweather address here
+#address="http://www.accuweather.com/en/gr/kastoria/178682/weather-forecast/178682"
+address="http://www.accuweather.com/en/us/los-angeles-ca/90012/weather-forecast/347625"
+
+loc_id=$(echo $address|sed 's/\/weather-forecast.*$//'|sed 's/^.*\///')
+last_number=$(echo $address|sed 's/^.*\///')
+
+curr_addr="$(echo $address|sed 's/weather-forecast.*$//')"current-weather/"$last_number"
+addr1="$(echo $address|sed 's/weather-forecast.*$//')"hourly-weather-forecast/"$last_number"
+
+kill -STOP $(pidof conky)
+killall wget
+rm $HOME/1c_accuweather_images_hourly/*.png
+
+wget --save-cookies $HOME/1c_accuweather_images_hourly/cookie -O $HOME/1c_accuweather_images_hourly/curr_cond_raw $curr_addr
+wget --load-cookies $HOME/1c_accuweather_images_hourly/cookie -O $HOME/1c_accuweather_images_hourly/hourly_raw1 $addr1
+ 
+#First 8hrs - hourly_raw1 file
+if [[ -s $HOME/1c_accuweather_images_hourly/hourly_raw1 ]]; then
+	sed -i -e '/"arrow-small-right">Next 8 hours/,/"chart chart-top"/!d' -e 's/&#176;/°/g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i '/td style="border-right/d' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/^.*<th>//g' -e 's/^.*<td class="//g' -e 's/^.*<div class="//g' $HOME/1c_accuweather_images_hourly/hourly_raw1 
+	sed -i -e 's/ icon.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/^">\|first-col">\|last-col">//g' -e 's/<\/td>.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e '60,67s/^.*>//g' -e 's/^.*row">\|<\/th>//g' -e 's/&#174;\|&deg;//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/^.*row">\|<\/th>//g' -e 's/&#174;\|&deg;//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/^.*<\/span><\/div>//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/">/\n/g' -e '/<tr\|<\/tr>/d' -e 's/" class="arrow-small-right.*$//g' -e 's/^.*<span>//g' -e 's/<\/span><br \/>/:/g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/<\/div>.*$//g' -e 's/^.*icon i-//g' -e '/<th class="first/d' -e 's/^.*<th class="//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/^.*<a href="//g' -e 's/" class=".*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e '/<\|;/d' -e 's/\r//g' -e '/^ *$/d' -e 's/^ *//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	sed -i -e 's/day.*$/day/g' -e 's/night.*$/night/g' -e 's/-h.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw1
+	for (( i=20; i<=41; i+=3 ))
+	  do
+    	  cp $HOME/1c_accuweather_images_hourly/Forecast_Images/$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1).png $HOME/1c_accuweather_images_hourly/$i.png
+	  done
+	for (( i=21; i<=50; i+=3 ))
+	  do
+		  no=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1|wc -c)
+			if (( no<=7 )); then
+				sed -i $i"s/$/\n/" $HOME/1c_accuweather_images_hourly/hourly_raw1
+				i=$((i+1))
+			elif (( no>7 )); then
+				sed -i $i"s/^\(.\{7\}\)/\1\n/" $HOME/1c_accuweather_images_hourly/hourly_raw1
+				i=$((i+1))
+			fi
+	  done
+fi
+
+addr2=$(sed -n 1p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+wget --load-cookies $HOME/1c_accuweather_images_hourly/cookie -O $HOME/1c_accuweather_images_hourly/hourly_raw2 $addr2
+
+#Next 8hrs - hourly_raw2 file
+if [[ -s $HOME/1c_accuweather_images_hourly/hourly_raw2 ]]; then
+	sed -i -e '/"arrow-small-right">Next 8 hours/,/"chart chart-top"/!d' -e 's/&#176;/°/g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i '/td style="border-right/d' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/^.*<th>//g' -e 's/^.*<td class="//g' -e 's/^.*<div class="//g' $HOME/1c_accuweather_images_hourly/hourly_raw2 
+	sed -i -e 's/ icon.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/^">\|first-col">\|last-col">//g' -e 's/<\/td>.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e '60,67s/^.*>//g' -e 's/^.*row">\|<\/th>//g' -e 's/&#174;\|&deg;//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/^.*row">\|<\/th>//g' -e 's/&#174;\|&deg;//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/^.*<\/span><\/div>//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/">/\n/g' -e '/<tr\|<\/tr>/d' -e 's/" class="arrow-small-right.*$//g' -e 's/^.*<span>//g' -e 's/<\/span><br \/>/:/g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/<\/div>.*$//g' -e 's/^.*icon i-//g' -e '/<th class="first/d' -e 's/^.*<th class="//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/^.*<a href="//g' -e 's/" class=".*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e '/<\|;/d' -e 's/\r//g' -e '/^ *$/d' -e 's/^ *//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	sed -i -e 's/day.*$/day/g' -e 's/night.*$/night/g' -e 's/-h.*$//g' $HOME/1c_accuweather_images_hourly/hourly_raw2
+	for (( i=20; i<=41; i+=3 ))
+	  do
+    	  cp $HOME/1c_accuweather_images_hourly/Forecast_Images/$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2).png $HOME/1c_accuweather_images_hourly/$(( $i+100 )).png
+	  done
+	for (( i=21; i<=50; i+=3 ))
+	  do
+		  no=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2|wc -c)
+			if (( no<=7 )); then
+				sed -i $i"s/$/\n/" $HOME/1c_accuweather_images_hourly/hourly_raw2
+				i=$((i+1))
+			elif (( no>7 )); then
+				sed -i $i"s/^\(.\{7\}\)/\1\n/" $HOME/1c_accuweather_images_hourly/hourly_raw2
+				i=$((i+1))
+			fi
+	  done
+fi
+
+
+# Full info - altogether file
+rm $HOME/1c_accuweather_images_hourly/altogether
+#TEMP
+echo "\${color ffe595}\${goto 100}\${hr 1}" > $HOME/1c_accuweather_images_hourly/altogether
+echo "TEMP.(°C)\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=52; i<=59; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "2s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=52; i<=59; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "2s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#REALFEEL
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "REALF.(°C)\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=61; i<=68; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "4s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=61; i<=68; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "4s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#HUMIDITY
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "HUMIDITY\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=70; i<=77; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "6s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=70; i<=77; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "6s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#RAIN
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "RAIN\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=79; i<=86; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "8s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=79; i<=86; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "8s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#SNOW
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "SNOW\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=88; i<=95; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "10s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=88; i<=95; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "10s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#ICE
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "ICE\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=97; i<=104; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "12s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=97; i<=104; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "12s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#WIND
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "WIND(km/h)\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=106; i<=113; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "14s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=106; i<=113; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "14s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#UV INDEX
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "UV INDEX\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=115; i<=122; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "16s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=115; i<=122; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "16s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#CLOUD COVER
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "CLOUD COV.\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=124; i<=131; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "18s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=124; i<=131; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "18s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+#DEW POINT
+echo "\${color ffe595}\${goto 100}\${hr 1}" >> $HOME/1c_accuweather_images_hourly/altogether
+echo "DEW P.(°C)\${color}" >> $HOME/1c_accuweather_images_hourly/altogether
+jump_to=100
+for (( i=133; i<=140; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw1)
+	sed -i "20s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+for (( i=133; i<=140; i+=1 ))
+do
+	temp=$(sed -n ${i}p $HOME/1c_accuweather_images_hourly/hourly_raw2)
+	sed -i "20s/$/\${goto $jump_to}$temp/" $HOME/1c_accuweather_images_hourly/altogether
+	jump_to=$(( jump_to+=60 ))
+done
+
+kill -CONT $(pidof conky)
