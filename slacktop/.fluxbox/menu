@@ -18,7 +18,7 @@
 [begin] (Fluxbox)
 [encoding] {UTF-8}
       [exec] (rxvt) {rxvt}
-      [exec] (firefox) {firefox}
+      [exec] (firefox) {firefox-default}
       [exec]   (Run) {bashrun2}
 
 [submenu] (Terminals)
@@ -64,8 +64,8 @@
 
 [submenu] (IRC)
       [exec]   (xchat) {xchat}
-      [exec]   (skype) {skype}
-      [exec]   (irssi) {rxvt -e irssi}
+      [exec]   (skype) {schroot -c slack32 skype}
+      [exec]   (irssi) {terminal -e irssi}
 [end]
 
 
@@ -119,8 +119,9 @@
 
 
 [submenu] (File utils)
-      [exec] (konqueror) {kfmclient openProfile filemanagement}
-      [exec]   (mc) {rxvt -e mc}
+      [exec]	(konqueror) {kfmclient openProfile filemanagement}
+	  [exec]	(thunar) {thunar}
+      [exec]	(mc) {rxvt -e mc}
 [end]
 
 
@@ -177,7 +178,7 @@
       [exec]   (xclock) {xclock}
       [exec]   (xcalc) {xcalc}
       [exec]   (kcalc) {kcalc}
-      [exec] (Open Office)      {soffice}
+      [exec]	(Open Office)      {soffice}
       [exec]   (xpdf) {xpdf}
       [exec]   (gv) {gv}
       [exec]   (xfig) {xfig}
@@ -203,8 +204,9 @@
       [exec]   (powertop) {rxvt -e powertop}
 [end]
 
-[exec]	(firefox)		{firefox} 
-[exec]	(firefox)		{firefox} 
+[exec]	(firefox-anon)		{firefox-anon} 
+[exec]	(firefox-nono)		{firefox-nono}
+[exec]  (firefox-work)       {firefox-work}
 [exec]	(thunderbird)	{thunderbird} 
 [exec]	(mutt)			{rxvt -e mutt} 
 [exec]	(pine)			{rxvt -e pine} 

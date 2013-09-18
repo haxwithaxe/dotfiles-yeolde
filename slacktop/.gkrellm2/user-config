@@ -70,21 +70,33 @@ disk device md0 0 0 15 0 1 -1 0
 disk text_format $T
 inet text_format all \t$a\f $l\N$A\f $L
 inet update_interval all 1
+net enables ax0 1 1 0
+net chart_config ax0 40 100000 5 0 0 0 : 0 1 0 0 500 : 0 0 0 1 500
+net enables ax1 1 1 0
+net chart_config ax1 40 10000 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
+net enables br0 1 1 0
+net chart_config br0 40 5 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
 net enables eth0 1 1 1
 net chart_config eth0 40 20000 5 0 0 0 : 0 1 0 0 500 : 0 0 0 1 500
 net enables lanbr0 1 1 0
 net enables lo 0 1 0
 net enables ppp0 1 1 0
 net chart_config ppp0 40 2000 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
+net enables sm0 1 1 0
+net chart_config sm0 40 30 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
+net enables tap0 1 1 0
+net chart_config tap0 40 500 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
 net enables teredo 1 1 0
 net chart_config teredo 40 3000 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
 net enables tun0 1 1 0
 net chart_config tun0 40 5 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
+net enables usb0 1 1 0
+net chart_config usb0 40 50 0 1 0 0 : 0 0 0 0 500 : 0 0 0 0 500
 net enables virbr0 1 1 0
 net chart_config virbr0 40 5000000 5 0 0 0 : 0 1 0 0 500 : 0 0 0 1 500
-net enables virbr1-nic 1 1 0
 net enables virbr1 1 1 0
 net chart_config virbr1 40 5000000 5 0 0 0 : 0 1 0 0 500 : 0 0 0 1 500
+net enables virbr1-nic 1 1 0
 net enables vnet0 1 1 0
 net chart_config vnet0 40 5000000 5 0 0 0 : 0 1 0 0 500 : 0 0 0 1 500
 net enables vwlan0 1 1 0
@@ -149,10 +161,6 @@ volume_plugin_config ADDDEV 6
 volume_plugin_config SETDEVNAME Mic(c) 
 volume_plugin_config ADDDEV 8
 volume_plugin_config SETDEVNAME Mic Boost(c)
-volume_plugin_config ADDDEV 14
-volume_plugin_config SETDEVNAME Internal Mic (c)
-volume_plugin_config ADDDEV 16
-volume_plugin_config SETDEVNAME Internal Mic Boost (c)
 battery enable 1
 battery enable_composite 1
 battery estimate_time 0

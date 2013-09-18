@@ -55,6 +55,11 @@ pcm.dsp0 {
 	type plug
 	slave.pcm "duplex"
 }
+
+# for aoss
+#pcm.dsp0 "duplex"
+#ctl.mixer0 "duplex"
+
 pcm.!default {
 	## this makes alsa apps default
 	## to use this config
@@ -81,3 +86,13 @@ pcm.duplex_mono {
 	capture.pcm "duplex_source_mono"
 }
 
+# softvol manages volume in alsa
+# i.e. wine likes this
+pcm.mainvol {
+    type softvol
+    slave.pcm "duplex"
+    control {
+        name "2ch-Upmix Master"
+        card 0
+    }
+}

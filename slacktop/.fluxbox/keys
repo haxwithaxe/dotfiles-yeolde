@@ -65,9 +65,13 @@ Mod1 F2 :Exec bashrun2
 
 # volume settings, using common keycodes
 # if these don't work, use xev to find out your real keycodes
-176 :Exec amixer sset Master,0 1+
-174 :Exec amixer sset Master,0 1-
-160 :Exec amixer sset Master,0 toggle
+# XF86AudioMute
+# XF86AudioLowerVolume
+# XF86AudioRaiseVolume
+#
+XF86AudioRaiseVolume :Exec amixer sset Master,0 1+
+XF86AudioLowerVolume :Exec amixer sset Master,0 1-
+XF86AudioMute :Exec amixer sset Master,0 toggle
 
 # current window commands
 Mod1 F4 :Close
