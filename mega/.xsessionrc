@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# allow X11 access from cron and the like
+xhost +si:localuser:$(whoami)
+
+xset -display :0.0 -dpms
+xset -display :0.0 s noexpose
+xset -display :0.0 s noblank
+xset -display :0.0 s off
+
+xmodmap -e "clear lock" # drop Caps_Lock
+xmodmap -e "remove mod4 = Hyper_L" # remove redundant Hyper_L references
+xmodmap -e "keycode 66 = Hyper_L" # set Caps_Lock key to read as Hyper_L
+xmodmap -e "add mod3 = Hyper_L" # set  mod3 to be Hyper_L
+xmodmap -pm
