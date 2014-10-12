@@ -1,0 +1,32 @@
+#!/bin/bash
+
+. ~/.i3/libautostart.sh
+
+# Start programs at login
+
+# run background services while the other stuff starts
+silent launch_bg dbus-launch nm-applet
+quiet launch_bg /usr/bin/git-annex assistant --autostart
+quiet launch_bg dropbox start
+launch_bg redshift
+
+# window 1
+# load terminals before all other programs
+ws=1
+set_layout tabbed
+launch i3-sensible-terminal
+launch i3-sensible-terminal
+move up
+done_launching
+
+# window 3
+ws=3
+split h
+launch_term mutt-patched
+split h
+quiet launch_dumb pidgin
+# split pidgin side by side
+split v
+done_launching
+
+return_home
