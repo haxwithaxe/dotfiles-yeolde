@@ -1,0 +1,23 @@
+# for crontab based alarm
+xhost +si:localuser:$(whoami)
+
+# turn off the darn screensaver
+xset s noblank
+xset s noexpose
+xset s off
+
+# set desktop background
+xsetroot -solid darkgrey
+
+# merge "paste buffers"
+autocutsel -fork
+autocutsel -selection PRIMARY -fork
+
+# fix key map
+xmodmap ~/.Xmodmap
+
+# force zapping
+setxkbmap -option terminate:ctrl_alt_bksp
+
+# set touchpad settings
+synclient VertEdgeScroll=1 HorizEdgeScroll=1 VertTwoFingerScroll=0 HorizTwoFingerScroll=0 TapButton1=0 TapButton2=0 TapButton3=0

@@ -3,7 +3,7 @@ REPO ?= $(shell pwd)
 
 .PHONY: all
 
-all: $(HOME)/.bashrc $(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/state $(HOME)/.playlists $(HOME)/.synergy.conf 
+all: $(HOME)/.bashrc $(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/state $(HOME)/.playlists $(HOME)/.synergy.conf $(HOME)/.xsessionrc
 
 $(HOME)/.bashrc:
 	ln -s $(REPO)/.bashrc $@
@@ -22,3 +22,6 @@ $(HOME)/.playlists:
 
 $(HOME)/.synergy.conf:
 	ln -s $(REPO)/.synergy.conf $@
+
+$(HOME)/.xsessionrc:
+	ln -s $(REPO)/.xsessionrc $@
