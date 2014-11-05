@@ -3,10 +3,9 @@ REPO ?= $(shell pwd)
 trgt2src = $(subst $(HOME), $(REPO), $(1))
 src2trgt = $(subst $(REPO), $(HOME), $(1))
 
-
 .PHONY: all load
 
-all: $(HOME)/.asoundrc \
+targets = $(HOME)/.asoundrc \
 	$(HOME)/.bashrc \
 	$(HOME)/.gtkrc-2.0 \
 	$(HOME)/.irssi \
@@ -20,7 +19,7 @@ all: $(HOME)/.asoundrc \
 	$(HOME)/.config/pianobar/state \
 	$(HOME)/.config/pianobar/config
 
-load: $(REPO)/.asoundrc \
+sources = $(REPO)/.asoundrc \
 	$(REPO)/.bashrc \
 	$(REPO)/.gtkrc-2.0 \
 	$(REPO)/.irssi \
@@ -34,46 +33,34 @@ load: $(REPO)/.asoundrc \
 	$(REPO)/.config/pianobar/config \
 	$(REPO)/.playlists
 
-#$(HOME)/.bashrc $(HOME)/.asoundrc $(HOME)/.gtkrc-2.0 $(HOME)/.irssi $(HOME)/.libao $(HOME)/.profile $(HOME)/.screenrc $(HOME)/.vimrc $(HOME)/.Xmodmap $(HOME)/.xsessionrc $(HOME)/.playlists $(HOME)/.synergy.conf:
-#	trgt=$@
-#	src=$@
-#	$(call trgt2src, $(src))
-#	echo src is $(src) target is $(trgt)
-#	ln -s $(src) $(trgt)
+all: $(targets)
 
-#$(HOME)/.config/pianobar: $(HOME)/.config
-#	mkdir -p $@
+load: $(sources) 
 
-#$(HOME)/.config:
-#	mkdir -p $@
+$(targets):
+	trgt=$@
+	src=$(call trgt2src, $@)
+	ln -s $(src) $(trgt)
 
-#$(HOME)/.config/pianobar/state: $(HOME)/.config/pianobar
-#	trgt=$@
-#	src=$@
-#	$(call trgt2src, $(src))
-#	echo src is $(src) target is $(trgt)
-#	ln -s $(src) $(trgt)
-#
-#$(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
-#	trgt=$@
-#	src=$@
-#	$(call trgt2src, $(src))
-#	echo src is $(src) target is $(trgt)
-#	cp $(src) $(trgt)
+$(HOME)/.config/pianobar: $(HOME)/.config
+	mkdir -p $@
 
-$(REPO)/.asoundrc $(REPO)/.bashrc $(REPO)/.gtkrc-2.0 $(REPO)/.irssi $(REPO)/.libao $(REPO)/.profile $(REPO)/.screenrc $(REPO)/.vimrc $(REPO)/.Xmodmap $(REPO)/.xsessionrc $(REPO)/.playlists: 
-	echo $@
+$(HOME)/.config:
+	mkdir -p $@
+
+$(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
+
+$(HOME)/.config/pianobar/config:
+	trgt=$@
+	src=$(call trgt2src, $@)
+	cp $(src) $(trgt)
+
+$(sources): 
 	trgt=$@
 	src=$(call src2trgt,$@)
-	echo src is $(src) target is $(trgt)
 	cp -r $(src) $(trgt)
 
 $(REPO)/.config/pianobar/state $(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
-	trgt=$@
-	src=$@
-	$(call trgt2src, $(src))
-	echo src is $(src) target is $(trgt)
-	cp -r $(src) $(trgt)
 
 $(REPO)/.config/pianobar: $(REPO)/.config
 	mkdir -p $@

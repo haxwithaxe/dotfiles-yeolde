@@ -1,27 +1,41 @@
-
 REPO ?= $(shell pwd)
 
-.PHONY: all
+trgt2src = $(subst $(HOME), $(REPO), $(1))
+src2trgt = $(subst $(REPO), $(HOME), $(1))
 
-all: $(HOME)/.bashrc $(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/state $(HOME)/.playlists $(HOME)/.synergy.conf $(HOME)/.xsessionrc
+.PHONY: all load
 
-$(HOME)/.bashrc:
-	ln -s $(REPO)/.bashrc $@
+targets = $(HOME)/.bashrc $(HOME)/.config/pianobar/state $(HOME)/.playlists $(HOME)/.synergy.conf $(HOME)/.xsessionrc
 
-$(HOME)/.config/pianobar:
-	    mkdir -p $@
+sources = $(REPO)/.bashrc $(REPO)/.config/pianobar/state $(REPO)/.playlists $(REPO)/.synergy.conf $(REPO)/.xsessionrc
 
-$(HOME)/.config/pianobar/state: $(HOME)/.config/pianobar
-	ln -s $(REPO)/.config/pianobar/state $@
+all: $(targets)
+	
+load: $(sources) 
 
-$(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
-	cp $(REPO)/.config/pianobar/config $@
+$(targets):
+	trgt=$@
+	src=$(call trgt2src, $@)
+	ln -s $(src) $(trgt)
 
-$(HOME)/.playlists:
-	ln -s $(REPO)/.playlists $@
+$(HOME)/.config/pianobar: $(HOME)/.config
+	mkdir -p $@
 
-$(HOME)/.synergy.conf:
-	ln -s $(REPO)/.synergy.conf $@
+$(HOME)/.config:
+	mkdir -p $@
 
-$(HOME)/.xsessionrc:
-	ln -s $(REPO)/.xsessionrc $@
+$(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
+
+$(sources): 
+	trgt=$@
+	src=$(call src2trgt,$@)
+	cp -r $(src) $(trgt)
+
+$(REPO)/.config/pianobar/state $(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
+
+$(REPO)/.config/pianobar: $(REPO)/.config
+	mkdir -p $@
+
+$(REPO)/.config:
+	mkdir -p $@
+
