@@ -3,13 +3,15 @@ REPO ?= $(shell pwd)
 trgt2src = $(subst $(HOME), $(REPO), $(1))
 src2trgt = $(subst $(REPO), $(HOME), $(1))
 
-.PHONY: all load
+.PHONY: all install load clean
 
 targets = $(HOME)/.bashrc $(HOME)/.config/pianobar/state $(HOME)/.playlists $(HOME)/.synergy.conf $(HOME)/.xsessionrc
 
 sources = $(REPO)/.bashrc $(REPO)/.config/pianobar/state $(REPO)/.playlists $(REPO)/.synergy.conf $(REPO)/.xsessionrc
 
-all: $(targets)
+all: install
+
+install: $(targets)
 	
 load: $(sources) 
 

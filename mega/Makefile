@@ -3,7 +3,7 @@ REPO ?= $(shell pwd)
 trgt2src = $(subst $(HOME), $(REPO), $(1))
 src2trgt = $(subst $(REPO), $(HOME), $(1))
 
-.PHONY: all load
+.PHONY: all install load clean
 
 targets = $(HOME)/.asoundrc \
 	$(HOME)/.bashrc \
@@ -33,7 +33,9 @@ sources = $(REPO)/.asoundrc \
 	$(REPO)/.config/pianobar/config \
 	$(REPO)/.playlists
 
-all: $(targets)
+all: install
+
+install: $(targets)
 
 load: $(sources) 
 
