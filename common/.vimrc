@@ -35,17 +35,11 @@ function! HasPaste()
 	en
 		return ''
 endfunction
-" Toggle paste mode
-" from the command bar
-command Tp setl paste!
-" or a key combo Ctrl+Shift+p (C-p) is used by vim
-map <C-P> :setl paste!<CR>
 """ color fixes
 " set color depth
 set t_Co=256
 " set gutter bg color
 highlight SignColumn guibg=darkgrey
-
 
 "Search
 set autoread
@@ -94,9 +88,6 @@ let g:syntastic_style_error_symbol='E'
 let g:syntastic_warning_symbol='!'
 let g:syntastic_style_warning_symbol='!'
 
-
-"
-
 highlight SyntasticError ctermfg=15 ctermbg=52
 highlight SyntasticWarning ctermfg=154 ctermbg=52
 highlight SyntasticStyleError ctermfg=160 ctermbg=17
@@ -111,8 +102,6 @@ highlight SyntasticErrorLine ctermbg=237
 highlight SyntasticWarningLine ctermbg=234
 highlight SyntasticStyleErrorLine ctermbg=237
 highlight SyntasticStyleWarningLine ctermbg=234
-
-command LB80 :set lbr tw=80
 
 " ex command for toggling hex mode - define mapping if desired
 command -bar Hexmode call ToggleHex()
