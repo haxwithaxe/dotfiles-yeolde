@@ -1,0 +1,3 @@
+[submodule "common/.i3/dex"]
+	path = common/.i3/dex
+	url = git@github.com:jceb/dex.git

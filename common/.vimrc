@@ -1,25 +1,13 @@
 "vim behavior
+set modeline
 set magic
 set encoding=utf-8
 set mouse-=a "disable mouse
-
-" remap ; -> :
-nore ; :
-
-" remap , -> ;
-"nore , ;
 
 " no backups
 set noswapfile
 set nobackup
 set nowritebackup
-" shortcuts
-"  ALT+j - move line down 1
-nmap <M-j> mz:m+<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-"  ALT+k - move line up 1
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 "Shiny
 syntax enable
@@ -35,11 +23,6 @@ function! HasPaste()
 	en
 		return ''
 endfunction
-""" color fixes
-" set color depth
-set t_Co=256
-" set gutter bg color
-highlight SignColumn guibg=darkgrey
 
 "Search
 set autoread
@@ -49,24 +32,25 @@ set hlsearch
 set incsearch
 set showmatch
 
-"Tabs ... -_-
+"Tabs
 set smarttab
 set autoindent
 set smartindent
-set cin
+set cindent
 set inde=
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set noexpandtab
+"pretty tabs
+let g:indent_guides_auto_colors = 0
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 
 "Spreling (spelling :P)
 set spell
 set spelllang=en
 set spellsuggest=5
-hi clear SpellBad
-hi SpellBad gui=underline
-hi SpellBad term=underline
-hi SpellBad cterm=underline
 map <leader>ss :setlocal spell!<cr> " Pressing ,ss will toggle and untoggle spell checking
 map <leader>sn ]s	"next?
 map <leader>sp [s	"previous?
@@ -75,35 +59,24 @@ map <leader>s? z=	"query?
 
 "syntastic
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_aggregate_errors = 1
-let g:syntastic_python_checkers=['pep8', 'pylint', 'pep257']
+let g:syntastic_python_checkers=['pylint']
 let g:syntastic_id_checkers = 1
-let g:syntastic_enable_signs = 1
+let g:syntastic_enable_signs = 0
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 0
+let g:syntastic_python_python_exec = '/usr/bin/python3'
+" default let g:syntastic_python_python_exec = '/path/to/python2'
 
-let g:syntastic_error_symbol='E'
-let g:syntastic_style_error_symbol='E'
-let g:syntastic_warning_symbol='!'
-let g:syntastic_style_warning_symbol='!'
+highlight SyntasticErrorLine guibg=red
+highlight SyntasticWarningLine guibg=yellow
+highlight SyntasticStyleErrorLine guibg=orange guifg=blue
+highlight SyntasticStyleWarningLine guibg=yellow guifg=darkgrey
 
-highlight SyntasticError ctermfg=15 ctermbg=52
-highlight SyntasticWarning ctermfg=154 ctermbg=52
-highlight SyntasticStyleError ctermfg=160 ctermbg=17
-highlight SyntasticStyleWarning ctermfg=154 ctermbg=17
+command LB80 :set lbr tw=80
 
-highlight SyntasticErrorSign ctermfg=15 ctermbg=52
-highlight SyntasticWarningSign ctermfg=154 ctermbg=52
-highlight SyntasticStyleErrorSign ctermfg=160 ctermbg=17
-highlight SyntasticStyleWarningSign ctermfg=154 ctermbg=17
-
-highlight SyntasticErrorLine ctermbg=237
-highlight SyntasticWarningLine ctermbg=234
-highlight SyntasticStyleErrorLine ctermbg=237
-highlight SyntasticStyleWarningLine ctermbg=234
-
-" ex command for toggling hex mode - define mapping if desired
+" hex edit mode
 command -bar Hexmode call ToggleHex()
 
 " helper function to toggle hex mode
@@ -193,3 +166,5 @@ if has("autocmd")
           \ endif
   augroup END
 endif
+" END hex edit mode
+

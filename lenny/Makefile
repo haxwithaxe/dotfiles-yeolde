@@ -64,4 +64,3 @@ $(REPO)/.config/pianobar: $(REPO)/.config
 
 $(REPO)/.config:
 	mkdir -p $@
-
