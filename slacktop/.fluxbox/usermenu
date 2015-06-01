@@ -1,7 +1,0 @@
-[exec]	(firefox-work)		{firefox-work} 
-[exec]	(firefox-anon)		{firefox-anon} 
-[exec]	(thunderbird)	{thunderbird} 
-[exec]	(mutt)			{rxvt -e mutt} 
-[exec]	(pine)			{rxvt -e pine} 
-[exec]	(gvim)			{gvim}
-[exec]	(vlc)			{vlc}
