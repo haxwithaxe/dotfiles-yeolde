@@ -3,17 +3,19 @@ REPO ?= $(shell pwd)
 trgt2src = $(subst $(HOME), $(REPO), $(1))
 src2trgt = $(subst $(REPO), $(HOME), $(1))
 
-.PHONY: all install load clean
+.PHONY: all install load clean i3
 
 targets = $(HOME)/.vimrc \
 	$(HOME)/.playlists \
-	$(HOME)/.config/pianobar/state \
-	$(HOME)/.config/pianobar/config
+	$(HOME)/.i3/conky-i3bar \
+	$(HOME)/.i3/dex \
+	$(HOME)/.i3/libautostart.sh
 
 sources = $(REPO)/.vimrc \
-	$(REPO)/.config/pianobar/state \
-	$(REPO)/.config/pianobar/config \
-	$(REPO)/.playlists
+	$(REPO)/.playlists \
+	$(REPO)/.i3/conky-i3bar \
+	$(REPO)/.i3/dex \
+	$(REPO)/.i3/libautostart.sh
 
 repo_mutt_bits = $(REPO)/.mutt/gpg.rc \
   	$(REPO)/.mutt/harvest_alias.sh \
@@ -25,15 +27,17 @@ install: $(targets)
 
 load: $(sources) 
 
+i3: $(HOME)/.i3 $(HOME)/.i3/conky-i3bar $(HOME)/.i3/dex $(HOME)/.i3/libautostart.sh
+
 $(targets):
 	trgt=$@
-	src=$(call trgt2src, $@)
+	src=$(call trgt2src,$@)
 	ln -s $(src) $(trgt)
 
 $(HOME)/.config/pianobar: $(HOME)/.config
 	mkdir -p $@
 
-$(HOME)/.config $(HOME)/.mutt:
+$(HOME)/.config $(HOME)/.mutt $(HOME)/.i3:
 	mkdir -p $@
 
 $(HOME)/.muttrc: $(home_mutt_bits)
@@ -58,14 +62,8 @@ $(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
 $(REPO)/.config/pianobar: $(REPO)/.config
 	mkdir -p $@
 
-$(REPO)/.config:
-	mkdir -p $@
-
 $(REPO)/.muttrc:
 	#sanitize muttrc
-
-$(REPO)/.mutt:
-	mkdir -p $@
 
 $(repo_mutt_bits): $(REPO)/.mutt $(REPO)/.muttrc
 
