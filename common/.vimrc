@@ -3,6 +3,13 @@ set modeline
 set magic
 set encoding=utf-8
 set mouse-=a "disable mouse
+" share the * register with the clipboard
+" http://vimcasts.org/episodes/accessing-the-system-clipboard-from-vim/
+if has('unnamedplus')
+	set clipboard=unnamed,unnamedplus
+else
+	set clipboard=unnamed
+endif
 
 " no backups
 set noswapfile
