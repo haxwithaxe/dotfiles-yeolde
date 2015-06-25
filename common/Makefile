@@ -30,9 +30,7 @@ load: $(sources)
 i3: $(HOME)/.i3 $(HOME)/.i3/conky-i3bar $(HOME)/.i3/dex $(HOME)/.i3/libautostart.sh
 
 $(targets):
-	trgt=$@
-	src=$(call trgt2src,$@)
-	ln -s $(src) $(trgt)
+	ln -s $(strip $(call trgt2src,$@)) $@
 
 $(HOME)/.config/pianobar: $(HOME)/.config
 	mkdir -p $@
@@ -52,7 +50,7 @@ $(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
 $(sources): $(repo_mutt_bits)
 	trgt=$@
 	src=$(call src2trgt,$@)
-	cp -r $(src) $(trgt)
+	cp -r "$(src)" "$(trgt)"
 
 $(REPO)/.config/pianobar/state: $(REPO)/.config/pianobar
 
