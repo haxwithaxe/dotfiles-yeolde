@@ -10,57 +10,60 @@ targets = $(HOME)/.bashrc \
 	$(HOME)/.irssi \
 	$(HOME)/.profile \
 	$(HOME)/.screenrc \
-	$(HOME)/.vimrc \
-	$(HOME)/.xsessionrc \
-	$(HOME)/.playlists \
-	$(HOME)/.config/pianobar/state \
-	$(HOME)/.config/pianobar/config
+	$(HOME)/.xsessionrc
 
 sources = $(REPO)/.bashrc \
 	$(REPO)/.gtkrc-2.0 \
 	$(REPO)/.irssi \
-	$(REPO)/.libao \
 	$(REPO)/.profile \
 	$(REPO)/.screenrc \
-	$(REPO)/.vimrc \
-	$(REPO)/.xsessionrc \
-	$(REPO)/.config/pianobar/state \
-	$(REPO)/.config/pianobar/config \
-	$(REPO)/.playlists
+	$(REPO)/.xsessionrc
+
+i3_targets = $(HOME)/.i3/config \
+	$(HOME)/.i3/conky-i3bar \
+	$(HOME)/.i3/conky-power.sh \
+	$(HOME)/.i3/conkyrc \
+	$(HOME)/.i3/conky-temp.sh \
+	$(HOME)/.i3/conky-wireless.sh \
+	$(HOME)/.i3/startup
+
+i3_sources = $(REPO)/.i3/config \
+	$(REPO)/.i3/conky-i3bar \
+	$(REPO)/.i3/conky-power.sh \
+	$(REPO)/.i3/conkyrc \
+	$(REPO)/.i3/conky-temp.sh \
+	$(REPO)/.i3/conky-wireless.sh \
+	$(REPO)/.i3/startup
+
+autostart_targets = $(HOME)/.config/autostart/dropbox.desktop \
+	$(HOME)/.config/autostart/nm-applet.desktop \
+	$(HOME)/.config/autostart/xfce4-power-manager.desktop
+
+autostart_sources = $(REPO)/.config/autostart/dropbox.desktop \
+	$(REPO)/.config/autostart/nm-applet.desktop \
+	$(REPO)/.config/autostart/xfce4-power-manager.desktop
+
+TARGET_DIRS = $(REPO)/.i3 $(HOME)/.config/autostart
 
 all: install
 
-install: $(targets)
+install: $(targets) i3 autostart
 
-load: $(sources) 
+load: $(sources) i3src autostartsrc
 
-$(targets):
-	trgt=$@
-	src=$(call trgt2src, $@)
-	ln -s $(src) $(trgt)
+i3: $(HOME)/.i3 $(i3_targets)
 
-$(HOME)/.config/pianobar: $(HOME)/.config
+i3src: $(REPO)/.i3 $(i3_sources)
+
+autostart: $(HOME)/.config/autostart $(autostart_targets)
+
+autostartsrc: $(REPO)/.config/autostart $(autostart_sources)
+
+$(targets) $(i3_targets) $(autostart_targets):
+	ln -s $(call trgt2src,$@) $@
+
+$(TARGET_DIRS):
 	mkdir -p $@
 
-$(HOME)/.config:
-	mkdir -p $@
-
-$(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
-
-$(HOME)/.config/pianobar/config:
-	trgt=$@
-	src=$(call trgt2src, $@)
-	cp $(src) $(trgt)
-
-$(sources): 
-	trgt=$@
-	src=$(call src2trgt,$@)
-	cp -r $(src) $(trgt)
-
-$(REPO)/.config/pianobar/state $(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
-
-$(REPO)/.config/pianobar: $(REPO)/.config
-	mkdir -p $@
-
-$(REPO)/.config:
-	mkdir -p $@
+$(sources) $(i3_sources) $(autostart_sources):
+	cp -r $(call src2trgt,$@) $@
