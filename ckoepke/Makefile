@@ -7,16 +7,12 @@ src2trgt = $(subst $(REPO), $(HOME), $(1))
 
 targets = $(HOME)/.bashrc \
 	$(HOME)/.gtkrc-2.0 \
-	$(HOME)/.irssi \
 	$(HOME)/.profile \
-	$(HOME)/.screenrc \
 	$(HOME)/.xsessionrc
 
 sources = $(REPO)/.bashrc \
 	$(REPO)/.gtkrc-2.0 \
-	$(REPO)/.irssi \
 	$(REPO)/.profile \
-	$(REPO)/.screenrc \
 	$(REPO)/.xsessionrc
 
 i3_targets = $(HOME)/.i3/config \
@@ -35,12 +31,10 @@ i3_sources = $(REPO)/.i3/config \
 	$(REPO)/.i3/conky-wireless.sh \
 	$(REPO)/.i3/startup
 
-autostart_targets = $(HOME)/.config/autostart/dropbox.desktop \
-	$(HOME)/.config/autostart/nm-applet.desktop \
+autostart_targets =	$(HOME)/.config/autostart/nm-applet.desktop \
 	$(HOME)/.config/autostart/xfce4-power-manager.desktop
 
-autostart_sources = $(REPO)/.config/autostart/dropbox.desktop \
-	$(REPO)/.config/autostart/nm-applet.desktop \
+autostart_sources =	$(REPO)/.config/autostart/nm-applet.desktop \
 	$(REPO)/.config/autostart/xfce4-power-manager.desktop
 
 TARGET_DIRS = $(REPO)/.i3 $(HOME)/.config/autostart
