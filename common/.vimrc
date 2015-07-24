@@ -1,3 +1,5 @@
+execute pathogen#infect()
+
 "vim behavior
 set modeline
 set magic
@@ -17,7 +19,7 @@ set nobackup
 set nowritebackup
 
 "Shiny
-syntax enable
+syntax on
 colorscheme slate
 filetype indent on
 filetype plugin on
@@ -53,6 +55,12 @@ set noexpandtab
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+"hardworking tabs
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-p>"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>"]
+
 
 "Spreling (spelling :P)
 set spell
@@ -80,3 +88,5 @@ highlight SyntasticErrorLine guibg=red
 highlight SyntasticWarningLine guibg=yellow
 highlight SyntasticStyleErrorLine guibg=orange guifg=blue
 highlight SyntasticStyleWarningLine guibg=yellow guifg=darkgrey
+
+let g:jedi#popup_on_dot = 0
