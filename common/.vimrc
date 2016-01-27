@@ -12,6 +12,8 @@ if has('unnamedplus')
 else
 	set clipboard=unnamed
 endif
+" insert newline without entering command mode (and stay on the same line)
+nmap <CR><CR> m`o<ESC>``
 
 " no backups
 set noswapfile
@@ -83,6 +85,7 @@ let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 0
 let g:syntastic_python_python_exec = '/usr/bin/python3'
 " default let g:syntastic_python_python_exec = '/path/to/python2'
+let g:syntastic_python_pylint_exec = '/usr/local/bin/pylint'
 
 highlight SyntasticErrorLine guibg=red
 highlight SyntasticWarningLine guibg=yellow
