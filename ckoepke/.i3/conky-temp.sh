@@ -23,7 +23,7 @@ elif [ $long_temp -ge $warn_temp ] ;then
 fi
 
 if $blink ;then
-	printf  "{ \"full_text\" : \"${blink}%2d${blink}\" , \"color\" : \"%s\" }," ${temp} ${temp_color}
+	printf  "{ \"full_text\" : \"\${blink}%2dC\${blink}\" , \"color\" : \"%s\" }," ${temp} ${temp_color}
 else
-	printf  "{ \"full_text\" : \"%2d\" , \"color\" : \"%s\" }," ${temp} ${temp_color}
+	printf  "{ \"full_text\" : \"%2dC\" , \"color\" : \"%s\" }," ${temp} ${temp_color}
 fi

@@ -14,5 +14,3 @@ move up
 done_launching
 
 return_home
-xfce4-power-manager &
-dropbox start &

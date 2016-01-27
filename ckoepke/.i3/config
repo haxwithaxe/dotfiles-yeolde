@@ -12,10 +12,16 @@
 set $mod Mod1
 #default Mod1
 
-set $LVDS LVDS1
+set $PRIMARY eDP1
+set $SECONDARY  DP2-1
+#set $SECONDARY  eDP1
 set $HDMI HDMI1
 set $VGA VGA1
-set $DP  DP1
+
+# admin/comms	1
+# management	2
+# docs			3
+# code/jira		4
 
 force_xinerama no
 
@@ -118,6 +124,17 @@ bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
+# switching to synergy screen
+# Server
+bindsym $mod+Home exec xte 'keydown Control_L' 'keydown Alt_L' 'keydown Super_L' 'keydown Shift_L' 'key Page_Up' 'keyup Control_L' 'keyup Alt_L' 'keyup Super_L' 'keyup Shift_L'
+# Client
+bindsym $mod+End exec xte 'keydown Control_L' 'keydown Alt_L' 'keydown Super_L' 'keydown Shift_L' 'key End' 'keyup Control_L' 'keyup Alt_L' 'keyup Super_L' 'keyup Shift_L'
+# Next screen
+bindsym $mod+Page_Up exec xte 'keydown Control_L' 'keydown Alt_L' 'keydown Super_L' 'keydown Shift_L' 'key Page_Up' 'keyup Control_L' 'keyup Alt_L' 'keyup Super_L' 'keyup Shift_L'
+# Previous screen
+bindsym $mod+Page_Down exec xte 'keydown Control_L' 'keydown Alt_L' 'keydown Super_L' 'keydown Shift_L' 'key Page_Down' 'keyup Control_L' 'keyup Alt_L' 'keyup Super_L' 'keyup Shift_L'
+
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
 bindsym $mod+Shift+2 move container to workspace 2
@@ -169,19 +186,23 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $PA_SINK
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $PA_SINK -- -10%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 
-assign [class="Pidgin"] 4
-assign [class="firefox-personal"] 2
-assign [class="firefox-default"] 2
-assign [class="firefox-work"] 3
-assign [class="Uzbl-core"] 2
+
+assign [class="Pidgin"] 1
+assign [class="firefox-personal"] 7
+assign [class="firefox-default"] 1
+assign [class="firefox-work"] 1
+assign [class="firefox-admin"] 1
+assign [class="firefox-jira"] 5
+assign [class="firefox-docs"] 3
+assign [class="firefox-management"] 2
+
 for_window [title="NoScript Options"] float
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	output $LVDS
-	output xinerama-0
-	font pango:Unifont CSUR 11
+	output $PRIMARY
+	font pango:Unifont CSUR 10
 	status_command $HOME/.i3/conky-i3bar
 }
 
@@ -190,17 +211,14 @@ bar {
 #LVDS-1 connected 1024x600+0+0 (normal left inverted right x axis y axis) 220mm x 129mm
 #   1024x600       60.0*+   65.0
 #HDMI-1 disconnected (normal left inverted right x axis y axis)
-workspace 1 output $LVDS
-workspace 2 output $LVDS
-workspace 3 output $LVDS
-workspace 4 output $LVDS
-workspace 5 output $LVDS
-workspace 6 output $LVDS
-workspace 7 output $LVDS
-workspace 8 output $HDMI
-workspace 9 output $VGA
+workspace 1 output $PRIMARY
+workspace 2 output $PRIMARY
+workspace 3 output $PRIMARY
+#workspace 4 output $PRIMARY
+workspace 4 output $SECONDARY
+workspace 5 output $SECONDARY
 
-exec dex -ae i3
+exec ~/.i3/dex/dex -ae i3
 
 exec --no-startup-id ~/.i3/startup &
 
