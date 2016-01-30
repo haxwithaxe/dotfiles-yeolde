@@ -1,67 +1,66 @@
+
+.PHONY: all install load clean i3 pianobar mutt vim
+
 REPO ?= $(shell pwd)
 
-trgt2src = $(subst $(HOME), $(REPO), $(1))
-src2trgt = $(subst $(REPO), $(HOME), $(1))
+targets = $(HOME)/.playlists
 
-.PHONY: all install load clean i3
+xdg_data_dir = $(HOME)/.config
+xdg_data_repo = $(REPO)/.config
 
-targets = $(HOME)/.vimrc \
-	$(HOME)/.playlists \
-	$(HOME)/.i3/conky-i3bar \
-	$(HOME)/.i3/dex \
-	$(HOME)/.i3/libautostart.sh
+vim_targets = $(HOME)/.vimrc $(HOME)/.vim
 
-sources = $(REPO)/.vimrc \
-	$(REPO)/.playlists \
-	$(REPO)/.i3/conky-i3bar \
-	$(REPO)/.i3/dex \
-	$(REPO)/.i3/libautostart.sh
+i3_dir = $(HOME)/.i3
+i3_repo =  $(REPO)/.i3
+i3_copy_targets = $(i3_dir)/conky-temp.sh $(i3_dir)/conky-power.sh $(i3_dir)/conky-wireless.sh $(i3_dir)/startup
+i3_targets = $(i3_dir)/config $(i3_dir)/conky-i3bar $(i3_dir)/dex $(i3_dir)/libautostart.sh
 
-repo_mutt_bits = $(REPO)/.mutt/gpg.rc \
-  	$(REPO)/.mutt/harvest_alias.sh \
-  	$(REPO)/.mutt/uirc
+pianobar_dir = $(xdg_data_dir)/pianobar
+pianobar_repo = $(xdg_data_repo)/pianobar
+pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config
+
+mutt_dir = $(HOME)/.mutt
+mutt_repo = $(REPO)/.mutt
+mutt_bits = $(mutt_dir)/gpg.rc $(mutt_dir)/harvest_alias.sh $(mutt_dir)/uirc
+
+DIRS = $(pianobar_dir) $(xdg_data_dir) $(mutt_dir) $(i3_dir) 
+# linked not created .playlists, .vim, .i3/dex
 
 all: install
 
-install: $(targets)
+install: $(targets) i3 pianobar mutt vim
 
-load: $(sources) 
+vim: $(vim_targets)
 
-i3: $(HOME)/.i3 $(HOME)/.i3/conky-i3bar $(HOME)/.i3/dex $(HOME)/.i3/libautostart.sh
+i3: $(i3_targets) $(i3_copy_targeets)
 
-$(targets):
-	ln -s $(strip $(call trgt2src,$@)) $@
+pianobar: $(pianobar_targets)
 
-$(HOME)/.config/pianobar: $(HOME)/.config
+mutt: $(mutt_bits) $(HOME)/.muttrc
+
+$(DIRS):
 	mkdir -p $@
 
-$(HOME)/.config $(HOME)/.mutt $(HOME)/.i3:
-	mkdir -p $@
-
-$(HOME)/.muttrc: $(home_mutt_bits)
+$(HOME)/.muttrc: $(mutt_bits)
 	cp $(REPO)/.muttrc $@
 
-$(HOME)/.config/pianobar/state: $(HOME)/.config/pianobar
+$(pianobar_dir)/config: $(pianobar_dir)
+	cp $(pianobar_repo)/config $@
 
-$(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
-	# copy not link sanitized config
-	cp $(REPO)/.config/pianobar/config $@
+$(pianobar_dir)/%: $(pianobar_dir)
+	ln -sf $(pianobar_repo)/$* $@
 
-$(sources): $(repo_mutt_bits)
-	trgt=$@
-	src=$(call src2trgt,$@)
-	cp -r "$(src)" "$(trgt)"
+$(xdg_data_dir)/%: $(xdg_data_dir)
+	ln -sf $(xdg_data_repo)/$* $@
 
-$(REPO)/.config/pianobar/state: $(REPO)/.config/pianobar
+$(i3_dir)/%: $(i3_dir)
+	ln -sf $(i3_repo)/$* $@
 
-$(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
-	# sanitize config
+$(mutt_dir)/%:  $(mutt_dir)
+	ln -sf $(mutt_repo)/$* $@
 
-$(REPO)/.config/pianobar: $(REPO)/.config
+$(DIRS):
 	mkdir -p $@
 
-$(REPO)/.muttrc:
-	#sanitize muttrc
-
-$(repo_mutt_bits): $(REPO)/.mutt $(REPO)/.muttrc
-
+$(HOME)/%:
+	ln -sf $(REPO)/$* $@
