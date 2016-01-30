@@ -12,12 +12,8 @@ targets = $(HOME)/.asoundrc \
 	$(HOME)/.libao \
 	$(HOME)/.profile \
 	$(HOME)/.screenrc \
-	$(HOME)/.vimrc \
 	$(HOME)/.Xmodmap \
-	$(HOME)/.xsessionrc \
-	$(HOME)/.playlists \
-	$(HOME)/.config/pianobar/state \
-	$(HOME)/.config/pianobar/config
+	$(HOME)/.xsessionrc
 
 sources = $(REPO)/.asoundrc \
 	$(REPO)/.bashrc \
@@ -26,12 +22,8 @@ sources = $(REPO)/.asoundrc \
 	$(REPO)/.libao \
 	$(REPO)/.profile \
 	$(REPO)/.screenrc \
-	$(REPO)/.vimrc \
 	$(REPO)/.Xmodmap \
-	$(REPO)/.xsessionrc \
-	$(REPO)/.config/pianobar/state \
-	$(REPO)/.config/pianobar/config \
-	$(REPO)/.playlists
+	$(REPO)/.xsessionrc
 
 all: install
 
