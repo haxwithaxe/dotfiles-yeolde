@@ -1,64 +1,37 @@
-REPO ?= $(shell pwd)
-
-trgt2src = $(subst $(HOME), $(REPO), $(1))
-src2trgt = $(subst $(REPO), $(HOME), $(1))
 
 .PHONY: all install load clean
 
-targets = $(HOME)/.asoundrc \
-	$(HOME)/.bashrc \
-	$(HOME)/.gtkrc-2.0 \
+REPO ?= $(shell pwd)
+
+targets = $(HOME)/.bashrc \
+	$(HOME)/.gtkrc-2.0.mine \
 	$(HOME)/.irssi \
 	$(HOME)/.libao \
-	$(HOME)/.profile \
 	$(HOME)/.screenrc \
 	$(HOME)/.Xmodmap \
-	$(HOME)/.xsessionrc
+	$(HOME)/.xsessionrc \
+	$(HOME)/.xinitrc
 
-sources = $(REPO)/.asoundrc \
-	$(REPO)/.bashrc \
-	$(REPO)/.gtkrc-2.0 \
-	$(REPO)/.irssi \
-	$(REPO)/.libao \
-	$(REPO)/.profile \
-	$(REPO)/.screenrc \
-	$(REPO)/.Xmodmap \
-	$(REPO)/.xsessionrc
+i3_dir = $(HOME)/.i3
+i3_repo =  $(REPO)/.i3
+i3_targets = $(i3_dir)/config $(i3_dir)/startup $(i3_dir)/conkyrc
+
+DIRS = $(i3_dir) 
 
 all: install
 
-install: $(targets)
+install: $(targets) i3
 
-load: $(sources) 
+i3: $(i3_targets)
 
-$(targets):
-	trgt=$@
-	src=$(call trgt2src, $@)
-	ln -s $(src) $(trgt)
+$(i3_dir)/%: $(i3_dir)
+	ln -sf $(i3_repo)/$* $@
 
-$(HOME)/.config/pianobar: $(HOME)/.config
+$(HOME)/.xinitrc:
+	ln -sf $(REPO)/.xsessionrc $@
+
+$(DIRS):
 	mkdir -p $@
 
-$(HOME)/.config:
-	mkdir -p $@
-
-$(HOME)/.config/pianobar/state $(HOME)/.config/pianobar/config: $(HOME)/.config/pianobar
-
-$(HOME)/.config/pianobar/config:
-	trgt=$@
-	src=$(call trgt2src, $@)
-	cp $(src) $(trgt)
-
-$(sources): 
-	trgt=$@
-	src=$(call src2trgt,$@)
-	cp -r $(src) $(trgt)
-
-$(REPO)/.config/pianobar/state $(REPO)/.config/pianobar/config: $(REPO)/.config/pianobar
-
-$(REPO)/.config/pianobar: $(REPO)/.config
-	mkdir -p $@
-
-$(REPO)/.config:
-	mkdir -p $@
-
+$(HOME)/%:
+	ln -sf $(REPO)/$* $@
