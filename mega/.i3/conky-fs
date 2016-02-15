@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+
+import os
+
+
+k = 10E2
+M = 10E6
+G = 10E8
+T = 10E11
+
+
+class FS:
+
+	def __init__(self, path):
+		self.path = path
+		self.stat = os.statvfs(self.path)
+
+	def _as_bytes(self, blocks):
+		return self.stat.f_frsize * blocks
+
+	@property
+	def size(self):
+		return self._as_bytes(self.stat.f_blocks)
+
+	@property
+	def free(self):
+		return self._as_bytes(self.stat.f_bfree)
+
+	@property
+	def avail(self):
+		return self._as_bytes(self.stat.f_bavail)
+
+	@property
+	def pfree(self):
+		return self.free/self.size*100
+
+	@property
+	def pavail(self):
+		return self.avail/self.size*100
+
+
+class ComplexFS:
+
+	def __init__(self, paths):
+		self.paths = paths
+		self.fss = []
+		for path in paths:
+			self.fss.append(FS(path))
+
+	def _sum_of_attr(self, attr):
+		total = 0
+		for fs in self.fss:
+			total += getattr(fs, attr)
+		return total
+
+	@property
+	def size(self):
+		return self._sum_of_attr('size')
+
+	@property
+	def free(self):
+		return self._sum_of_attr('free')
+
+	@property
+	def avail(self):
+		return self._sum_of_attr('avail')
+
+	@property
+	def pfree(self):
+		return self.free/self.size*100
+
+	@property
+	def pavail(self):
+		return self.avail/self.size*100
+
+
+if __name__ == '__main__':
+	import sys
+	paths = sys.argv[1:]
+	fs = ComplexFS(paths)
+
+	if fs.pfree > 10:
+		color = '#ffffff'
+	else:
+		color = '#ff0000'
+
+	print('{ "full_text" : "h: f/m: %s %s" , "color" : "%s" },' % (int(fs.free/G), int(fs.pfree), color))

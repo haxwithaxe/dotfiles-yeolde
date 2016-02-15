@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+
+import re
+import subprocess
+
+CORES_RE = re.compile(r'Core [0-9]+:[\s]+[a-zA-Z0-9_]+: [0-9.]+[\s]+[a-zA-Z0-9_]+: [0-9.]+[\s]+[a-zA-Z0-9_]+: [0-9.]+[\s]+[a-zA-Z0-9_]+: [0-9.]+', flags=re.M)
+HEADER = 'coretemp-isa-0000'
+GOOD_COLOR = "#aaaaff"
+WARN_COLOR = "#ffff00"
+DANGER_COLOR = "#ff0000"
+
+
+class Core:
+
+	def __init__(self, number):
+		self.number = number
+		self.color = GOOD_COLOR
+		self.features = {}
+		self.blink = False
+
+	@property
+	def temp(self):
+		return self.features['input']
+	
+	@property
+	def maximum(self):
+		return self.features['crit']
+
+	def __str__(self):
+		if self.features['input'] >= self.features['crit']:
+			self.color = DANGER_COLOR
+			self.blink = True
+		elif self.features['input'] >= self.features['crit']-10:
+			self.color = WARN_COLOR
+
+		if self.blink:
+			conky_str = r'{ "full_text" : "${blink}%2dC${blink}", "color" :"%s" },'
+		else:
+			conky_str = r'{ "full_text" : "%2dC" , "color" : "%s" },'
+
+		return conky_str % (self.features['input'], self.color)
+
+
+def get_sensors():
+	return subprocess.check_output(['sensors', '-u', '-A']).decode()
+
+
+def parse_sensors(stdin):
+	core_temps = []
+	cores = stdin.replace(HEADER, '')
+	core_chunks = CORES_RE.findall(cores)
+	for core in core_chunks:
+		core_temps.append(parse_core(core))
+	return core_temps
+
+
+def parse_core(core_str):
+	features = core_str.split('\n')
+	core_number = features.pop(0).split()[1].strip(':')
+	core = Core(core_number)
+	for feature in features:
+		key, value = feature.split(':', 1)
+		key = key.split('_', 1)[1]
+		core.features[key.strip()] = float(value.strip())
+	return core
+
+
+if __name__ == '__main__':
+	import sys
+	
+	cores = parse_sensors(get_sensors())
+	if len(sys.argv) > 1:
+		core = int(sys.argv[1])
+		sys.stdout.write(str(cores[core]))
+	else:
+		temp = max([x.temp for x in cores])
+		max_temp = max([x.maximum for x in cores])
+		core = Core(-1)
+		core.features = {'input': temp, 'crit': max_temp}
+		sys.stdout.write(str(core))
