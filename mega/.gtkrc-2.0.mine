@@ -1,0 +1,34 @@
+# DO NOT EDIT! This file will be overwritten by LXAppearance.
+# Any customization should be done in ~/.gtkrc-2.0.mine instead.
+
+
+
+style "dark" 
+{
+	fg[NORMAL] = "#bfbfbf"
+	fg[PRELIGHT] = "#b9b9b9"
+	fg[ACTIVE] = "#c9c9c9"
+	fg[SELECTED] = "#000090"
+	fg[INSENSITIVE] = "#909090"
+
+	bg[NORMAL] = "#383838"
+	bg[PRELIGHT] = "#484848"
+	bg[ACTIVE] = "#282828"
+	bg[SELECTED] = "#484848"
+	bg[INSENSITIVE] = "#505050"
+
+	text[NORMAL] = "#f0f0f0"
+	text[PRELIGHT] = "#f0f0f0"
+	text[ACTIVE] = "#f0f0f0"
+	text[SELECTED] = "#f0f0f0"
+	text[INSENSITIVE] = "#909090"
+
+	base[NORMAL] = "#333333"
+	base[PRELIGHT] = "#444444"
+	base[ACTIVE] = "#4f4f4f"
+	base[SELECTED] = "#444444"
+	base[INSENSITIVE] = "#505050"
+	font_name = "Sans 16"
+}
+
+widget_class "*" style "dark"
