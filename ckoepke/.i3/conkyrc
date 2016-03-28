@@ -32,9 +32,9 @@ _text = [[
 
 #	{ "full_text" : "top: cpu:${top name 1}=${top cpu 1} mem:${top_mem name 1}=${top_mem mem 1}" },
 
-	{ "full_text" : "${execi 1800 /home/ckoepke/.bin/conky-noaa.py -s 'KDCA' -i ~/dev/scripts/station-locations.csv}" },
 ]]
 
+--{ "full_text" : "${execi 1800 /home/ckoepke/.bin/conky-noaa.py -s 'KDCA' -i ~/dev/scripts/station-locations.csv}" },
 _text = _text .. '${exec ' .. os.getenv('HOME') .. '/.i3/conky-temp.sh}'
-_text = _text .. '${exec ' .. os.getenv('HOME') .. '/.i3/conky-power.sh}'
+_text = _text .. '${exec ' .. os.getenv('HOME') .. '/.i3/conky-power}'
 conky.text = _text .. '{ "full_text" : "${time %d.%m %H:%M}" }],'
