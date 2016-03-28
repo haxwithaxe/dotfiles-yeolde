@@ -202,7 +202,7 @@ for_window [title="NoScript Options"] float
 # finds out, if available)
 bar {
 	output $PRIMARY
-	font pango:Unifont CSUR 10
+	font pango:Sans 12
 	status_command $HOME/.i3/conky-i3bar
 }
 
