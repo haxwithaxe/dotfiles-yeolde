@@ -59,7 +59,7 @@ hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
 "hardworking tabs
 let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-p>"
+let g:SuperTabContextDefaultCompletionType = "<c-n>"
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>"]
 
@@ -80,11 +80,12 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_python_checkers=['pylint']
 let g:syntastic_id_checkers = 1
-let g:syntastic_enable_signs = 0
+let g:syntastic_enable_signs = 1
 let g:syntastic_enable_highlighting = 1
 let g:syntastic_auto_jump = 0
 let g:syntastic_python_python_exec = '/usr/bin/python3'
 " default let g:syntastic_python_python_exec = '/path/to/python2'
+let g:syntastic_python_pylint_args = '--rcfile=~/.pylintrc' 
 let g:syntastic_python_pylint_exec = '/usr/local/bin/pylint'
 
 highlight SyntasticErrorLine guibg=red
@@ -92,4 +93,4 @@ highlight SyntasticWarningLine guibg=yellow
 highlight SyntasticStyleErrorLine guibg=orange guifg=blue
 highlight SyntasticStyleWarningLine guibg=yellow guifg=darkgrey
 
-let g:jedi#popup_on_dot = 0
+let g:jedi#popup_on_dot = 1
