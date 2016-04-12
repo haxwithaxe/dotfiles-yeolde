@@ -57,6 +57,7 @@ dist-clean: clean
 	git clean -dxf
 
 $(HOME)/.muttrc: $(mutt_bits)
+	# copy not link sanitized config
 	cp $(REPO)/.muttrc $@
 
 $(pianobar_dir)/config: $(pianobar_dir)
@@ -64,10 +65,6 @@ $(pianobar_dir)/config: $(pianobar_dir)
 
 $(HOME)/.vim/autoload/pathogen.vim:
 	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
-
-$(HOME)/.muttrc:
-	# copy not link sanitized config
-	cp $(REPO)/.muttrc $@
 
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
