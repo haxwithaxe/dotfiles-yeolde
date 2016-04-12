@@ -1,2 +1,3 @@
 */.vim/doc
 common/.vim/.netrwhist
+common/.vim/autoload/pathogen.vim
