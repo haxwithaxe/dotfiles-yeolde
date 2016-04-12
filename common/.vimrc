@@ -53,10 +53,12 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set noexpandtab
+
 "pretty tabs
 let g:indent_guides_auto_colors = 0
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+
 "hardworking tabs
 let g:SuperTabDefaultCompletionType = "context"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
@@ -68,11 +70,6 @@ let g:SuperTabContextDiscoverDiscovery = ["&omnifunc:<c-x><c-o>"]
 set spell
 set spelllang=en
 set spellsuggest=5
-map <leader>ss :setlocal spell!<cr> " Pressing ,ss will toggle and untoggle spell checking
-map <leader>sn ]s	"next?
-map <leader>sp [s	"previous?
-map <leader>sa zg	"add?
-map <leader>s? z=	"query?
 
 "syntastic
 let g:syntastic_check_on_open = 1
