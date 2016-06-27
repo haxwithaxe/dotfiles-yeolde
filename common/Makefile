@@ -62,8 +62,11 @@ $(HOME)/.muttrc: $(mutt_bits)
 
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
+	
+$(REPO)/.vim/vim-pathogen/autoload/pathogen.vim:
+	git submodule update --init .vim/vim-pathogen
 
-$(HOME)/.vim/autoload/pathogen.vim:
+$(HOME)/.vim/autoload/pathogen.vim: $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
 	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
 
 $(i3_dir)/%: $(i3_dir)
