@@ -36,7 +36,7 @@ TEXT
 
 # JSON for i3bar
 [
-	{ "full_text" : "eth0:${if_up eth0}${addr eth0} d/u:${downspeed eth0}/${upspeed eth0}${else}down${endif}" },
+	{ "full_text" : "br0:${if_up br0}${addr br0} d/u:${downspeed br0}/${upspeed br0}${else}down${endif}" },
 
 	{ "full_text" : "${if_up wlan0}wlan0:${addr wlan0} ${wireless_link_qual wlan0}db ${if_match "${wireless_mode wlan0}"=="Ad-Hoc"}adhoc:${wireless_ap wlan0}${else}e:${wireless_essid wlan0}${endif}${else}wlan0:down${endif}" },
 
