@@ -15,7 +15,7 @@
 	url = https://github.com/tpope/vim-surround.git
 [submodule "common/.vim/bundle/jedi-vim"]
 	path = common/.vim/bundle/jedi-vim
-	url = https://github.com/davidhalter/jedi.git
+	url = https://github.com/davidhalter/jedi-vim.git
 [submodule "common/.vim/vim-pathogen"]
 	path = common/.vim/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
