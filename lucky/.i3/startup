@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. ~/.i3/libautostart.sh
+
+# Start programs at login
+
+# window 1
+# load terminals before all other programs
+ws=1
+set_layout tabbed
+launch i3-sensible-terminal
+launch i3-sensible-terminal
+move up
+done_launching
+
+return_home
