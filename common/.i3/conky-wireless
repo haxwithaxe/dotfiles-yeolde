@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+
+from collections import namedtuple
+import re
+import string
+import subprocess
+
+ASCII_RE_STRING = '['+re.sub( r'[\n\t\r-]', '', string.printable )+'-]'
+
+
+IP4_ADDRESS =  r'([0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3})'
+
+class NetConfig:
+
+	_command = None
+
+	def __init__( self, interface_name ):
+		self._interface_name = interface_name
+		self._stdout = subprocess.check_output([self._command, self._interface_name]).decode().strip()
+
+	def _get_property(self, regex):
+		return re.findall(regex, self._stdout)[0]
+
+	def _on_off_as_bool( self, regex ):
+		return True if self._get_property(regex) == 'on' else False
+
+	def _as_int(self, regex):
+		return int(self._get_property(regex).strip())
+
+	def _as_float(self, regex):
+		return float(self._get_property(regex).strip())
+
+	def _as_int_with_units(self, regex):
+		value, units = self._get_property(regex)
+		return int(value.strip()), units.strip()
+
+	def _as_float_with_units(self, regex):
+		value, units = self._get_property(regex)
+		return float(value.strip()), units.strip()
+
+
+class WirelessIFace(NetConfig):
+
+	_command = '/sbin/iwconfig'
+
+	@property
+	def protocol(self):
+		return self._get_property(r'IEEE 802.11([abgnc]+)')
+
+	@property
+	def essid(self):
+		return self._get_property(r'ESSID:"([\w\W]+)"')
+
+	@property
+	def mode(self):
+		return self._get_property(r'Mode:([\w_-]+)')
+
+	@property
+	def frequency(self):
+		return self._as_float_with_units(r'Frequency:([\w .]+) ([A-Za-z]Hz)')
+
+	@property
+	def bssid(self):
+		return self._get_property(r'Access Point: ([A-F0-9:]+)')
+
+	@property
+	def bit_rate(self):
+		return self._as_int_with_units(r'Bit Rate=([0-9]+) ([A-Za-z]b/s)')
+
+	@property
+	def tx_power(self):
+		return self._as_int(r'Tx-Power=([0-9]+) dBm')
+
+	@property
+	def retry_short_limit(self):
+		return self._as_int(r'Retry short limit:([0-9]+)')
+
+	@property
+	def rts_threshold(self):
+		return self._on_off_as_bool(r'RTS thr:(on|off)')
+
+	@property
+	def fragmentation_threshold(self):
+		return self._on_off_as_bool(r'Fragment thr:(on|off)')
+
+	@property
+	def power_management(self):
+		return self._on_off_as_bool(r'Power Management:(on|off)')
+
+	@property
+	def snr(self):
+		quality = self._get_property(r'Link Quality=([0-9]+/[0-9]+)')
+		signal, noise = quality.split('/')
+		return int(signal)/float(noise)
+
+	@property
+	def signal(self):
+		return self._as_int(r'Signal level=([-]?[0-9]+) dBm')
+
+	@property
+	def rx_invalid_nwid(self):
+		return self._as_int(r'Rx invalid nwid:([0-9]+)')
+
+	@property
+	def rx_invalid_crypt(self):
+		return self._as_int(r'Rx invalid crypt:([0-9]+)')
+
+	@property
+	def rx_invalid_frag(self):
+		return self._as_int(r'Rx invalid frag:([0-9]+)')
+
+	@property
+	def tx_excessive_retries(self):
+		return self._as_int(r'Tx excessive retries:([0-9]+)')
+
+	@property
+	def invalid_misc(self):
+		return self._as_int(r'Invalid misc:([0-9]+)')
+
+	@property
+	def missing_beacon(self):
+		return self._as_int(r'Missed beacon:([0-9]+)')
+
+
+class IfconfigIFace(NetConfig):
+
+	_command = '/sbin/ifconfig'
+
+	@property
+	def up(self):
+		return 'UP' in self.flags.values
+
+	@property
+	def flags(self):
+		bits, values = self._get_property(r'flags=([0-9]+)<([A-Z,]+)>')
+		Flags = namedtuple('Flags', ['bits', 'values'])
+		return Flags(bits = int(bits), values = values.split(','))
+
+	@property
+	def mtu(self):
+		return self._as_int(r'mtu ([0-9]+)')
+
+	@property
+	def inet(self):
+	    return self._get_property(r'inet '+IP4_ADDRESS)
+
+	@property
+	def netmask(self):
+		return self._get_property(r'netmask '+IP4_ADDRESS)
+
+	@property
+	def broadcast(self):
+		return self._get_property(r'broadcast '+IP4_ADDRESS)
+
+	@property
+	def inet6(self):
+		return self._get_property(r'inet6 ([0-9A-Fa-f:]+)')
+
+	@property
+	def prefix_length(self):
+		return self._get_property(r'prefixlen ([0-9]{1,3})')
+
+	@property
+	def scope(self):
+		scopeid, scope_string = self._get_property(r'scopeid 0x20<([a-zA-Z]+)>')
+		Scope = namedtuple('Scope', ['id', 'name'])
+		return Scope(id = int(scopeid.replace('0x', ''), 16), name = scope_string)
+
+	@property
+	def mac(self):
+		return self._get_property(r'ether ([0-9A-Fa-f]:[0-9A-Fa-f]:[0-9A-Fa-f]:[0-9A-Fa-f]:[0-9A-Fa-f]:[0-9A-Fa-f])')
+
+	@property
+	def tx_queue_length(self):
+		#r'txqueuelen 1000  (Ethernet)'
+		self._as_int(r'txqueuelen ([0-9]+)')
+
+	@property
+	def rx_packets(self):
+		packet_count, byte_count, scaled_bytes, units = r'RX packets ([0-9]+)  bytes ([0-9]+) \(([0-9.]+) ([A-Za-z]{1,2}B)\)'
+		RxPackets = namedtuple('RxPackets', ['packet_count', 'byte_count', 'scalled', 'units'])
+		rx_packets = RxPackets(
+				packet_count = int(packet_count),
+				byte_count = int(byte_count),
+				scaled = int(scaled_bytes),
+				units =	units
+				)
+		return rx_packets
+
+	@property
+	def rx_errors(self):
+		errors, dropped, overruns, frame = r'RX errors ([0-9]+)  dropped ([0-9]+)  overruns ([0-9]+)  frame ([0-9]+)'
+		RxErrors = namedtuple('RxErrors', ['errors', 'dropped', 'overruns', 'frame'])
+		rx_errors = RxErrors(
+				errors = int(errors),
+				dropped = int(dropped),
+				overruns = int(overruns),
+				frame =	int(frame)
+				)
+		return rx_errors
+
+	@property
+	def tx_packets(self):
+		packet_count, byte_count, scaled_bytes, units = r'TX packets ([0-9]+)  bytes ([0-9]+) \(([0-9.]+) ([A-Za-z]{1,2}B)\)'
+		TxPackets = namedtuple('TxPackets', ['packet_count', 'byte_count', 'scalled', 'units'])
+		tx_packets = TxPackets(
+				packet_count = int(packet_count),
+				byte_count = int(byte_count),
+				scaled = int(scaled_bytes),
+				units =	units
+				)
+		return tx_packets
+
+
+	@property
+	def tx_errors(self):
+		errors, dropped, overruns, carrier, collisions = self._get_property(r'TX errors ([0-9]+)  dropped ([0-9]+) overruns ([0-9]+)  carrier ([0-9]+)  collisions ([0-9]+)')
+		TxErrors = namedtuple('TxErrors', ['errors', 'dropped', 'overruns', 'carrier', 'collisions'])
+		tx_errors = TxErrors(
+				errors = int(errors),
+				dropped = int(dropped),
+				overruns = int(overruns),
+				carrier = int(carrier),
+				collisions = int(collisions)
+				)
+		return tx_errors
+
+if __name__ == '__main__':
+	import sys
+	import json
+	conky_text = []
+	ifname = sys.argv[1]
+	iwconfig = WirelessIFace(ifname)
+	ifconfig = IfconfigIFace(ifname)
+	if ifconfig.up:
+		conky_text = ['wlan0:'+ifconfig.inet, '%sdBm' % iwconfig.signal]
+		if iwconfig.mode.lower() in ('adhoc', 'ad-hoc', 'ad_hoc'):
+			conky_text.append('adhoc:'+iwconfig.bssid)
+		if iwconfig.mode.lower() in ('master', 'ap'):
+			conky_text.append('ap:'+iwconfig.essid)
+		else:
+			conky_text.append('e:'+iwconfig.essid)
+	else:
+		conky_text = [ifname+':down']
+	print('%s,' % json.dumps({ 'full_text': ' '.join(conky_text) }))

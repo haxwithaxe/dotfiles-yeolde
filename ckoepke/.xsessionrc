@@ -18,3 +18,5 @@ setxkbmap -option terminate:ctrl_alt_bksp -option ctrl:nocaps
  
 # set touchpad settings
 synclient VertEdgeScroll=1 HorizEdgeScroll=1 VertTwoFingerScroll=0 HorizTwoFingerScroll=0 TapButton1=0 TapButton2=0 TapButton3=0
+
+dbus-x11 > /tmp/dbus-x11.log &

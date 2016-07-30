@@ -54,9 +54,9 @@ TEXT
 
 	{ "full_text" : "${execi 1800 /home/hax/.bin/conky-noaa.py -s 'KDCA' -i ~/dev/scripts/station-locations.csv}" },
 
-	${exec /home/hax/.i3/conky-temp.sh}
+	${exec /home/hax/.i3/conky-temp 0}
 
-	${exec /home/hax/.i3/conky-power.sh}
+	${exec /home/hax/.i3/conky-power BAT0}
 
 	{ "full_text" : "${time %d.%m %H:%M}" }
 ],

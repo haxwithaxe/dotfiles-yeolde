@@ -4,13 +4,41 @@
 
 # Start programs at login
 
-# window 1
+# window 5
 # load terminals before all other programs
 ws=1
-set_layout tabbed
+# Setup quad terminals
+split v
 launch i3-sensible-terminal
 launch i3-sensible-terminal
-move up
+split h
+launch i3-sensible-terminal
+focus up
+split h
+launch i3-sensible-terminal
+focus down
+
+# Tab all the things
+split h
+layout tabbed
+focus left
+split h
+layout tabbed
+focus up
+split h
+layout tabbed
+focus left
+split h
+layout tabbed
+
+# grow code window
+focus down
+focus right
+resize grow left 3
+
 done_launching
+
+ws=2
+ws=3
 
 return_home

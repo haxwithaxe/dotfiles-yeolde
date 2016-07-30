@@ -111,4 +111,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-. $HOME/.psrc
+
+if [ -e $HOME/.psrc ]; then
+	. $HOME/.psrc
+fi

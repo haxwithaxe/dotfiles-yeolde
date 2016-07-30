@@ -12,16 +12,21 @@
 set $mod Mod1
 #default Mod1
 
-set $PRIMARY eDP1
-set $SECONDARY  DP2-1
+set $PRIMARY eDP-1
+set $SECONDARY  DP-2-1
+set $TERTIARY DP-2-2
 #set $SECONDARY  eDP1
 set $HDMI HDMI1
 set $VGA VGA1
 
-# admin/comms	1
-# management	2
-# docs			3
-# code/jira		4
+# admin/comms
+set $COMMS 5
+# management
+set $MNGMT 4
+# docs
+set $DOCS 4
+# code/jira
+set $CODE 1
 
 force_xinerama no
 
@@ -181,42 +186,30 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ## Pulseaudio Volume
-set $PA_SINK 0
+set $PA_SINK 1
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $PA_SINK -- +10%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $PA_SINK -- -10%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 
 
-assign [class="Pidgin"] 1
-assign [class="firefox-personal"] 7
-assign [class="firefox-default"] 1
-assign [class="firefox-work"] 1
-assign [class="firefox-admin"] 1
-assign [class="firefox-jira"] 5
-assign [class="firefox-docs"] 3
-assign [class="firefox-management"] 2
-
+assign [class="Pidgin"] $COMMS
 for_window [title="NoScript Options"] float
+for_window [class="pavumeter"] float
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
 	output $PRIMARY
-	font pango:Sans 12
+	output $SECONDARY
+	font pango:Sans 10
 	status_command $HOME/.i3/conky-i3bar
 }
 
-#Screen 0: minimum 8 x 8, current 1024 x 600, maximum 8192 x 8192
-#VGA-1 disconnected primary (normal left inverted right x axis y axis)
-#LVDS-1 connected 1024x600+0+0 (normal left inverted right x axis y axis) 220mm x 129mm
-#   1024x600       60.0*+   65.0
-#HDMI-1 disconnected (normal left inverted right x axis y axis)
-workspace 1 output $PRIMARY
-workspace 2 output $PRIMARY
-workspace 3 output $PRIMARY
-#workspace 4 output $PRIMARY
-workspace 4 output $SECONDARY
-workspace 5 output $SECONDARY
+workspace 1 output $SECONDARY
+workspace 2 output $SECONDARY
+workspace 3 output $TERTIARY
+workspace 4 output $TERTIARY
+workspace 5 output $TERTIARY
 
 exec ~/.i3/dex/dex -ae i3
 

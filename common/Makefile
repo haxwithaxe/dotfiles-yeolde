@@ -17,8 +17,7 @@ shell_tatgets = $(HOME)/.bashrc $(HOME)/.psrc $(HOME)/.profile $(HOME)/.profile.
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
-i3_copy_targets = $(i3_dir)/conky-temp.sh $(i3_dir)/conky-power.sh $(i3_dir)/conky-wireless.sh $(i3_dir)/startup
-i3_targets = $(i3_dir)/config $(i3_dir)/conky-i3bar $(i3_dir)/dex $(i3_dir)/libautostart.sh
+i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/dex $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
 
 pianobar_dir = $(xdg_data_dir)/pianobar
 pianobar_repo = $(xdg_data_repo)/pianobar
@@ -40,7 +39,7 @@ install: $(DIRS) $(TARGETS) i3 pianobar mutt vim
 
 vim: $(vim_dir) $(vim_targets)
 
-i3: $(i3_targets) $(i3_copy_targeets)
+i3: $(i3_targets)
 
 pianobar: $(pianobar_dirs) $(pianobar_targets)
 

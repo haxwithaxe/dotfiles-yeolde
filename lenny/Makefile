@@ -20,28 +20,20 @@ sources = $(REPO)/.bashrc \
 	$(REPO)/.xsessionrc
 
 i3_targets = $(HOME)/.i3/config \
-	$(HOME)/.i3/conky-i3bar \
-	$(HOME)/.i3/conky-power.sh \
 	$(HOME)/.i3/conkyrc \
 	$(HOME)/.i3/conky-temp.sh \
-	$(HOME)/.i3/conky-wireless.sh \
 	$(HOME)/.i3/startup
 
 i3_sources = $(REPO)/.i3/config \
-	$(REPO)/.i3/conky-i3bar \
-	$(REPO)/.i3/conky-power.sh \
 	$(REPO)/.i3/conkyrc \
 	$(REPO)/.i3/conky-temp.sh \
-	$(REPO)/.i3/conky-wireless.sh \
 	$(REPO)/.i3/startup
 
 autostart_targets = $(HOME)/.config/autostart/dropbox.desktop \
-	$(HOME)/.config/autostart/nm-applet.desktop \
-	$(HOME)/.config/autostart/xfce4-power-manager.desktop
+	$(HOME)/.config/autostart/nm-applet.desktop
 
 autostart_sources = $(REPO)/.config/autostart/dropbox.desktop \
-	$(REPO)/.config/autostart/nm-applet.desktop \
-	$(REPO)/.config/autostart/xfce4-power-manager.desktop
+	$(REPO)/.config/autostart/nm-applet.desktop
 
 TARGET_DIRS = $(REPO)/.i3 $(HOME)/.config/autostart
 

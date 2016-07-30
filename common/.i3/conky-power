@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+
+
+GOOD_COLOR = "#00ff00"
+WARN_COLOR = "#ffff00"
+DANGER_COLOR = "#ff0000"
+
+# bat power
+BATT_SYM = '⚡'
+# ac power
+AC_SYM = '⏚'
+# unknown
+UNKNOWN_SYM = '∅'
+
+CRITICAL_BATTERY_PERC= 10
+
+POWER_SUPPLY_PATH = '/sys/class/power_supply/'
+BATTERY_NAME = 'BAT0'
+BATTERY_FULL = 'energy_full'
+BATTERY_NOW = 'energy_now'
+AC_ONLINE = 'AC/online'
+
+class SysInfo:
+
+	def __init__(self, path=None, output_type=str):
+		self._path = path
+		self._output_type = output_type
+	
+	@property
+	def path(self):
+		return self._path
+
+	def get(self, output_type=None):
+		with open(self.path, 'r') as state:
+			stinfo= state.read(256)
+		return (output_type or self._output_type)(stinfo.strip())
+
+	def __call__(self):
+		return self.get()
+
+	@classmethod
+	def read(cls, path, output_type=str):
+		return cls(path).get(output_type)
+
+
+class Battery:
+
+	def __init__(self, ps_path, path, full=BATTERY_FULL, now=BATTERY_NOW):
+		self._path = ps_path+'/'+path
+		self._full = SysInfo(self._path+'/'+full, output_type=int)
+		self._now = SysInfo(self._path+'/'+now, output_type=int)
+
+	@property
+	def full(self):
+		return self._full()
+
+	@property
+	def now(self):
+		return self._now()
+
+	@property
+	def perc(self):
+		return int(self.now/float(self.full)*100)
+
+
+class CompositeBattery(Battery):
+
+	def __init__(self, batteries):
+		self.batteries = batteries
+		
+	@property
+	def full(self):
+		return sum([b.full for b in self.batteries])
+
+	@property
+	def now(self):
+		return sum([b.now for b in self.batteries])
+
+
+class PowerSupply:
+
+	def __init__(self, batteries=[(BATTERY_FULL,)], ac_online=AC_ONLINE, path=POWER_SUPPLY_PATH):
+		self.path = path
+		self.battery = CompositeBattery([Battery(path, *b) for b in batteries])
+		self._ac_online = SysInfo(self.path+'/'+ac_online, output_type=bool)
+
+	@property
+	def on_ac(self):
+		return self._ac_online()
+
+	def get_state(self):
+		battery_perc = self.battery.perc
+		if self.on_ac:
+			if battery_perc >= 100:
+				# Full and on AC
+				return (BATT_SYM, battery_perc, GOOD_COLOR)
+			else:
+				# Charging
+				return (AC_SYM, battery_perc, WARN_COLOR)
+		else:
+			if battery_perc <= CRITICAL_BATTERY_PERC:
+				return (BATT_SYM, battery_perc, DANGER_COLOR)
+			else:
+				return (BATT_SYM, battery_perc, GOOD_COLOR)
+		# unknown state
+		return (UNKNOWN_SYM, battery_perc, DANGER_COLOR)
+
+	def __str__(self):
+		return '{ \"full_text\" : \"%s:%3d\" , \"color\" : \"%s\" },' % self.get_state()
+
+if __name__ == '__main__':
+	import sys
+	batteries = [[x] for x in sys.argv[1:]]
+	print(PowerSupply(batteries))

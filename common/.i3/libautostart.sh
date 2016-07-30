@@ -42,13 +42,24 @@ split(){
 	i3-msg "workspace $ws;split $1"
 }
 
-set_layout(){
+layout(){
 	i3-msg "workspace $ws;layout $1"
+}
+
+# unit ppt == percent
+resize() {
+	action=$1
+	direction=$2
+	count=$3
+	for i in $(seq 1 $count); do
+		i3-msg resize $action $direction
+	done
 }
 
 return_home(){
     i3-msg "workspace 1"
 }
+
 # Start program
 launch(){
 	i3-msg "workspace $ws"
