@@ -1,7 +1,9 @@
 
+
 .PHONY: all install load clean dist-clean i3 vim-config pianobar shell-config
 
 REPO ?= $(shell pwd)
+GIT_UPDATE = git submodule update --recursive --remote --merge
 
 xdg_data_dir = $(HOME)/.config
 xdg_repo_dir = $(REPO)/.config
@@ -13,7 +15,7 @@ vim_dirs = $(vim_dir) $(HOME)/.vim/autoload
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
-shell_dirs = $(shell_profile_dir)
+shell_dirs = $(shell_profile_dir) $(HOME).psrc.d $(HOME)/.bash_aliases.d
 shell_targets = $(HOME)/.bashrc $(HOME)/.psrc $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
 
 i3_dir = $(HOME)/.i3
@@ -34,6 +36,8 @@ all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
+UPDATE_SUBMODULES: .i3/dex/dex
+
 vim: $(vim_dirs) $(vim_targets)
 
 i3: $(i3_targets)
@@ -47,20 +51,20 @@ shell-config: $(shell_dirs) $(shell_targets)
 clean:
 	@rm -rf $(clean_targets)
 
-dist-clean: clean
-	git clean -dxf
+$(i3_dir)/dex/dex: .i3/dex/dex
+
+.i3/dex/dex: make/.i3/dex
 
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
 	
-$(HOME)/.vim/autoload/pathogen.vim: $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
-	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
+$(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
+	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
 
-$(REPO)/.vim/vim-pathogen/autoload/pathogen.vim:
-	git submodule update --init .vim/vim-pathogen
+.vim/autoload/pathogen.vim: .vim/autoload .vim/vim-pathogen/autoload/pathogen.vim
+	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
 
-$(REPO)/.vim/autoload/pathogen.vim: $(REPO)/.vim/autoload $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
-	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
+.vim/vim-pathogen/autoload/pathogen.vim: updaate/.vim/vim-pathogen
 
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
@@ -82,3 +86,10 @@ $(DIRS):
 
 $(HOME)/%:
 	ln -sf $(REPO)/$* $@
+
+make/%: update/%
+	$(MAKE) -C $*
+
+update/%:
+	$(GIT_UPDATE) $*
+
