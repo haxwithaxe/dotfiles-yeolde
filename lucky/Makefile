@@ -5,8 +5,6 @@ REPO ?= $(shell pwd)
 TARGETS = $(HOME)/.bashrc \
 	$(HOME)/.gtkrc-2.0.mine \
 	$(HOME)/.irssi \
-	$(HOME)/.profile \
-	$(HOME)/.psrc
 
 i3_REPO = $(REPO)/.i3
 i3_DIR = $(HOME)/.i3
