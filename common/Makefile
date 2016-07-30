@@ -64,7 +64,7 @@ $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 .vim/autoload/pathogen.vim: .vim/autoload .vim/vim-pathogen/autoload/pathogen.vim
 	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
 
-.vim/vim-pathogen/autoload/pathogen.vim: updaate/.vim/vim-pathogen
+.vim/vim-pathogen/autoload/pathogen.vim: update/.vim/vim-pathogen
 
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
