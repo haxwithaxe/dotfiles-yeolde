@@ -1,19 +1,20 @@
 
-.PHONY: all install load clean dist-clean i3 mutt vim-config pianobar shell-config
+.PHONY: all install load clean dist-clean i3 vim-config pianobar shell-config
 
 REPO ?= $(shell pwd)
 
 xdg_data_dir = $(HOME)/.config
-xdg_data_dir = $(REPO)/.config
+xdg_repo_dir = $(REPO)/.config
 
 vim_dir = $(HOME)/.vim
 vim_repo = $(REPO)/.vim
 vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc
+vim_dirs = $(vim_dir) $(HOME)/.vim/autoload
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir)
-shell_tatgets = $(HOME)/.bashrc $(HOME)/.psrc $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
+shell_targets = $(HOME)/.bashrc $(HOME)/.psrc $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
@@ -23,27 +24,21 @@ pianobar_dir = $(xdg_data_dir)/pianobar
 pianobar_repo = $(xdg_data_repo)/pianobar
 pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config
 
-mutt_dir = $(HOME)/.mutt
-mutt_repo = $(REPO)/.mutt
-mutt_bits = $(mutt_dir)/gpg.rc $(mutt_dir)/harvest_alias.sh $(mutt_dir)/uirc
-
 clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
 
-TARGETS = $(HOME)/.playlists $(pianobar_targets) $(mutt_targets) $(i3_targets) $(vim_targets) $(shell_targets)
-DIRS = $(pianobar_dir) $(xdg_data_dir) $(mutt_dir) $(i3_dir) $(vim_dir) $(shell_dirs)
+TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(vim_targets) $(shell_targets)
+DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs)
 # linked not created .playlists, .vim, .i3/dex
 
 all: install
 
-install: $(DIRS) $(TARGETS) i3 pianobar mutt vim
+install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-vim: $(vim_dir) $(vim_targets)
+vim: $(vim_dirs) $(vim_targets)
 
 i3: $(i3_targets)
 
 pianobar: $(pianobar_dirs) $(pianobar_targets)
-
-mutt: $(mutt_dir) $(mutt_bits) $(HOME)/.muttrc
 
 vim-config: $(vim_dir) $(vim_targets)
 
@@ -55,17 +50,16 @@ clean:
 dist-clean: clean
 	git clean -dxf
 
-$(HOME)/.muttrc: $(mutt_bits)
-	# copy not link sanitized config
-	cp $(REPO)/.muttrc $@
-
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
 	
+$(HOME)/.vim/autoload/pathogen.vim: $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
+	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
+
 $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim:
 	git submodule update --init .vim/vim-pathogen
 
-$(HOME)/.vim/autoload/pathogen.vim: $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
+$(REPO)/.vim/autoload/pathogen.vim: $(REPO)/.vim/autoload $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
 	ln -sf $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim $@
 
 $(i3_dir)/%: $(i3_dir)
@@ -73,9 +67,6 @@ $(i3_dir)/%: $(i3_dir)
 
 $(pianobar_dir)/%: $(pianobar_dir)
 	ln -sf $(pianobar_repo)/$* $@
-
-$(mutt_dir)/%:  $(mutt_dir)
-	ln -sf $(mutt_repo)/$* $@
 
 $(shell_profile_dir)/%:  $(shell_profile_dir)
 	ln -sf $(shell_profile_repo)/$* $@
