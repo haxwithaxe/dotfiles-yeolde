@@ -1,23 +1,5 @@
-# compressed prompt with path and hostname
-
-small_pwd(){
-	PWD=${PWD:-$(pwd)}
-	if [[ $PWD == $HOME ]] ;then
-		echo -n '~'
-	elif [[ $(basename "$PWD") == "$PWD" ]] ;then
-		echo -n $PWD
-	else
-		relative_to_home=$(dirname "$PWD" | sed "s:^$HOME:/~:")
-		cwd=$(echo $relative_to_home | egrep -o '(\/\.[^/]|\/[^/])' | sed ':a;N;$!ba;s/\n//g')
-		echo -n ${cwd//\/\~/\~}/$(basename "$PWD")
-	fi
-}
-
-
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWUPSTREAM="auto"
-export GIT_PS1_DESCRIBE_STYLE="branch"
-export GIT_PS1_SHOWCOLORHINTS=true
+for psrc in ${HOME}/.psrc.d/*;do
+	source $psrc
+done
 
 PROMPT_COMMAND='__git_ps1 "\u@\h:\$(small_pwd)" "\\\$ "'
