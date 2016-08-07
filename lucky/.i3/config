@@ -142,6 +142,11 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $PA_SINK
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $PA_SINK -10%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 
+# Pianobar
+set $PIANOBAR_CONTROL "$HOME/.config/pianobar/ctl" 
+bindsym XF86AudioPlay exec --no-startup-id echo "p" > $PIANOBAR_CONTROL
+#bindsym XF86AudioPrev exec --no-startup-id 
+bindsym XF86AudioNext exec --no-startup-id echo "n" > $PIANOBAR_CONTROL
 
 assign [class="Pidgin"] 1
 
