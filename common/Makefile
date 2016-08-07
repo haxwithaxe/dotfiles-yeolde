@@ -42,7 +42,7 @@ vim: $(vim_dirs) $(vim_targets)
 
 i3: $(i3_targets)
 
-pianobar: $(pianobar_dirs) $(pianobar_targets)
+pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
 
 vim-config: $(vim_dir) $(vim_targets)
 
@@ -65,6 +65,9 @@ $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
 
 .vim/vim-pathogen/autoload/pathogen.vim: update/.vim/vim-pathogen
+
+$(HOME)/.config/pianobar/ctl:
+	mkfifo $@
 
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
