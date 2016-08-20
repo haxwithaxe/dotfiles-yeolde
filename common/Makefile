@@ -1,4 +1,4 @@
-
+.SHELL: /bin/bash
 
 .PHONY: all install load clean dist-clean i3 vim-config pianobar shell-config
 
@@ -8,10 +8,12 @@ GIT_UPDATE = git submodule update --recursive --remote --merge
 xdg_data_dir = $(HOME)/.config
 xdg_repo_dir = $(REPO)/.config
 
+# vim_dir is linked no need to have any targets inside it besides those
+#   required for pathogen
 vim_dir = $(HOME)/.vim
 vim_repo = $(REPO)/.vim
 vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc
-vim_dirs = $(vim_dir) $(HOME)/.vim/autoload
+vim_dirs = $(HOME)/.vim/autoload
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
@@ -38,7 +40,7 @@ install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
 UPDATE_SUBMODULES: .i3/dex/dex
 
-vim: $(vim_dirs) $(vim_targets)
+vim: $(vim_dir) vim-config
 
 i3: $(i3_targets)
 
