@@ -38,7 +38,7 @@ all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-UPDATE_SUBMODULES: .i3/dex/dex
+UPDATE_SUBMODULES: .i3/dex/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
 vim: $(vim_dir) vim-config
 
@@ -79,6 +79,7 @@ $(pianobar_dir)/%: $(pianobar_dir)
 
 $(shell_profile_dir)/%:  $(shell_profile_dir)
 	ln -sf $(shell_profile_repo)/$* $@
+
 
 $(vim_dir)/%:  $(vim_dir)
 	ln -sf $(vim_repo)/$* $@
