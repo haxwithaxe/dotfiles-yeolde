@@ -18,7 +18,7 @@ vim_dirs = $(HOME)/.vim/autoload
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
-shell_targets = $(HOME)/.bashrc $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
+shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
@@ -50,6 +50,8 @@ vim-config: $(vim_dir) $(vim_targets)
 
 shell-config: $(shell_dirs) $(shell_targets)
 
+pre-commit: .config/pianobar/config
+
 clean:
 	@rm -rf $(clean_targets)
 
@@ -59,6 +61,9 @@ $(i3_dir)/dex/dex: .i3/dex/dex
 
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
+
+.config/pianobar/config: .FORCE
+	../sanitize $(pianobar_repo)/config $@
 	
 $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@

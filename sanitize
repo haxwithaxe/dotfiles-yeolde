@@ -1,0 +1,32 @@
+
+
+irssi_config(){
+	sed \
+	-e 's/\(\(NICKSERV|nickserv\)  [a-zA-Z0-9_-]\+ \)\(.*\)/\1<pass>/' \
+	-e '/IDENT = "msg NICKSERV IDENTIFY \$\*";/! s/\(\(nickserv|NICKSERV|ns|NS\) \(IDENTIFY|identify\)\) \(.*\)/\1 <pass>/g' \
+	-e 's/\/\(IDENT|ident\) \(.*\)/\1 <pass>/g' \
+	-e 's/\(irssiproxy_password = \)".*"/\1"<pass>"/' \
+	-e 's/\(irssiproxy_ports = \)"wikicomms=[0-9]\+"/\1"<server>:<port>"/' \
+	-
+}
+
+generic(){
+	sed -e 's/\(^.*password[[:space:]]*=\).*$/\1 <password here>/g' -
+}
+
+
+eval set -- "$(getopt -o h --long 'irssi,pianobar' -n 'sanitize' -- "$@")"
+
+while true; do
+	case $1 in
+		--irssi)
+			shift
+			irssi_config < $1
+			break
+			;;
+		--)
+			shift
+			generic < $1
+			;;
+	esac
+done
