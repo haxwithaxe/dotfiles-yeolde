@@ -1,0 +1,1 @@
+alias pianobar="$HOME/.config/pianobar/pianobar-ctl start"

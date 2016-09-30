@@ -26,7 +26,7 @@ i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/dex $(i3_dir)/libautostart.sh $(i3_
 
 pianobar_dir = $(xdg_data_dir)/pianobar
 pianobar_repo = $(xdg_data_repo)/pianobar
-pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config
+pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config $(pianobar_dir)/pianobar-ctl $(HOME)/.bash_aliases.d/pianobar-ctl
 
 clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
 

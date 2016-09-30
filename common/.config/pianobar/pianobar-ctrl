@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+PIANOBAR_CONTROL="${PIANOBAR_CONTROL:-$HOME/.config/pianobar/ctl}"
+
+if [[ "$1" == "start" ]]; then
+	# If the control interface exists but is not a fifo remove it
+	if [ -e "$PIANOBAR_CONTROL" ] &&
+		[ "$(file -b "$PIANOBAR_CONTROL")" != "fifo (named pipe)" ]; then
+			rm -f "$PIANOBAR_CONTROL"
+	fi
+	# if the control interface does not exist then create it
+	if ! [ -e "$PIANOBAR_CONTROL" ]; then
+		mkfifo "$PIANOBAR_CONTROL"
+	fi
+	pianobar
+elif (pgrep -x pianobar >/dev/null); then
+	echo "$1" > "$PIANOBAR_CONTROL"
+else
+	echo "pianobar is not running. Ignoring command: \"$1\"" >&2
+	echo "To start pianobar call this script with the argument \"start\"" >&2
+	exit 1
+fi
