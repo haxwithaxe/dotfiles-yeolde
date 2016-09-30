@@ -1,0 +1,1 @@
+alias derp='sudo "$BASH" -c "$(history -p !!)"'
