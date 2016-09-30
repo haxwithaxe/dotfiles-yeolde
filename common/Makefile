@@ -38,7 +38,9 @@ all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-UPDATE_SUBMODULES: .i3/dex/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+UPDATE_SUBMODULES: .i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+
+MAKE_SUBMODULES: .i3/dex/dex
 
 vim: $(vim_dir) vim-config
 
