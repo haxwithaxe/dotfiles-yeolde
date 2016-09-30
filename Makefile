@@ -31,6 +31,10 @@ make/%: update/%
 update/%:
 	$(GIT_UPDATE) $*
 
+on-commit:
+	;$(MAKE) -C $(shell hostname) on-commit
+	$(MAKE) -C common on-commit
+
 dist-clean: clean
 	    git clean -dxf
 
