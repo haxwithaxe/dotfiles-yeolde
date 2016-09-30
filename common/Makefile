@@ -18,7 +18,7 @@ vim_dirs = $(HOME)/.vim/autoload
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
-shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh
+shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh $(HOME)/.bash_aliases.d/derp
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
