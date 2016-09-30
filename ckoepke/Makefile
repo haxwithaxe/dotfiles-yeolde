@@ -13,8 +13,7 @@ i3_targets = $(HOME)/.i3/config \
 	$(HOME)/.i3/startup
 
 irssi_dir = $(HOME)/.irssi
-irssi_targets = $(irssi_dir)/bccmd_actions \
-	$(irssi_dir)/default.theme \
+irssi_targets = $(irssi_dir)/default.theme \
 	$(irssi_dir)/screwer.theme \
 	$(irssi_dir)/scripts
 
