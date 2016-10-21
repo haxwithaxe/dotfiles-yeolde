@@ -10,7 +10,6 @@
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod1
-#default Mod1
 
 set $PRIMARY eDP-1
 set $SECONDARY  DP-2-1
@@ -66,6 +65,9 @@ bindsym $mod+d exec dmenu_run
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+# i3lock
+bindsym $mod+Super+l exec --no-startup-id xautolock -locknow
 
 # change focus
 bindsym $mod+j focus left
@@ -192,11 +194,14 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $PA_SINK
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 
 ## Pianobar control
-bindsym XF86AudioPlay exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctl" "p"
+bindsym XF86AudioPlay exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctrl" "p"
 #bindsym XF86AudioPrev exec --no-startup-id 
-bindsym XF86AudioNext exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctl" "n"
+bindsym XF86AudioNext exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctrl" "n"
 
-assign [class="Pidgin"] $COMMS
+# XProfile shinyness
+bindsym $mod+Mod4+u exec "xprofile activate undocked"
+bindsym $mod+Mod4+d exec "xprofile activate docked"
+
 for_window [title="NoScript Options"] float
 for_window [class="pavumeter"] float
 
