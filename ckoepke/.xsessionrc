@@ -19,4 +19,9 @@ setxkbmap -option terminate:ctrl_alt_bksp -option ctrl:nocaps
 # set touchpad settings
 synclient VertEdgeScroll=1 HorizEdgeScroll=1 VertTwoFingerScroll=0 HorizTwoFingerScroll=0 TapButton1=0 TapButton2=0 TapButton3=0
 
-dbus-x11 > /tmp/dbus-x11.log &
+xautolock -detectsleep \
+	-time 3 \
+	-locker "i3lock -f -e -u -c 000009" \
+	-notify 45 \
+	-notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 45 seconds'" &
+
