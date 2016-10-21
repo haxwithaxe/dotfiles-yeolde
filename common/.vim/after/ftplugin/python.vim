@@ -16,7 +16,7 @@ setlocal linebreak
 setlocal textwidth=120
 setlocal nowrap
 
-setlocal omnifunc=pythoncomplete#Complete
+setlocal omnifunc=jedi#completions
 
 " Disable docstring for jedi autocomplete
 setlocal completeopt-=preview
