@@ -194,9 +194,9 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $PA_SINK
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 
 ## Pianobar control
-bindsym XF86AudioPlay exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctrl" "p"
+bindsym XF86AudioPlay exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctl p"
 #bindsym XF86AudioPrev exec --no-startup-id 
-bindsym XF86AudioNext exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctrl" "n"
+bindsym XF86AudioNext exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctl n"
 
 # XProfile shinyness
 bindsym $mod+Mod4+u exec "xprofile activate undocked"
