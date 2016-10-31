@@ -3,7 +3,7 @@
 .PHONY: all install load clean dist-clean i3 vim-config pianobar shell-config
 
 REPO ?= $(shell pwd)
-GIT_UPDATE = git submodule update --recursive --remote --merge
+GIT_UPDATE = git submodule update --init --recursive --remote --merge
 
 xdg_data_dir = $(HOME)/.config
 xdg_repo_dir = $(REPO)/.config
@@ -14,6 +14,7 @@ vim_dir = $(HOME)/.vim
 vim_repo = $(REPO)/.vim
 vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc
 vim_dirs = $(HOME)/.vim/autoload
+vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
@@ -42,7 +43,7 @@ UPDATE_SUBMODULES: .i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/super
 
 MAKE_SUBMODULES: .i3/dex/dex
 
-vim: $(vim_dir) vim-config
+vim: $(vim_submodules) $(vim_dir) vim-config
 
 i3: $(i3_targets)
 
