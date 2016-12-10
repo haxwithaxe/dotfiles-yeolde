@@ -1,0 +1,149 @@
+#!/bin/bash
+
+set -e
+
+DEBUG=false
+NOTOFY_ON_LOG=true
+JOB_FILE="/tmp/xautolockctl_${USER}.job"
+SCRIPT_NAME="$(basename $0)"
+SCRIPT_PATH="$(readlink -f $0)"
+DEFAULT_TIMEOUT=$((60*10))
+NOTIFY_LEAD=10
+LOCKSCREEN_COLOR=000009
+NOTOFY_ON_LOG=true
+
+log() {
+	local notify_level=${notify_level:-normal}
+	echo "$@" >&2
+	if $NOTOFY_ON_LOG; then
+		notify-send -u $notify_level -t 5 "${SCRIPT_NAME}" -- "$@"
+	fi
+}
+
+debug() {
+	if $DEBUG; then
+		log "DEBUG: $@"
+	fi
+}
+
+error() {
+	local notify_level=critical
+	log "ERROR: $@"
+}
+
+notify() {
+	notify-send "screen lock" "$@"
+}
+
+xautolocker() {
+	debug "xautolocker start"
+	xautolock -detectsleep \
+		-time 3 \
+		-locker "killeri3lock -f -e -u -c $LOCKSCREEN_COLOR" \
+		-notify $NOTIFY_LEAD \
+		-notifier "xset s activate" &
+	debug "xautolocker finish"
+}
+
+unlocker() {
+	if [[ -f $LOCKER_PID_FILE ]]; then
+		local pid=$(cat $LOCKER_PID_FILE)
+		if [[ -n "$pid" ]] && [[ $pid -gt 100 ]]; then
+			kill -9 $pid
+		fi
+	fi
+}
+
+enable_lock() {
+	xautolock -enable
+	# NOTE the timeouts are set by laptop-mode.
+	xset s on
+	xset +dpms
+}
+
+disable_lock() {
+	xautolock -disable
+	xset -dpms
+	xset s off
+}
+
+suspend_lock() {
+	local minutes=$(parse_minutes_arg $1)
+	disable_lock
+	if [ -f "$JOB_FILE" ]; then
+		job=$(cat "$JOB_FILE")
+		if [ -n "$job" ]; then
+			atrm "$job"
+			rm "$JOB_FILE"
+		fi
+	fi
+	echo "${SCRIPT_PATH} --resume" | \
+		at now + "$minutes" minute 2>&1 1>/dev/null | \
+		tail -1 | \
+		cut -d ' ' -f 2 > "$JOB_FILE"
+	return $minutes
+}
+
+resume_lock() {
+	enable_lock
+	if [ -f "$JOB_FILE" ]; then
+		job=$(cat "$JOB_FILE")
+		if [ -n "$job" ]; then
+			atrm "$job"
+			rm "$JOB_FILE"
+		fi
+	else
+		debug "No state file '$JOB_FILE', assuming the screen lock is already enabled."
+	fi
+}
+
+parse_minutes_arg() {
+	local minutes="$1"
+	if [ -z "$minutes" ]; then
+		debug "Using default time of ${DEFAULT_TIMEOUT} minutes."
+		minutes="${DEFAULT_TIMEOUT}"
+	elif [[ ! "$minutes" =~ ^[0-9]+$ ]]; then
+		error "Second argument must be numeric."
+		return 1
+	fi
+	echo "$minutes"
+}
+
+eval set -- "$(getopt -o h --long 'help,disable,enable,resume,suspend,start' -n $SCRIPT_NAME -- "$@")"
+
+while true; do
+	case $1 in
+		-h|--help)
+			echo "$SCRIPT_NAME (-h|--help|--disable|--enable|--resume|--suspend [minutes]|--lock)"
+			exit 1
+			;;
+		--disable)
+			disable_lock
+			notify "Disabling the screen lock until next X restart."
+			break
+			;;
+		--enable)
+			enable_lock
+			notify "Enabling the screen lock."
+			break
+			;;
+		--resume)
+			resume_lock
+			notify "Restoring screen lock to normal."
+			break
+			;;
+		--start)
+			xautolocker
+			notify "Starting screen lock with a idle time of $DEFAULT_TIMEOUT."
+			break
+			;;
+		--suspend)
+			minutes=$(suspend_lock $@)
+			notify "Suspending screen lock for $minutes"
+			break
+			;;
+		--)
+			break
+			;;
+	esac
+done
