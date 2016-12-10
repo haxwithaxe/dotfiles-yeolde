@@ -22,6 +22,6 @@ synclient VertEdgeScroll=1 HorizEdgeScroll=1 VertTwoFingerScroll=0 HorizTwoFinge
 xautolock -detectsleep \
 	-time 3 \
 	-locker "i3lock -f -e -u -c 000009" \
-	-notify 45 \
+	-notify 60 \
 	-notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 45 seconds'" &
 
