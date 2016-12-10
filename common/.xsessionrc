@@ -1,0 +1,5 @@
+if [ -d ~/.xsessionrc.d ]; then
+	for rc in ~/.xsessionrc.d/*;do
+		source $rc
+	done
+fi
