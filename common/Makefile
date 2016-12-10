@@ -14,7 +14,7 @@ xdg_repo_dir = $(REPO)/.config
 #   required for pathogen
 vim_dir = $(HOME)/.vim
 vim_repo = $(REPO)/.vim
-vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc
+vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc $(HOME)/.pylintrc
 vim_dirs = $(HOME)/.vim/autoload
 vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround
 
