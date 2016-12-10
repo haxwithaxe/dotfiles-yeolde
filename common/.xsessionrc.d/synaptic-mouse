@@ -1,0 +1,18 @@
+# Set touchpad settings
+synclient \
+	VertEdgeScroll=1 \
+	HorizEdgeScroll=1 \
+	VertTwoFingerScroll=0 \
+	HorizTwoFingerScroll=0 \
+	TapButton1=0 \
+	TapButton2=0 \
+	TapButton3=0
+
+# Enable vertical and horizontal edge scrolling
+# VertEdgeScroll=1 HorizEdgeScroll=1
+#
+# Disable vertical and horizontal two finger scrolling
+# VertTwoFingerScroll=0 HorizTwoFingerScroll=0
+#
+# Disable tap buttons
+# TapButton1=0 TapButton2=0 TapButton3=0

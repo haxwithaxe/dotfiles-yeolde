@@ -5,6 +5,8 @@
 REPO ?= $(shell pwd)
 GIT_UPDATE = git submodule update --recursive --remote --merge
 
+# https://www.freedesktop.org/software/systemd/man/file-hierarchy.html
+user_prefix = $(HOME)/.local
 xdg_data_dir = $(HOME)/.config
 xdg_repo_dir = $(REPO)/.config
 
@@ -22,7 +24,7 @@ shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psr
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
-i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/dex $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
+i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/dex/dex $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
 
 pianobar_dir = $(xdg_data_dir)/pianobar
 pianobar_repo = $(xdg_repo_dir)/pianobar
@@ -30,8 +32,20 @@ pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config $(pianobar_dir)/
 
 clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
 
+xsessionrcd = $(HOME)/.xsessionrc.d
+
+x_targets = $(xsessionrcd) \
+	$(HOME)/.xsessionrc \
+	$(HOME)/.xsessionrc.d/xkb-fixes \
+	$(HOME)/.xsessionrc.d/merge-pastebuffers \
+	$(HOME)/.xsessionrc.d/set-background \
+	$(HOME)/.xsessionrc.d/xmodmap
+
+#$(HOME)/.xsessionrc.d/synaptic-mouse
+#$(HOME)/.xsessionrc.d/screen-lock-basic
+
 TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(vim_targets) $(shell_targets)
-DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs)
+DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs) $(xsessionrcd)
 # linked not created .playlists, .vim, .i3/dex
 
 all: install
@@ -44,13 +58,17 @@ MAKE_SUBMODULES: .i3/dex/dex
 
 vim: $(vim_dir) vim-config
 
-i3: $(i3_targets)
+i3: $(i3_targets) $(x_targets)
 
 pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
 
 vim-config: $(vim_dir) $(vim_targets)
 
 shell-config: $(shell_dirs) $(shell_targets)
+
+xsessionrc: $(HOME)/.xsessionrc $(x_targets)
+
+screen-lock: $(xsessionrcd)/screen-lock-advanced
 
 pre-commit: .config/pianobar/config
 
@@ -78,6 +96,11 @@ $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 $(HOME)/.config/pianobar/ctl:
 	mkfifo $@
 
+$(xsessionrcd)/screen-lock-advanced: $(xsessionrcd) $(HOME)/.xsessionrc $(user_prefix)/bin/xautolockctl
+
+$(xsessionrcd)/%: $(xsessionrcd) $(HOME)/.xsessionrc
+	ln -sf $(REPO)/.xsessionrc.d/$* $@
+
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
 
@@ -87,12 +110,13 @@ $(pianobar_dir)/%: $(pianobar_dir)
 $(shell_profile_dir)/%:  $(shell_profile_dir)
 	ln -sf $(shell_profile_repo)/$* $@
 
-
 $(vim_dir)/%:  $(vim_dir)
 	ln -sf $(vim_repo)/$* $@
 
 $(xdg_data_dir)/%: $(xdg_data_dir)
 	ln -sf $(xdg_data_repo)/$* $@
+
+$(xdg_bin_dir)/%: $(xdg_bin_dir)
 
 $(DIRS):
 	mkdir -p $@
