@@ -1,0 +1,18 @@
+#!/bin/bash
+
+__toggle_touchpad() {
+	local input_id input_state
+	input_id=$(xinput list | sed -n -e 's/^.*[Tt]ouch[Pp]ad[[:space:]]*id=\([0-9][0-9]\?\).*$/\1/p')
+	input_state=$(xinput list-props $input_id | sed -n '/Device Enabled/ s/^.*:[[:space:]]\+\([0-9]\+\)/\1/p')
+	if [[ $input_state -eq 1 ]]; then
+		xinput disable $input_id
+		#xsession-debug "Touchpad disabled."
+		#xsession-debug-notify 'Touchpad' 'Disabled'
+	else
+		xinput enable $input_id
+		#xsession-debug "Touchpad enabled."
+		#xsession-dbug-notify 'Touchpad' 'Enabled'
+	fi
+}
+
+__toggle_touchpad
