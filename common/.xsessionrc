@@ -1,5 +1,8 @@
+
 if [ -d ~/.xsessionrc.d ]; then
+	echo ~/.xsessionrc.d/*
 	for rc in ~/.xsessionrc.d/*;do
-		source $rc
+		echo "xsessionrc rc \"$rc\""
+		. $rc
 	done
 fi
