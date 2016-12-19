@@ -12,7 +12,6 @@ set -e
 DUMB_DELAY=${DUMB_DELAY:-2}
 
 if $DEBUG ;then
-	set -x
 	redirect=">/tmp/$(whoami)-i3_startup.log 2>&1"
 else
 	redirect=">/dev/null 2>&1"
