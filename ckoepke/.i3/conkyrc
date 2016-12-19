@@ -14,10 +14,12 @@ conky.config = {
 	cpu_avg_samples = 2
 }
 
+--{ "full_text" : "eth0:${if_up eth0}${addr eth0} d/u:${downspeed eth0}/${upspeed eth0}${else}down${endif}" },
+
 _text = [[
 [
-	{ "full_text" : "eth0:${if_up eth0}${addr eth0} d/u:${downspeed eth0}/${upspeed eth0}${else}down${endif}" },
 
+	${exec ]] .. os.getenv('HOME') .. [[/.i3/conky-wireless eth0}
 	${exec ]] .. os.getenv('HOME') .. [[/.i3/conky-wireless wlan0}
 
 	{ "full_text" : "sda:${diskio sda}" },
