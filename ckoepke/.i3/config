@@ -195,6 +195,9 @@ bindsym XF86AudioNext exec --no-startup-id "$HOME/.config/pianobar/pianobar-ctl 
 bindsym $mod+Mod4+u exec "xprofile activate undocked"
 bindsym $mod+Mod4+d exec "xprofile activate tripple"
 
+# Toggle touchpad on and off
+bindsym $mod+Mod4+t exec "toggle-touchpad"
+
 for_window [title="NoScript Options"] float
 for_window [class="pavumeter"] float
 
