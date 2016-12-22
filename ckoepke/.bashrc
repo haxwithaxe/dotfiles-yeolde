@@ -115,3 +115,7 @@ fi
 if [ -e $HOME/.psrc ]; then
 	. $HOME/.psrc
 fi
+
+if [ -d "${HOME}/.local/bin" ] && ! ( grep -q "${HOME}/.local/bin" <<< "$PATH" ); then
+	export PATH="${HOME}/.local/bin:${PATH}"
+fi
