@@ -92,3 +92,8 @@ fi
 if [ -e $HOME/.psrc ]; then
 	source $HOME/.psrc
 fi
+
+if [ -d ${HOME}/.local/bin ] && ( egrep -q "[:]?${HOME}/.local/bin[:]?" <<< "$PATH" ); then
+	export PATH="${HOME}/.local/bin:$PATH"
+fi
+
