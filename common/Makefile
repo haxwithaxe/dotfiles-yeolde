@@ -21,7 +21,7 @@ vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
-shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh $(HOME)/.bash_aliases.d/derp
+shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh $(HOME)/.bash_aliases.d/derp $(HOME)/.bash_completion
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
@@ -46,7 +46,7 @@ x_targets = $(xsessionrcd) \
 #$(HOME)/.xsessionrc.d/screen-lock-basic
 
 TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(vim_targets) $(shell_targets)
-DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs) $(xsessionrcd)
+DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs) $(xsessionrcd) $(HOME)/.bash_completion.d
 # linked not created .playlists, .vim, .i3/dex
 
 all: install
@@ -60,6 +60,8 @@ MAKE_SUBMODULES: .i3/dex/dex
 vim: $(vim_submodules) $(vim_dir) vim-config
 
 i3: $(i3_targets) $(x_targets)
+
+bash_completion: $(HOME)/.bash_completion
 
 pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
 
@@ -97,6 +99,8 @@ $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 $(HOME)/.config/pianobar/ctl:
 	mkfifo $@
 
+$(HOME)/.bash_completion: $(HOME)/.bash_completion.d
+
 $(xsessionrcd)/screen-lock-advanced: $(xsessionrcd) $(HOME)/.xsessionrc $(user_prefix)/bin/xautolockctl
 
 $(xsessionrcd)/%: $(xsessionrcd) $(HOME)/.xsessionrc
@@ -130,4 +134,3 @@ make/%: update/%
 
 update/%:
 	$(GIT_UPDATE) $*
-
