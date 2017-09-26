@@ -4,6 +4,9 @@ case $- in
       *) return;;
 esac
 
+
+TERM=xterm-256color
+
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 
@@ -93,7 +96,4 @@ if [ -e $HOME/.psrc ]; then
 	source $HOME/.psrc
 fi
 
-if [ -d ${HOME}/.local/bin ] && ( egrep -q "[:]?${HOME}/.local/bin[:]?" <<< "$PATH" ); then
-	export PATH="${HOME}/.local/bin:$PATH"
-fi
 
