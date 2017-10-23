@@ -8,13 +8,13 @@ subtarget = $(subst $(goal)/,,$(MAKECMDGOALS))
 
 .PHONY: help $(targets) update update-submodules $(goal)/$(subtarget) 
 
-GIT_UPDATE = git submodule update --recursive --remote --merge
+GIT_UPDATE = git submodule foreach git pull origin master
+GIT_SYNC = git submodule update --recursive --remote --merge
 
 help:
 	@echo "make <goal>/<target>"
 	@echo "	goal: $(goals)"
 	@echo "	target: $(targets)"
-
 
 update: PULL update-submodules
 
@@ -23,6 +23,10 @@ PULL:
 
 update-submodules:
 	$(GIT_UPDATE)
+	$(MAKE) -C common MAKE_SUBMODULES
+
+sync-submodules:
+	$(GIT_SYNC)
 	$(MAKE) -C common MAKE_SUBMODULES
 
 make/%: update/%
@@ -43,6 +47,4 @@ $(targets):
 
 $(goal)/$(subtarget):
 	$(MAKE) -C $(goal) $(subtarget)
-
-
 
