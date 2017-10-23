@@ -84,7 +84,7 @@ $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
 
 .config/pianobar/config: .FORCE
-	../sanitize $(pianobar_repo)/config $@
+	#../sanitize $(pianobar_repo)/config $@
 	
 $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
