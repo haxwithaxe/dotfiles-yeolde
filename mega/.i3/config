@@ -167,7 +167,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute $PA_SINK toggle
 assign [class="Pidgin"] 4
 assign [class="firefox-personal"] 2
 assign [class="firefox-default"] 2
-assign [class="qbittorent"] 3
+assign [class="qbittorrent"] 3
+assign [class="qBittorrent"] 3
 
 for_window [title="NoScript Options"] float
 
@@ -176,10 +177,7 @@ for_window [title="NoScript Options"] float
 bar {
 	position top
 	font $I3_BAR_FONT
-	status_command $HOME/.i3/conky-i3bar
+	status_command i3status
 }
 
-exec ~/.i3/dex/dex -ae i3
-
-exec --no-startup-id ~/.i3/startup &
-
+exec --no-startup-id /usr/bin/qbittorrent &

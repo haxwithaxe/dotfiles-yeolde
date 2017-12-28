@@ -4,5 +4,12 @@
 
 # Start programs at login
 
-# window 1
-# load terminals before all other programs
+ws=3
+launch_dumb qbittorrent
+echo foo
+sleep 10
+done_launching
+
+
+ws=1
+return_home
