@@ -5,12 +5,7 @@ REPO ?= $(shell pwd)
 
 targets = $(HOME)/.bashrc \
 	$(HOME)/.gtkrc-2.0.mine \
-	$(HOME)/.irssi \
-	$(HOME)/.libao \
-	$(HOME)/.screenrc \
-	$(HOME)/.Xmodmap \
-	$(HOME)/.xsessionrc \
-	$(HOME)/.xinitrc
+	$(HOME)/.Xmodmap
 
 i3_dir = $(HOME)/.i3
 i3_repo =  $(REPO)/.i3
