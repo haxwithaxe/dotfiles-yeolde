@@ -15,7 +15,7 @@ xdg_repo_dir = $(REPO)/.config
 vim_dir = $(HOME)/.vim
 vim_repo = $(REPO)/.vim
 vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc $(HOME)/.pylintrc
-vim_dirs = $(HOME)/.vim/autoload
+vim_dirs = $(HOME)/.vim $(HOME)/.vim/autoload
 vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround
 
 shell_profile_dir = $(HOME)/.profile.d
@@ -36,7 +36,7 @@ shell_targets = $(HOME)/.bashrc \
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
-i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/dex/dex $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
+i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
 
 pianobar_dir = $(xdg_data_dir)/pianobar
 pianobar_repo = $(xdg_repo_dir)/pianobar
@@ -65,7 +65,7 @@ UPDATE_SUBMODULES: .i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/super
 
 MAKE_SUBMODULES: .i3/dex/dex
 
-vim: $(vim_submodules) $(vim_dir) vim-config
+vim: vim-config $(vim_submodules)
 
 i3: $(i3_targets) $(x_targets)
 
@@ -73,11 +73,14 @@ bash_completion: $(HOME)/.bash_completion
 
 pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
 
-vim-config: $(vim_dir) $(vim_targets)
+vim-config: $(vim_dirs) $(vim_targets)
 
 shell-config: $(shell_dirs) $(shell_targets)
 
 xsessionrc: $(HOME)/.xsessionrc $(x_targets)
+
+xsessionrc.d/%:
+	$(MAKE) -C $*
 
 screen-lock: $(xsessionrcd)/screen-lock-advanced
 
@@ -110,13 +113,6 @@ $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 
 $(HOME)/.config/pianobar/ctl:
 	mkfifo $@
-
-$(HOME)/.bash_completion: $(HOME)/.bash_completion.d
-
-$(xsessionrcd)/screen-lock-advanced: $(xsessionrcd) $(HOME)/.xsessionrc $(user_prefix)/bin/xautolockctl
-
-$(xsessionrcd)/%: $(xsessionrcd) $(HOME)/.xsessionrc
-	ln -sf $(REPO)/.xsessionrc.d/$* $@
 
 $(i3_dir)/%: $(i3_dir)
 	ln -sf $(i3_repo)/$* $@
