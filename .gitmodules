@@ -22,3 +22,9 @@
 [submodule "ckoepke/.irssi/scripts/irssi-libnotify"]
 	path = ckoepke/.irssi/scripts/irssi-libnotify
 	url = git@github.com:stickster/irssi-libnotify.git
+[submodule "common/.vim/bundle/vim-jsbeautify"]
+	path = common/.vim/bundle/vim-jsbeautify
+	url = https://github.com/maksimr/vim-jsbeautify.git
+[submodule "common/.vim/bundle/Dockerfile"]
+	path = common/.vim/bundle/Dockerfile
+	url = https://github.com/ekalinin/Dockerfile.vim.git
