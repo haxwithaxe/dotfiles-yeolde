@@ -21,7 +21,18 @@ vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
-shell_targets = $(HOME)/.bashrc $(HOME)/.bash_aliases $(HOME)/.psrc $(HOME)/.psrc.d/00-bashrc $(HOME)/.psrc.d/00-git $(HOME)/.psrc.d/01-smallpwd $(HOME)/.profile $(HOME)/.profile.d/git-prompt.sh $(HOME)/.bash_aliases.d/derp $(HOME)/.bash_completion
+shell_targets = $(HOME)/.bashrc \
+	$(HOME)/.bash_aliases \
+	$(HOME)/.bash_aliases.d/derp \
+	$(HOME)/.bash_aliases.d/python3 \
+	$(HOME)/.bash_aliases.d/venv-activate \
+	$(HOME)/.bash_completion \
+	$(HOME)/.profile \
+	$(HOME)/.profile.d/git-prompt.sh \
+	$(HOME)/.psrc \
+	$(HOME)/.psrc.d/00-bashrc \
+	$(HOME)/.psrc.d/00-git \
+	$(HOME)/.psrc.d/01-smallpwd
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
