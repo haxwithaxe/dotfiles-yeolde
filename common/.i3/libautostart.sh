@@ -11,12 +11,14 @@ set -e
 
 DUMB_DELAY=${DUMB_DELAY:-2}
 
-if $DEBUG ;then
-	redirect=">/tmp/$(whoami)-i3_startup.log 2>&1"
-else
-	redirect=">/dev/null 2>&1"
-fi
-
+redirect() {
+	if $DEBUG ;then
+		stdout="/tmp/$(whoami)-i3_startup.log"
+	else
+		stdout="/dev/null"
+	fi
+	$@ > $stdout 2>&1
+}
 
 # should we be quiet?
 if [ -e ~/.silent ] ;then 
@@ -62,7 +64,7 @@ return_home(){
 # Start program
 launch(){
 	i3-msg "workspace $ws"
-	$@ $redirect &
+	( redirect $@ ) &
 	wait_for_program $! "$@"
 }
 
@@ -76,12 +78,12 @@ launch_dumb(){
 # Start program in terminal
 launch_term(){
     i3-msg "workspace $ws"
-	i3-sensible-terminal -e $@ $redirect &
+	i3-sensible-terminal -e redirect $@ &
     wait_for_program $! "i3-sensible-terminal -e $@"
 }
 
 launch_bg(){
-	$@  $redirect &
+	( redirect $@ ) &
 }
 
 # Wait for program coming up
