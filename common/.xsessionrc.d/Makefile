@@ -1,44 +1,30 @@
 .SHELL: /bin/bash
 
+.PHONY: all install clean
 
-REPO ?= $(shell pwd)/..
 
-xsessionrcd = $(HOME)/.xsessionrc.d
-
-TARGETS = $(xsessionrcd) \
-	$(HOME)/.xsessionrc \
-	$(xsessionrcd)/xkb-fixes \
-	$(xsessionrcd)/merge-pastebuffers \
-	$(xsessionrcd)/set-background \
-	$(xsessionrcd)/xmodmap
+REPO ?= $(shell pwd)
+INSTALL_DIR = $(HOME)/.xsessionrc.d
+TARGETS = $(INSTALL_DIR)/xkb-fixes \
+	$(INSTALL_DIR)/merge-pastebuffers \
+	$(INSTALL_DIR)/set-background \
+	$(INSTALL_DIR)/xmodmap
 
 FILES = always-on \
 	disable-touchpad-on-start \
 	merge-pastebuffers \
-	screen-lock-advanced \
-	screen-lock-basic \
 	set-background \
 	synaptic-mouse \
 	xkb-fixes \
 	xmodmap
 
-
-$(FILES): % : $(xsessionrcd)/%
-	echo $@ $^
-
-DIRS = $(xsessionrcd)
-
 all: install
 
-install: $(DIRS) $(TARGETS)
+install: $(TARGETS)
 
-screen-lock: $(xsessionrcd)/screen-lock-advanced
-
-$(xsessionrcd)/screen-lock-advanced: $(xsessionrcd) $(HOME)/.xsessionrc $(user_prefix)/bin/xautolockctl
-
-$(xsessionrcd)/%: $(xsessionrcd) $(HOME)/.xsessionrc
-	ln -sf $(REPO)/.xsessionrc.d/$* $@
-
-$(DIRS):
+$(INSTALL_DIR): $(HOME)/.xsessionrc
 	mkdir -p $@
+
+$(INSTALL_DIR)/%: $(INSTALL_DIR)
+	ln -sf $(REPO)/$* $@
 

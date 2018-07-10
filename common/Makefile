@@ -6,139 +6,118 @@ REPO ?= $(shell pwd)
 GIT_UPDATE = git submodule update --init --recursive --remote --merge
 
 # https://www.freedesktop.org/software/systemd/man/file-hierarchy.html
-user_prefix = $(HOME)/.local
+xdg_user_prefix = $(HOME)/.local
 xdg_data_dir = $(HOME)/.config
-xdg_repo_dir = $(REPO)/.config
-
-# vim_dir is linked no need to have any targets inside it besides those
-#   required for pathogen
-vim_dir = $(HOME)/.vim
-vim_repo = $(REPO)/.vim
-vim_targets = $(HOME)/.vim/autoload/pathogen.vim $(HOME)/.vimrc $(HOME)/.pylintrc
-vim_dirs = $(HOME)/.vim $(HOME)/.vim/autoload
-vim_submodules = update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround
+xdg_repo_data_dir = $(REPO)/.config
+xdg_bin_dir = $(HOME)/.local/bin
+xdg_repo_bin_dir = $(REPO)/.local/bin
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
-shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
+shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d $(HOME)/.profile.d
 shell_targets = $(HOME)/.bashrc \
-	$(HOME)/.bash_aliases \
-	$(HOME)/.bash_aliases.d/derp \
-	$(HOME)/.bash_aliases.d/python3 \
-	$(HOME)/.bash_aliases.d/venv-activate \
+	bash_aliases \
 	$(HOME)/.bash_completion \
 	$(HOME)/.profile \
 	$(HOME)/.profile.d/git-prompt.sh \
-	$(HOME)/.psrc \
-	$(HOME)/.psrc.d/00-bashrc \
-	$(HOME)/.psrc.d/00-git \
-	$(HOME)/.psrc.d/01-smallpwd
+	psrc \
+	vim
 
 i3_dir = $(HOME)/.i3
 i3_repo = $(REPO)/.i3
-i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/libautostart.sh $(i3_dir)/conky-power $(i3_dir)/conky-wireless $(i3_dir)/conky-temp
+i3_targets = $(i3_dir)/conky-i3bar \
+			 $(i3_dir)/conky-power \
+			 $(i3_dir)/conky-temp \
+			 $(i3_dir)/conky-wireless 
 
 pianobar_dir = $(xdg_data_dir)/pianobar
-pianobar_repo = $(xdg_repo_dir)/pianobar
-pianobar_targets = $(pianobar_dir)/state $(pianobar_dir)/config $(pianobar_dir)/pianobar-ctl $(HOME)/.bash_aliases.d/pianobar-ctl
+pianobar_repo = $(xdg_repo_data_dir)/pianobar
+pianobar_targets = $(pianobar_dir)/state \
+				   $(pianobar_dir)/config \
+				   $(pianobar_dir)/pianobar-ctl \
+				   bash_aliases.d/pianobar-ctl
 
-clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config $(REPO)/.vim/vim-pathogen/autoload/pathogen.vim
+clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config
 
-xsessionrcd = $(HOME)/.xsessionrc.d
-
-x_targets = $(xsessionrcd) \
-	$(HOME)/.xsessionrc \
-	$(HOME)/.xsessionrc.d/xkb-fixes \
-	$(HOME)/.xsessionrc.d/merge-pastebuffers \
-	$(HOME)/.xsessionrc.d/set-background \
-	$(HOME)/.xsessionrc.d/xmodmap
-
-TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(vim_targets) $(shell_targets)
-DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs) $(xsessionrcd) $(HOME)/.bash_completion.d
+TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(shell_targets)
+DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(shell_dirs)
 # linked not created .playlists, .vim, .i3/dex
 
 all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-UPDATE_SUBMODULES: .i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+update: make/.i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
-MAKE_SUBMODULES: .i3/dex/dex
+UPDATE_SUBMODULES: make/.i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
-vim: vim-config $(vim_submodules)
+MAKE_SUBMODULES: make/.i3/dex
 
 i3: $(i3_targets) $(x_targets)
+
+i3/autostart: i3 make/.i3/dex $(i3_dir)/libautostart.sh
 
 bash_completion: $(HOME)/.bash_completion
 
 pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
 
-vim-config: $(vim_dirs) $(vim_targets)
-
 shell-config: $(shell_dirs) $(shell_targets)
 
-xsessionrc: $(HOME)/.xsessionrc $(x_targets)
+psrc: psrc/base  # $(HOME)/.psrc
 
-xsessionrc.d/%:
-	$(MAKE) -C $*
+psrc/%:
+	$(MAKE) -C $(REPO)/.psrc.d $^
 
-screen-lock: $(xsessionrcd)/screen-lock-advanced
+vim: vim/base
+
+vim/%:
+	$(MAKE) -C $(REPO)/.vim $^
+
+xsessionrc: xsessionrc/base  # $(HOME)/.xsessionrc
+
+xsessionrc/%:
+	$(MAKE) -C $(REPO)/.xsessionrc.d $^
 
 pre-commit: .config/pianobar/config
 
-clean:
+clean: bash_aliases/clean psrc/clean xsessionrc/clean
 	@rm -rf $(clean_targets)
-	$(MAKE) -C clean
-
-$(i3_dir)/dex/dex: .i3/dex/dex
-
-.i3/dex/dex: make/.i3/dex
 
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
 
-.config/pianobar/config: .FORCE
-	#../sanitize $(pianobar_repo)/config $@
+$(HOME)/.bash_aliases.d/%: $(REPO)/.bash_aliases.d/%
+	$(MAKE) -C $(REPO)/.bash_aliases.d $@
 
-$(HOME)/.psrc.d/%: 
+$(HOME)/.psrc.d/%: $(REPO)/.psrc.d/%
 	$(MAKE) -C $(REPO)/.psrc.d $@
 
-$(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
-	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
+$(HOME)/xsessionrc.d/%: $(REPO)/.xsessionrc.d/%
+	$(MAKE) -C $(REPO)/.xsessionrc.d $@
 
-.vim/autoload/pathogen.vim: .vim/autoload .vim/vim-pathogen/autoload/pathogen.vim
-	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
-
-.vim/vim-pathogen/autoload/pathogen.vim: update/.vim/vim-pathogen
-
-$(HOME)/.config/pianobar/ctl:
+$(HOME)/.config/pianobar/ctl: $(HOME)/.config/pianobar
 	mkfifo $@
 
+$(i3_dir)/dex/dex: make/.i3/dex
+
 $(i3_dir)/%: $(i3_dir)
-	ln -sf $(i3_repo)/$* $@
 
 $(pianobar_dir)/%: $(pianobar_dir)
-	ln -sf $(pianobar_repo)/$* $@
 
 $(shell_profile_dir)/%:  $(shell_profile_dir)
-	ln -sf $(shell_profile_repo)/$* $@
 
-$(vim_dir)/%:  $(vim_dir)
-	ln -sf $(vim_repo)/$* $@
+$(xdg_data_dir)/%: $(xdg_data_dir) $(xdg_repo_data_dir)/%
 
-$(xdg_data_dir)/%: $(xdg_data_dir)
-	ln -sf $(xdg_data_repo)/$* $@
-
-$(xdg_bin_dir)/%: $(xdg_bin_dir)
+$(xdg_bin_dir)/%: $(xdg_bin_dir) $(xdg_repo_bin_dir)/%
 
 $(DIRS):
 	mkdir -p $@
 
-$(HOME)/%:
-	ln -sf $(REPO)/$* $@
+$(HOME)/%: $(REPO)/%
+	ln -sf $^ $@
 
 make/%: update/%
 	$(MAKE) -C $*
 
-update/%:
+update/%: %
 	$(GIT_UPDATE) $*
