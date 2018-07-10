@@ -1,15 +1,19 @@
 #!/bin/bash
 
-. ~/.i3/libautostart.sh
+# should we be quiet?
+if [ -e ~/.silent ] || [ -e ~/.quiet ];then 
+	echo 'Found "~/.silent" or "~/.quiet". Not running any startup programs.' 1>&2
+	exit 0
+fi
 
-# Start programs at login
+i3-msg "workspace 3"
+qbittorrent &
+sleep 10  # Wait for qbittorent to finish starting
 
-ws=3
-launch_dumb qbittorrent
-echo foo
-sleep 10
-done_launching
+# Sync up X
+xrefresh &
+
+# Return home
+i3-msg "workspace 1"
 
 
-ws=1
-return_home
