@@ -2,4 +2,10 @@ for psrc in ${HOME}/.psrc.d/*;do
 	source $psrc
 done
 
-PROMPT_COMMAND='__git_ps1 "\u@\h:\$(small_pwd)" "\\\$ "'
+VENV_LABEL_COLOR=215  # light goldenrod
+
+__prompt_command() {
+	local venv_label="$(__virtualenv_label $VENV_LABEL_COLOR)" 
+	__git_ps1 "\u@\h:\$(small_pwd)" "${venv_label}\\\$ "
+}
+PROMPT_COMMAND='__prompt_command'

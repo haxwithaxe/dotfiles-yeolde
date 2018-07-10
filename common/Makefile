@@ -53,9 +53,6 @@ x_targets = $(xsessionrcd) \
 	$(HOME)/.xsessionrc.d/set-background \
 	$(HOME)/.xsessionrc.d/xmodmap
 
-#$(HOME)/.xsessionrc.d/synaptic-mouse
-#$(HOME)/.xsessionrc.d/screen-lock-basic
-
 TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(vim_targets) $(shell_targets)
 DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(vim_dirs) $(shell_dirs) $(xsessionrcd) $(HOME)/.bash_completion.d
 # linked not created .playlists, .vim, .i3/dex
@@ -88,6 +85,7 @@ pre-commit: .config/pianobar/config
 
 clean:
 	@rm -rf $(clean_targets)
+	$(MAKE) -C clean
 
 $(i3_dir)/dex/dex: .i3/dex/dex
 
@@ -98,7 +96,10 @@ $(pianobar_dir)/config: $(pianobar_dir)
 
 .config/pianobar/config: .FORCE
 	#../sanitize $(pianobar_repo)/config $@
-	
+
+$(HOME)/.psrc.d/%: 
+	$(MAKE) -C $(REPO)/.psrc.d $@
+
 $(vim_dir)/autoload/pathogen.vim: .vim/autoload/pathogen.vim
 	ln -sf $(vim_repo)/vim-pathogen/autoload/pathogen.vim $@
 
