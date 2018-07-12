@@ -1,2 +1,2 @@
 
-xss-lock -- i3lock -f -c 000000
+xss-lock -- i3lock -f -c 000000 &
