@@ -1,34 +1,28 @@
-REPO ?= $(shell pwd)
 
 .PHONY: all install clean
 
+REPO ?= $(shell pwd)
+
 TARGETS = $(HOME)/.gtkrc-2.0.mine $(HOME)/.irssi
-
-i3_REPO = $(REPO)/.i3
-i3_DIR = $(HOME)/.i3
-i3_TARGETS = $(i3_DIR)/config $(i3_DIR)/startup
-
-AUTOSTART_REPO = $(REPO)/.config/autostart
-AUTOSTART_DIR = $(HOME)/.config/autostart
-AUTOSTART_TARGETS = $(AUTOSTART_DIR)/dropbox.desktop $(AUTOSTART_DIR)/nm-applet.desktop
-
-DIRS = $(i3_DIR) $(AUTOSTART_DIR)
 
 all: install
 
-install: $(TARGETS) i3 autostart
+install: common/shell-config common/psrc/all common/vim $(TARGETS) i3 autostart
 
-i3: $(i3_DIR) $(i3_TARGETS)
+i3: common/i3 $(i3_DIR)/config $(i3_DIR)/startup
 
-autostart: $(AUTOSTART_DIR) $(AUTOSTART_TARGETS)
+autostart: $(HOME)/.config/autostart/dropbox.desktop $(HOME)/.config/autostart/nm-applet.desktop
 
-$(i3_DIR)/%: $(i3_DIR)
-	ln -sf $(i3_REPO)/$* $@
+common/%:
+	$(MAKE) -C ../common $*
 
-$(AUTOSTART_DIR)/%: $(AUTOSTART_DIR)
-	ln -sf $(AUTOSTART_REPO)/$* $@
+$(HOME)/.i3/%: $(HOME)/.i3
+	ln -sf $(REPO)/.i3/$* $@
 
-$(DIRS):
+$(HOME)/.config/autostart/%: $(HOME)/.config/autostart 
+	ln -sf $(REPO)/.config/autostart/$* $@
+
+$(HOME)/.config/autostart $(HOME)/.i3:
 	mkdir -p $@
 
 $(HOME)/%:
