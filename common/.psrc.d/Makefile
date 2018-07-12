@@ -14,6 +14,8 @@ TARGETS = $(INSTALL_DIR)/00-color \
 
 all: install
 
+base: install
+
 install: $(TARGETS)
 
 clean:
