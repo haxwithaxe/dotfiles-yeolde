@@ -67,7 +67,7 @@ esac
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # enable color support
-[ -r ~/.dircolors ] && $(dircolors -b ~/.dircolors) || export $(dircolors -b)
+[ -r ~/.dircolors ] && export $(dircolors -b ~/.dircolors) || export $(dircolors -b)
 
 # Alias definitions.
 if [ -f ~/.bash_aliases ]; then
