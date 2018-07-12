@@ -4,8 +4,20 @@ done
 
 VENV_LABEL_COLOR=215  # light goldenrod
 
+# Print nothing when the function isn't defined
+__try() {
+	local func=$1
+	shift
+	if [[ "$(type -t $func)" == "function" ]]; then
+		$func $@
+	fi
+}
+
 __prompt_command() {
-	local venv_label="$(__virtualenv_label $VENV_LABEL_COLOR)" 
-	__git_ps1 "\u@\h:\$(small_pwd)" "${venv_label}\\\$ "
+	local venv_label
+	local venv_label="$(__try __virtualenv_label $VENV_LABEL_COLOR)"
+	__git_ps1 "\u@\h:\$(__small_pwd)" "${venv_label}\\\$ "
 }
 PROMPT_COMMAND='__prompt_command'
+
+# vim: filetype=sh:

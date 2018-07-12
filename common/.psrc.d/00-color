@@ -34,3 +34,5 @@ xterm*|rxvt*)
 *)
     ;;
 esac
+
+# vim: filetype=sh:

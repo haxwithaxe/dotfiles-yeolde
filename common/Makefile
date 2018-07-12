@@ -3,18 +3,18 @@
 .PHONY: all install load clean dist-clean i3 vim-config pianobar shell-config
 
 REPO ?= $(shell pwd)
-GIT_UPDATE = git submodule update --init --recursive --remote --merge
 
 # https://www.freedesktop.org/software/systemd/man/file-hierarchy.html
 xdg_user_prefix = $(HOME)/.local
+xdg_repo_user_prefix = $(REPO)/.local
 xdg_data_dir = $(HOME)/.config
-xdg_repo_data_dir = $(REPO)/.config
-xdg_bin_dir = $(HOME)/.local/bin
-xdg_repo_bin_dir = $(REPO)/.local/bin
+xdg_data_repo = $(REPO)/.config
+xdg_bin_dir = $(xdg_user_prefix)/.local/bin
+xdg_bin_repo = $(xdg_repo_user_prefix)/.local/bin
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
-shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d $(HOME)/.profile.d
+shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
 shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
 	$(HOME)/.bash_completion \
@@ -31,11 +31,12 @@ i3_targets = $(i3_dir)/conky-i3bar \
 			 $(i3_dir)/conky-wireless 
 
 pianobar_dir = $(xdg_data_dir)/pianobar
-pianobar_repo = $(xdg_repo_data_dir)/pianobar
+pianobar_repo = $(xdg_data_repo)/pianobar
 pianobar_targets = $(pianobar_dir)/state \
 				   $(pianobar_dir)/config \
 				   $(pianobar_dir)/pianobar-ctl \
-				   bash_aliases.d/pianobar-ctl
+				   $(pianobar_dir)/ctl \
+				   bash_aliases/pianobar-ctl
 
 clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config
 
@@ -59,11 +60,16 @@ i3/autostart: i3 make/.i3/dex $(i3_dir)/libautostart.sh
 
 bash_completion: $(HOME)/.bash_completion
 
-pianobar: $(pianobar_dirs) $(pianobar_targets) $(HOME)/.config/pianobar/ctl
+pianobar: $(pianobar_dirs) $(pianobar_targets)
 
 shell-config: $(shell_dirs) $(shell_targets)
 
-psrc: psrc/base  # $(HOME)/.psrc
+bash_aliases: bash_aliases/base
+
+bash_aliases/%:
+	$(MAKE) -C $(REPO)/.bash_aliases.d $^
+
+psrc: psrc/base
 
 psrc/%:
 	$(MAKE) -C $(REPO)/.psrc.d $^
@@ -73,16 +79,32 @@ vim: vim/base
 vim/%:
 	$(MAKE) -C $(REPO)/.vim $^
 
-xsessionrc: xsessionrc/base  # $(HOME)/.xsessionrc
+xsessionrc: xsessionrc/base
 
 xsessionrc/%:
 	$(MAKE) -C $(REPO)/.xsessionrc.d $^
 
-pre-commit: .config/pianobar/config
+pre-commit: $(REPO)/.config/pianobar/config
 
 clean: bash_aliases/clean psrc/clean xsessionrc/clean
 	@rm -rf $(clean_targets)
 
+$(i3_dir)/%: $(i3_dir) $(i3_repo)/%
+	ln -sf $(i3_repo)/$* $@
+
+$(pianobar_dir)/%: $(pianobar_dir) $(pianobar_repo)/%
+	ln -sf $(pianobar_repo)/$* $@
+
+$(shell_profile_dir)/%: $(shell_profile_dir) $(shell_profile_repo)/%
+	ln -sf $(shell_profile_repo)/$* $@
+
+$(xdg_data_dir)/%: $(xdg_data_dir) $(xdg_data_repo)/%
+	ln -sf $(xdg_data_repo)/$* $@
+
+$(xdg_bin_dir)/%: $(xdg_bin_dir) $(xdg_bin_repo)/%
+	ln -sf $(xdg_bin_repo)/$* $@
+
+# Copy the config so that is doesn't contaminate the repo
 $(pianobar_dir)/config: $(pianobar_dir)
 	cp $(pianobar_repo)/config $@
 
@@ -95,20 +117,10 @@ $(HOME)/.psrc.d/%: $(REPO)/.psrc.d/%
 $(HOME)/xsessionrc.d/%: $(REPO)/.xsessionrc.d/%
 	$(MAKE) -C $(REPO)/.xsessionrc.d $@
 
-$(HOME)/.config/pianobar/ctl: $(HOME)/.config/pianobar
+$(pianobar_dir)/ctl: $(pianobar_dir)
 	mkfifo $@
 
 $(i3_dir)/dex/dex: make/.i3/dex
-
-$(i3_dir)/%: $(i3_dir)
-
-$(pianobar_dir)/%: $(pianobar_dir)
-
-$(shell_profile_dir)/%:  $(shell_profile_dir)
-
-$(xdg_data_dir)/%: $(xdg_data_dir) $(xdg_repo_data_dir)/%
-
-$(xdg_bin_dir)/%: $(xdg_bin_dir) $(xdg_repo_bin_dir)/%
 
 $(DIRS):
 	mkdir -p $@
@@ -120,4 +132,4 @@ make/%: update/%
 	$(MAKE) -C $*
 
 update/%: %
-	$(GIT_UPDATE) $*
+	git submodule update --init --recursive --remote --merge $*

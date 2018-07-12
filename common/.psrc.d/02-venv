@@ -7,6 +7,7 @@ fi
 
 __virtualenv_label() {
 	local color="$1"
+	local max_length=20
 	local format label path
 	if [ -n "$color" ]; then
 		format="\\e[38;5;${color}m(%s)\033[0m"
@@ -15,7 +16,15 @@ __virtualenv_label() {
 	fi
 	if [ -e "$VIRTUAL_ENV" ]; then
 		path=$(dirname "$VIRTUAL_ENV")
-		label=$(basename "$path")
+		{
+			while read -r; do
+				if ((${#REPLY}<=max_length)); then
+					label="$REPLY"
+				else
+					label="${REPLY:0:$((max_length-3))}..." 
+				fi
+			done
+		} <<< "$(basename "$path")"
 		printf "$format" "$label"
 	fi
 	return 0

@@ -1,6 +1,7 @@
 .SHELL: /bin/bash
 
 .PHONY: all install base submodules update clean dist-clean
+.DEFAULT: all
 
 REPO ?= $(shell pwd)
 
@@ -15,6 +16,9 @@ NOOP_TARGETS = $(HOME)/.vim/bundle/jedi-vim \
 	$(HOME)/.vim/bundle/vim-surround \
 	$(HOME)/.vim/vim-pathogen
 
+# Ignore Makefile targets and specified NoOp targets
+$(INSTALL_DIR)/Makefile $(REPO)/Makefile $(NOOP_TARGETS)::
+
 all: install
 
 base: install
@@ -26,7 +30,9 @@ update: update/bundle/jedi-vim  update/bundle/supertab  update/bundle/syntastic 
 update/%:
 	git submodule update --init --recursive --remote --merge ./$*
 
-clean:
+clean: clean/pathogen
+
+clean/pathogen:
 	rm $(INSTALL_DIR)/vim-pathogen/autoload/pathogen.vim
 	rm $(REPO)/autoload/pathogen.vim
 
@@ -47,9 +53,6 @@ $(REPO)/autoload/pathogen.vim: $(REPO)/autoload $(REPO)/vim-pathogen/autoload/pa
 $(INSTALL_DIR)/autoload/pathogen.vim: $(INSTALL_DIR) $(REPO)/autoload/pathogen.vim
 	ln -sf $(REPO)/vim-pathogen/autoload/pathogen.vim $@
 
-$(NOOP_TARGETS)::
-
-$(INSTALL_DIR)/%: $(INSTALL_DIR)
-	@echo installing \"$@\"
+$(INSTALL_DIR)/%: $(INSTALL_DIR) $(REPO)/%
 	ln -sf $(REPO)/$* $@
 

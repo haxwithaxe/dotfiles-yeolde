@@ -1,13 +1,24 @@
 # compressed prompt with path and hostname
-small_pwd(){
+__small_pwd(){
     PWD=${PWD:-$(pwd)}
     if [[ $PWD == $HOME ]] ;then
-        echo -n '~'
+        printf '~'
     elif [[ $(basename "$PWD") == "$PWD" ]] ;then
-        echo -n $PWD
+        printf "$PWD"
     else
         relative_to_home=$(dirname "$PWD" | sed "s:^$HOME:/~:")
         cwd=$(echo $relative_to_home | egrep -o '(\/\.[^/]|\/[^/])' | sed ':a;N;$!ba;s/\n//g')
-        echo -n ${cwd//\/\~/\~}/$(basename "$PWD")
+        path="${cwd//\/\~/\~}/%s"
+		{
+			while read -r; do
+				if ((${#REPLY}<=max_length)); then
+					printf "$path" "${path}${REPLY}"
+				else
+					printf "$path" "${REPLY:0:$((max_length-3))}..." 
+				fi
+			done
+		} <<< "$(basename "$PWD")"
     fi
 }
+
+# vim: filetype=sh:
