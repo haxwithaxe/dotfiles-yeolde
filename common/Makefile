@@ -17,7 +17,7 @@ shell_profile_repo = $(REPO)/.profile.d
 shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
 shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
-	$(HOME)/.bash_completion \
+	bash_completion \
 	$(HOME)/.profile \
 	$(HOME)/.profile.d/git-prompt.sh \
 	psrc \
@@ -50,7 +50,7 @@ install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
 update: make/.i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
-UPDATE_SUBMODULES: make/.i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+UPDATE_SUBMODULES: make/.i3/dex vim/update/jedi-vim vim/update/supertab vim/update/syntastic vim/update/vim-indent-guides vim/update/vim-surround vim/update/vim-pathogen
 
 MAKE_SUBMODULES: make/.i3/dex
 
@@ -67,7 +67,7 @@ shell-config: $(shell_dirs) $(shell_targets)
 bash_aliases: bash_aliases/base
 
 bash_aliases/%:
-	$(MAKE) -C $(REPO)/.bash_aliases.d $^
+	$(MAKE) -C $(REPO)/.bash_aliases.d $*
 
 psrc: psrc/base
 
@@ -77,12 +77,12 @@ psrc/%:
 vim: vim/base
 
 vim/%:
-	$(MAKE) -C $(REPO)/.vim $^
+	$(MAKE) -C $(REPO)/.vim $*
 
 xsessionrc: xsessionrc/base
 
 xsessionrc/%:
-	$(MAKE) -C $(REPO)/.xsessionrc.d $^
+	$(MAKE) -C $(REPO)/.xsessionrc.d $*
 
 pre-commit: $(REPO)/.config/pianobar/config
 

@@ -2,7 +2,6 @@
 
 .PHONY: all install clean
 
-
 REPO ?= $(shell pwd)
 INSTALL_DIR = $(HOME)/.xsessionrc.d
 TARGETS = $(INSTALL_DIR)/xkb-fixes \
@@ -19,6 +18,8 @@ FILES = always-on \
 	xmodmap
 
 all: install
+
+base: install
 
 install: $(TARGETS)
 

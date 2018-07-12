@@ -3,24 +3,28 @@
 
 REPO ?= $(shell pwd)
 
-targets = $(HOME)/.bashrc \
+TARGETS = $(HOME)/.bashrc \
 	$(HOME)/.gtkrc-2.0.mine \
-	$(HOME)/.Xmodmap
-
-i3_dir = $(HOME)/.i3
-i3_repo =  $(REPO)/.i3
-i3_targets = $(i3_dir)/config $(i3_dir)/startup $(i3_dir)/conkyrc
-
-DIRS = $(i3_dir) 
+	$(HOME)/.Xmodmap \
+	$(HOME)/.i3/config \
+	$(HOME)/.i3/startup \
+	$(HOME)/.i3/conkyrc
+DIRS = $(HOME)/.i3
 
 all: install
 
-install: $(targets) i3
+install: $(TARGETS) i3 shell common/bash_aliases/venv-activate
 
-i3: $(i3_targets)
+shell: common/shell-config common/bash_completion common/bash_aliases common/psrc/all common/vim
 
-$(i3_dir)/%: $(i3_dir)
-	ln -sf $(i3_repo)/$* $@
+i3: common/i3 \
+	$(HOME)/.i3/config \
+	$(HOME)/.i3/startup \
+	$(HOME)/.i3/conkyrc \
+	common/xsessionrc
+
+common/%:
+	$(MAKE) -C ../common $*
 
 $(HOME)/.xinitrc:
 	ln -sf $(REPO)/.xsessionrc $@
