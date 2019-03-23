@@ -42,13 +42,13 @@ clean_targets = $(HOME)/.muttrc $(HOME)/.config/pianobar/config
 
 TARGETS = $(HOME)/.playlists $(pianobar_targets) $(i3_targets) $(shell_targets)
 DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(shell_dirs)
-# linked not created .playlists, .vim, .i3/dex
+# linked not created .playlists, .vim
 
 all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-update: make/.i3/dex update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+update: update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
 UPDATE_SUBMODULES: make/.i3/dex vim/update/jedi-vim vim/update/supertab vim/update/syntastic vim/update/vim-indent-guides vim/update/vim-surround vim/update/vim-pathogen
 
@@ -64,16 +64,14 @@ pianobar: $(pianobar_dirs) $(pianobar_targets)
 
 shell-config: $(shell_dirs) $(shell_targets)
 
-<<<<<<< HEAD
-bash_aliases: bash_aliases/base
-=======
 xsessionrc: $(HOME)/.xsessionrc $(x_targets)
 
 xsessionrc/%: $(xsessionrcd)/%
 	echo $@
 
 screen-lock: $(xsessionrcd)/screen-lock-advanced
->>>>>>> fixed xsessionrc targets in common/Makefile
+
+bash_aliases: bash_aliases/base
 
 bash_aliases/%:
 	$(MAKE) -C $(REPO)/.bash_aliases.d $*
@@ -90,13 +88,8 @@ vim/%:
 
 xsessionrc: xsessionrc/base
 
-<<<<<<< HEAD
-xsessionrc/%:
-	$(MAKE) -C $(REPO)/.xsessionrc.d $*
-=======
 $(HOME)/.psrc.d/%:
 	$(MAKE) -C $(REPO)/.psrc.d $@
->>>>>>> fixed xsessionrc targets in common/Makefile
 
 pre-commit: $(REPO)/.config/pianobar/config
 
@@ -112,16 +105,14 @@ $(pianobar_dir)/%: $(pianobar_dir) $(pianobar_repo)/%
 $(shell_profile_dir)/%: $(shell_profile_dir) $(shell_profile_repo)/%
 	ln -sf $(shell_profile_repo)/$* $@
 
-<<<<<<< HEAD
 $(xdg_data_dir)/%: $(xdg_data_dir) $(xdg_data_repo)/%
 	ln -sf $(xdg_data_repo)/$* $@
 
 $(xdg_bin_dir)/%: $(xdg_bin_dir) $(xdg_bin_repo)/%
 	ln -sf $(xdg_bin_repo)/$* $@
-=======
+
 $(xsessionrcd)/%: $(xsessionrcd) $(HOME)/.xsessionrc $(REPO)/.xsessionrc.d/% 
 	ln -sf $(REPO)/.xsessionrc.d/$* $@
->>>>>>> fixed xsessionrc targets in common/Makefile
 
 # Copy the config so that is doesn't contaminate the repo
 $(pianobar_dir)/config: $(pianobar_dir)
@@ -144,14 +135,9 @@ $(i3_dir)/dex/dex: make/.i3/dex
 $(DIRS):
 	mkdir -p $@
 
-<<<<<<< HEAD
-$(HOME)/%: $(REPO)/%
-	ln -sf $^ $@
-=======
 $(HOME)/%:
 	echo $@
 	ln -sf $(REPO)/$* $@
->>>>>>> fixed xsessionrc targets in common/Makefile
 
 make/%: update/%
 	$(MAKE) -C $*
