@@ -87,7 +87,11 @@ if ! shopt -oq posix; then
 fi
 
 if [ -e $HOME/.psrc ]; then
-	source $HOME/.psrc
+  source $HOME/.psrc
 fi
 
-
+if [ -d ${HOME}/.bashrc.d ]; then
+  for bashrc in ${HOME}/.bashrc.d/*;do
+    source $bashrc
+  done
+fi

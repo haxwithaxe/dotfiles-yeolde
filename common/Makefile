@@ -14,7 +14,7 @@ xdg_bin_repo = $(xdg_repo_user_prefix)/.local/bin
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
-shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d
+shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d $(HOME)/.bashrc.d
 shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
 	bash_completion \
@@ -75,6 +75,8 @@ bash_aliases: $(HOME)/.bash_aliases bash_aliases/base
 
 bash_aliases/%:
 	$(MAKE) -C $(REPO)/.bash_aliases.d $*
+
+bashrc: $(HOME)/.bashrc $(HOME)/.bashrc.d
 
 psrc: psrc/base
 
