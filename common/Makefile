@@ -83,6 +83,10 @@ psrc: psrc/base
 psrc/%:
 	$(MAKE) -C $(REPO)/.psrc.d $^
 
+# NeoVIM doesn't look for the VIM config on its own
+# It does look for $(xdg_data_dir)/nvim/init.vim which now points to the vim config
+nvim neovim: vim $(xdg_data_dir)/nvim $(xdg_data_dir)/nvim/init.vim
+
 vim: vim/base
 
 vim/%:
