@@ -71,7 +71,7 @@ xsessionrc/%: $(xsessionrcd)/%
 
 screen-lock: $(xsessionrcd)/screen-lock-advanced
 
-bash_aliases: bash_aliases/base
+bash_aliases: $(HOME)/.bash_aliases bash_aliases/base
 
 bash_aliases/%:
 	$(MAKE) -C $(REPO)/.bash_aliases.d $*
@@ -128,6 +128,8 @@ $(HOME)/xsessionrc.d/%: $(REPO)/.xsessionrc.d/%
 	$(MAKE) -C $(REPO)/.xsessionrc.d $@
 
 $(pianobar_dir)/ctl: $(pianobar_dir)
+	@echo WARN $(pianobar_dir)/ctl seems to exist before this runs.
+	rm $@
 	mkfifo $@
 
 $(i3_dir)/dex/dex: make/.i3/dex
