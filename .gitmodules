@@ -1,6 +1,3 @@
-[submodule "common/.i3/dex"]
-	path = common/.i3/dex
-	url = git@github.com:jceb/dex.git
 [submodule "common/.vim/bundle/syntastic"]
 	path = common/.vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
