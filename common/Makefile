@@ -19,7 +19,6 @@ shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
 	bash_completion \
 	$(HOME)/.profile \
-	$(HOME)/.profile.d/git-prompt.sh \
 	psrc \
 	vim
 
