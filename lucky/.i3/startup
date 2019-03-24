@@ -1,16 +1,8 @@
 #!/bin/bash
 
-. ~/.i3/libautostart.sh
+xcape -e "Hyper_L=space"
 
-# Start programs at login
+dropbox start >/dev/null 2>&1
 
-# window 1
-# load terminals before all other programs
-ws=1
-set_layout tabbed
-launch i3-sensible-terminal
-launch i3-sensible-terminal
-move up
-done_launching
+i3-msg workspace 1 >/dev/null 2>&1
 
-return_home

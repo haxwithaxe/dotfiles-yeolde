@@ -1,4 +1,4 @@
-set $mod Mod1
+set $mod Mod3
 #default Mod1
 
 set $PRIMARY eDP1
@@ -156,7 +156,7 @@ for_window [title="VLC media player"] fullscreen
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-	status_command i3status
+	status_command $I3_DIR/conky-i3bar
 }
 
 #Screen 0: minimum 8 x 8, current 1024 x 600, maximum 8192 x 8192
@@ -168,7 +168,5 @@ workspace 1 output $PRIMARY
 workspace 2 output $PRIMARY
 workspace 3 output $PRIMARY
 
-exec ~/.i3/dex/dex -ae i3
-
-exec --no-startup-id ~/.i3/startup &
+exec --no-startup-id $I3_DIR/startup &
 
