@@ -25,3 +25,12 @@
 [submodule "common/.vim/bundle/Dockerfile"]
 	path = common/.vim/bundle/Dockerfile
 	url = https://github.com/ekalinin/Dockerfile.vim.git
+[submodule "common/.vim/bundle/vim-gitgutter"]
+	path = common/.vim/bundle/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "common/.vim/bundle/vim-python-pep8-indent"]
+	path = common/.vim/bundle/vim-python-pep8-indent
+    url = https://github.com/Vimjas/vim-python-pep8-indent.git
+[submodule "common/.vim/bundle/vim-sleuth"]
+	path = common/.vim/bundle/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth.git
