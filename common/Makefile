@@ -47,11 +47,11 @@ all: install
 
 install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
 
-update: update/.vim/bundle/jedi-vim  update/.vim/bundle/supertab  update/.vim/bundle/syntastic  update/.vim/bundle/vim-indent-guides  update/.vim/bundle/vim-surround update/.vim/vim-pathogen
+update: update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
-UPDATE_SUBMODULES: make/.i3/dex vim/update/jedi-vim vim/update/supertab vim/update/syntastic vim/update/vim-indent-guides vim/update/vim-surround vim/update/vim-pathogen
+UPDATE_SUBMODULES: vim/update/jedi-vim vim/update/supertab vim/update/syntastic vim/update/vim-indent-guides vim/update/vim-surround vim/update/vim-pathogen
 
-MAKE_SUBMODULES: make/.i3/dex
+MAKE_SUBMODULES: 
 
 i3: $(i3_targets) $(x_targets)
 
@@ -151,3 +151,6 @@ make/%: update/%
 
 update/%: %
 	git submodule update --init --recursive --remote --merge $*
+
+update/.vim/bundle/vim-jsbeautify:
+	git submodule update --init --remote --merge .vim/bundle/vim-jsbeautify
