@@ -68,10 +68,10 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+grave floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+grave focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -147,6 +147,12 @@ set $PIANOBAR_CONTROL "$HOME/.config/pianobar/ctl"
 bindsym XF86AudioPlay exec --no-startup-id echo "p" > $PIANOBAR_CONTROL
 #bindsym XF86AudioPrev exec --no-startup-id 
 bindsym XF86AudioNext exec --no-startup-id echo "n" > $PIANOBAR_CONTROL
+
+# Scratchpad
+bindsym $mod+Shift+bracketleft move scratchpad
+bindsym $mod+bracketleft scratchpad show
+
+# END TEST
 
 assign [class="Pidgin"] 1
 
