@@ -1,5 +1,6 @@
 */.vim/doc
 common/.vim/.netrwhist
 common/.vim/autoload/pathogen.vim
+common/.vim/disabled/
 **/__pycache__
 test/
