@@ -12,13 +12,14 @@ BASE_TARGETS = $(INSTALL_DIR)/color-grep \
 	$(INSTALL_DIR)/venv-activate
 TARGETS = $(BASE_TARGETS) $(INSTALL_DIR)/pianobar-ctl
 
-$(INSTALL_DIR)/Makefile::
-
 all: install
+	echo "goal $(MAKECMDGOALS)"
 
 base: $(BASE_TARGETS)
 
 install: $(TARGETS)
+
+install/%: $(INSTALL_DIR)/%
 
 clean:
 	rm $(TARGETS)
@@ -28,6 +29,6 @@ dist-clean: clean
 $(INSTALL_DIR): $(HOME)/.bash_aliases
 	mkdir -p $@
 
-$(INSTALL_DIR)/%: $(INSTALL_DIR)
+$(INSTALL_DIR)/%: $(INSTALL_DIR) $(REPO)/%
 	ln -sf $(REPO)/$* $@
 
