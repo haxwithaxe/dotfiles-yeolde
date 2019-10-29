@@ -71,30 +71,10 @@ set spell
 set spelllang=en
 set spellsuggest=5
 
-" Syntastic
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_python_checkers=['pylint']
-let g:syntastic_id_checkers = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_auto_jump = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_python_python_exec = '/usr/bin/python3'
-" Default is let g:syntastic_python_python_exec = '/path/to/python2'
-let g:syntastic_python_pylint_args = '--rcfile=~/.pylintrc'
-" Use pylint installed by pip
-let g:syntastic_python_pylint_exec = '/usr/local/bin/pylint'
-
-highlight SyntasticErrorLine guibg=red
-highlight SyntasticWarningLine guibg=yellow
-highlight SyntasticStyleErrorLine guibg=orange guifg=blue
-highlight SyntasticStyleWarningLine guibg=yellow guifg=darkgrey
+call neomake#configure#automake('nrw', 10)
 
 let g:jedi#popup_on_dot = 0
 
 " Remove trailing whitespace in python code
 autocmd FileType python autocmd BufEnter    <buffer> :%s/\s\+$//e
 autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
-autocmd FileType python autocmd InsertLeave <buffer> :%s/\s\+$//e

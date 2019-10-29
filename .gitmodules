@@ -34,3 +34,6 @@
 [submodule "common/.vim/bundle/vim-sleuth"]
 	path = common/.vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth.git
+[submodule "common/.vim/bundle/neomake"]
+	path = common/.vim/bundle/neomake
+	url = https://github.com/neomake/neomake.git
