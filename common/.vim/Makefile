@@ -25,7 +25,13 @@ base: install
 
 install: $(INSTALL_DIR) $(TARGETS)
 
-update: update/bundle/jedi-vim  update/bundle/supertab  update/bundle/syntastic  update/bundle/vim-indent-guides  update/bundle/vim-surround update/vim-pathogen
+update: update/bundle/jedi-vim update/bundle/supertab update/bundle/syntastic update/bundle/vim-indent-guides update/bundle/vim-surround update/vim-pathogen
+
+update/bundle/jedi-vim:
+	pip3 install --user -U jedi
+
+update/bundle/syntastic:
+	pip3 install --user -U pylint
 
 update/%:
 	git submodule update --init --recursive --remote --merge ./$*
@@ -41,6 +47,12 @@ clean/%:
 
 dist-clean: clean
 	rm $(INSTALL_DIR)
+
+$(HOME)/.local/lib/python3%/site-packages/jedi:
+	pip3 install --user jedi
+
+$(HOME)/.local/bin/pylint:
+	pip3 install --user pylint
 
 $(INSTALL_DIR):
 	ln -sf $(REPO) $@
