@@ -91,7 +91,7 @@ if [ -e $HOME/.psrc ]; then
 fi
 
 if [ -d ${HOME}/.bashrc.d ]; then
-  for bashrc in ${HOME}/.bashrc.d/*;do
+  for bashrc in $(ls ${HOME}/.bashrc.d/);do
     source $bashrc
   done
 fi
