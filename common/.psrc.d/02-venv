@@ -20,7 +20,7 @@ __virtualenv_label() {
 	local format name path
 
 	if [ -n "$color" ] && [ "$color" != "none" ]; then
-		format="\\e[38;5;${color}m(%s)\033[0m"
+		format="\\[\\e[38;5;${color}m\\](%s)\\[\033[0m\\]"
 	else
 		format='(%s)'
 	fi
