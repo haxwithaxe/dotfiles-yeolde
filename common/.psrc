@@ -48,9 +48,11 @@ __psrc_try() {
 	fi
 }
 
-for psrc in ${HOME}/.psrc.d/[0-9][0-9]-*;do
-	source $psrc
-done
+if (ls ${HOME}/.psrc.d/[0-9][0-9]-* >/dev/null 2>&1); then
+	for psrc in ${HOME}/.psrc.d/[0-9][0-9]-*;do
+		source $psrc
+	done
+fi
 
 if [ -e ${HOME}/.psrc.d/conf ];then
 	source ${HOME}/.psrc.d/conf

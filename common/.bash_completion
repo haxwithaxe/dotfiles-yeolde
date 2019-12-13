@@ -1,5 +1,5 @@
-if [ -d ~/.bash_completion.d ]; then
-	for completion in ~/.bash_completion.d/*;do
+if [ -d $HOMR/.bash_completion.d ] && (ls $HOMR/.bash_completion.d/* >/dev/null 2&>1); then
+	for completion in $HOMR/.bash_completion.d/*;do
 		source $completion
 	done
 fi

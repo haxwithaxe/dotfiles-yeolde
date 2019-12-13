@@ -90,8 +90,8 @@ if [ -e $HOME/.psrc ]; then
   source $HOME/.psrc
 fi
 
-if [ -d ${HOME}/.bashrc.d ]; then
-  for bashrc in $(ls ${HOME}/.bashrc.d/);do
+if [ -d ${HOME}/.bashrc.d ] && (ls ${HOME}/.bashrc.d/* > /dev/null 2>&1); then
+  for bashrc in ${HOME}/.bashrc.d/*;do
     source $bashrc
   done
 fi
