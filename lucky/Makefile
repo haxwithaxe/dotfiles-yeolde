@@ -7,11 +7,19 @@ TARGETS = $(HOME)/.gtkrc-2.0.mine $(HOME)/.irssi
 
 all: install
 
-install: common/shell-config common/psrc/all common/vim $(TARGETS) i3 autostart
+install: common/shell-config common/psrc/all common/vim bash_aliases $(TARGETS) i3 autostart
 
-i3: common/i3 $(i3_DIR)/config $(i3_DIR)/startup
+i3: common/i3 $(HOME)/.config/i3/config $(HOME)/.config/i3/startup
 
 autostart: $(HOME)/.config/autostart/dropbox.desktop $(HOME)/.config/autostart/nm-applet.desktop
+
+bash_aliases: common/bash_aliases/battery \
+    common/bash_aliases/color-grep \
+    common/bash_aliases/color-ls \
+    common/bash_aliases/pianobar-ctl \
+    common/bash_aliases/python3 \
+    common/bash_aliases/screensaver \
+    common/bash_aliases/venv-activate
 
 common/%:
 	$(MAKE) -C ../common $*

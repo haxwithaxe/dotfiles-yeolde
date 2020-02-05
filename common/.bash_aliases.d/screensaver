@@ -1,0 +1,2 @@
+alias xseton='xset +dpms; xset s blank; xset s on'
+alias xsetoff='xset -dpms; xset s noblank; xset s off'
