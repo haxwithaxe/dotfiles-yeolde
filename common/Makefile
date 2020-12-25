@@ -14,27 +14,35 @@ export xdg_bin_repo = $(xdg_repo_user_prefix)/.local/bin
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
-shell_dirs = $(shell_profile_dir) $(HOME)/.psrc.d $(HOME)/.bash_aliases.d $(HOME)/.bashrc.d
+shell_dirs = $(shell_profile_dir) \
+	$(HOME)/.psrc.d \
+	$(HOME)/.bash_aliases.d \
+	$(HOME)/.bashrc.d \
+	$(xdg_data_dir)/nvim
 shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
 	bash_completion \
 	$(HOME)/.profile \
 	psrc \
-	vim
+	neovim
+
+x_targets = xsessionrc
 
 i3_dir = $(xdg_data_dir)/i3
 i3_repo = $(REPO)/.i3
-i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/conkyrc $(i3_dir)/i3-conky-modules
+i3_targets = $(i3_dir)/conky-i3bar $(i3_dir)/conkyrc $(i3_dir)/i3-conky-modules xsessionrc/i3.env
 
 clean_targets = $(HOME)/.muttrc
 
-TARGETS = $(HOME)/.playlists pianobar $(i3_targets) $(shell_targets)
-DIRS = $(pianobar_dir) $(xdg_data_dir) $(i3_dir) $(shell_dirs)
+INSTALL_TARGETS = $(shell_targets)
+TARGETS = $(HOME)/.playlists pianobar $(i3_targets) $(INSTALL_TARGETS)
+INSTALL_DIRS = $(xdg_data_dir) $(shell_dirs)
+DIRS = $(pianobar_dir) $(i3_dir) $(INSTALL_DIRS)
 # linked not created .playlists, .vim
 
-all: install
+all: $(DIRS) $(TARGETS) install i3 pianobar
 
-install: $(DIRS) $(TARGETS) i3 pianobar vim shell-config
+install: $(INSTALL_DIRS) $(INSTALL_TARGETS) vim shell-config
 
 update: update/.vim/bundle/jedi-vim update/.vim/bundle/supertab update/.vim/bundle/syntastic update/.vim/bundle/vim-indent-guides update/.vim/bundle/vim-surround update/.vim/vim-pathogen
 
@@ -84,15 +92,16 @@ screen-lock: $(xsessionrcd)/screen-lock-advanced
 
 shell-config: $(shell_dirs) $(shell_targets)
 
-vim: vim/base
+vim: $(HOME)/.vimrc vim/base
 
 vim/%:
 	$(MAKE) -C $(REPO)/.vim $*
 
-xsessionrc: xsessionrc/base
+xsessionrc: $(HOME)/.xsessionrc
+	$(MAKE) -C $(REPO)/.xsessionrc.d base
 
-xsessionrc/%: $(xsessionrcd)/%
-	echo $@
+xsessionrc/%:
+	$(MAKE) -C $(REPO)/.xsessionrc.d $(HOME)/.xsessionrc.d/$*
 
 $(HOME)/.bash_aliases.d/%: $(REPO)/.bash_aliases.d/%
 	$(MAKE) -C $(REPO)/.bash_aliases.d $@
@@ -102,9 +111,6 @@ $(HOME)/.config/pianobar/%: $(REPO)/.config/pianobar/%
 
 $(HOME)/.psrc.d/%: $(REPO)/.psrc.d/%
 	$(MAKE) -C $(REPO)/.psrc.d $@
-
-$(HOME)/xsessionrc.d/%: $(REPO)/.xsessionrc.d/%
-	$(MAKE) -C $(REPO)/.xsessionrc.d $@
 
 $(i3_dir)/%: $(i3_dir) $(i3_repo)/%
 	ln -sf $(i3_repo)/$* $@

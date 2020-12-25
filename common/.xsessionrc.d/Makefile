@@ -4,18 +4,14 @@
 
 REPO ?= $(shell pwd)
 INSTALL_DIR = $(HOME)/.xsessionrc.d
-TARGETS = $(INSTALL_DIR)/xkb-fixes \
+TARGETS = $(INSTALL_DIR)/i3.env \
 	$(INSTALL_DIR)/merge-pastebuffers \
 	$(INSTALL_DIR)/set-background \
+	$(INSTALL_DIR)/xkb-fixes \
 	$(INSTALL_DIR)/xmodmap
 
-FILES = always-on \
-	disable-touchpad-on-start \
-	merge-pastebuffers \
-	set-background \
-	synaptic-mouse \
-	xkb-fixes \
-	xmodmap
+# Ignore Makefile
+$(INSTALL_DIR)/Makefile::
 
 all: install
 
@@ -23,9 +19,11 @@ base: install
 
 install: $(TARGETS)
 
-$(INSTALL_DIR): $(HOME)/.xsessionrc
+install/%: $(INSTALL_DIR)/%
+
+$(INSTALL_DIR):
 	mkdir -p $@
 
-$(INSTALL_DIR)/%: $(INSTALL_DIR)
+$(INSTALL_DIR)/%: $(REPO)/% $(INSTALL_DIR)
 	ln -sf $(REPO)/$* $@
 
