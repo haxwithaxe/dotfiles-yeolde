@@ -26,7 +26,7 @@ shell_targets = $(HOME)/.bashrc \
 	psrc \
 	neovim
 
-x_targets = xsessionrc
+x_targets = xsessionrc $(xdg_bin_dir)/xsetlock
 
 i3_dir = $(xdg_data_dir)/i3
 i3_repo = $(REPO)/.i3
