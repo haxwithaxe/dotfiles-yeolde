@@ -1,0 +1,7 @@
+! Supports spacebar as i3 mod key
+clear mod3 
+clear mod4 
+add mod3 = Hyper_L 
+add mod4 = Super_L Super_R
+keycode 65 = Hyper_L
+keycode any = space

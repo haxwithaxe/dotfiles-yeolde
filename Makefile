@@ -1,7 +1,7 @@
 
 goals = all install load clean
 
-targets = common mega ckoepke lenny lucky
+targets = common mega ckoepke lenny lucky unlucky
 
 goal = $(firstword $(subst /, ,$(MAKECMDGOALS)))
 subtarget = $(subst $(goal)/,,$(MAKECMDGOALS))
