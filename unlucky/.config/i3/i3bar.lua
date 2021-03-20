@@ -1,13 +1,14 @@
 i3dir = os.getenv('I3_DIR')
 
-package.path = i3dir .. '/?.lua;' .. package.path
+package.path = i3dir .. '/i3-conky-modules/?.lua;' .. package.path
 
 DEFAULT_COLOR = 'ffffff'
 WARN_COLOR = 'f0f000'
 ALERT_COLOR = 'ffa0a0'
 
 lib = require('lib')
-log = lib.log:new(lib.log.INFO)
+log = lib.log:new(lib.log.DEBUG)
+
 
 weather = require('weather')
 weather.config.units = 'metric'
@@ -16,12 +17,6 @@ weather.config.apikey = '0cdcb01d44ef6c8109da7024566fc22b'
 weather.config.cache_filename = '/tmp/i3-conky-weather.json'
 
 undefined = 'undefined'
-
-conky_fparse = function(fmt, ...)
-	log:debug('fmt: %s', fmt:format(unpack(arg)))
-	log:debug('parsed: %s', conky_parse(fmt:format(unpack(arg))))
-	return conky_parse(fmt:format(unpack(arg)))
-end
 
 Conditional = {
 	match = function()
@@ -130,43 +125,35 @@ end
 needs_reeboot = function()
 	local flag_file = io.open('/var/run/reboot-required', 'r')
 	if flag_file then
-		flag_file.close()
+		io.close(flag_file)
 		return i3bar_item({ full_text = 'Reboot Required', color = 'ff0000'})
 	else
 		return i3bar_item({ full_text = '' })
 	end
 end
 
-wireless_state = function(iface)
-	if conky_fparse('${if_up %s}UP${endif}', iface) == 'UP' then
-		full_text = iface .. ':'
-		full_text = full_text .. conky_fparse('${addr %s}', iface) .. ' '
-		full_text = full_text .. conky_fparse('${wireless_link_qual %s}db', iface) .. ' '
-		wireless_mode = conky_fparse('${wireless_mode %s}', iface)
-		if wireless_mode == 'Ad-Hoc' then
-			full_text = full_text .. conky_fparse('adhoc:${wireless_ap %s}', iface)
-		else
-			full_text = full_text .. conky_fparse('e:${wireless_essid %s}', iface)
-		end
+wired_state = function(iface)
+	if conky_parse(('${if_up %s}UP${endif}'):format(iface)) == 'UP' then
+		full_text = conky_parse(('%s:${addrs %s}'):format(iface, iface))
 	else
 		full_text = iface .. ':down'
 	end
 	return i3bar_item({ full_text = full_text })
 end
 
-diskio = function()
-	return i3bar_item({ full_text = 'sda:' .. conky_parse('${diskio sda}') })
+diskio = function(disk)
+	return i3bar_item({ full_text = disk .. ':' .. conky_parse(('${diskio %s}'):format(disk)) })
 end
 
 disk_space = function(alias, path, low_space_perc, low_space_color)
 	local low_color = low_sapce_color or ALERT_COLOR
-	free_perc = tonumber(conky_fparse('${fs_free_perc %s}', path))
+	free_perc = tonumber(conky_parse(('${fs_free_perc %s}'):format(path)))
 	if free_perc <= low_space_perc then
 		color = low_color
 	else
 		color = DEFAULT_COLOR
 	end
-	return i3bar_item({
+	return '' .. i3bar_item({
 		full_text = conky_parse(('%s:${fs_free %s} ${fs_free_perc %s}'):format(alias, path, path)),
 		color = color
 	})
@@ -175,14 +162,14 @@ end
 cpu_usage = function(alias, core, high_color, high_perc)
 	high_color = high_color or ALERT_COLOR
 	high_perc = high_perc or 90
-	cpu_perc = tonumber(conky_fparse('${cpu %d}', core))
+	cpu_perc = tonumber(conky_parse(('${cpu %d}'):format(core)))
 	if cpu_perc < high_perc then
 		color = DEFAULT_COLOR
 	else
 		color = high_color
 	end
 	return i3bar_item({
-		full_text = conky_fparse('%s:${cpu %d}', alias, core),
+		full_text = conky_parse(('%s:${cpu %d}'):format(alias, core)),
 		color = color
 	})
 end
@@ -192,7 +179,7 @@ cpu_temp = function(device, subdevice, critical_color, warn_color, critical_temp
 	warn_color = warn_color or WARN_COLOR
 	crit_path = ('/sys/class/hwmon/hwmon%d/temp%d_crit'):format(device, subdevice)
 	critical_temp = critical_temp or tonumber(io.open(crit_path):read())/1000
-	temp = tonumber(conky_fparse('${hwmon %d temp %d}', device, subdevice))
+	temp = tonumber(conky_parse(('${hwmon %d temp %d}'):format(device, subdevice)))
 	log:debug('temp = %d, critical temp = %d, %d, %d', temp, critical_temp, critical_temp*0.90, critical_temp*0.75)
 	if temp >= critical_temp*0.90 then
 		color = critical_color
@@ -228,15 +215,15 @@ function conky_i3bar_main()
 	status = table.concat(
 			{
 				needs_reeboot(),
-				wireless_state('wlp58s0'),
-				diskio('sda'),
+				wired_state('ens1'),
+				diskio('vda'),
 				disk_space('/', '/', 10),
 				disk_space('h', '/home', 10),
 				cpu_usage('c0', 0),
 				cpu_temp(0, 1, ALERT_COLOR, WARN_COLOR),
 				mem_space(),
 				weather.getf('{ "full_text" : "%t%u %c" }, { "full_text" : "%i" }'),
-				i3bar_item({full_text = conky_parse('${time %d.%m %H:%M}')})
+				i3bar_item({full_text = conky_parse('${time %m.%d %H:%M}')})
 			},
 			',\n'
 		)

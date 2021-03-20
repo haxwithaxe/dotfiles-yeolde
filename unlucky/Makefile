@@ -12,7 +12,7 @@ all: install
 
 install: common/shell-config common/psrc/all common/vim bash_aliases $(TARGETS) i3 autostart common/xsessionrc/xss-lock
 
-i3: common/i3 $(HOME)/.config/i3/config $(HOME)/.config/i3/startup
+i3: common/i3 $(HOME)/.config/i3/config $(HOME)/.config/i3/startup $(HOME)/.config/i3/i3bar.lua
 
 autostart: $(HOME)/.config/autostart/nm-applet.desktop
 
