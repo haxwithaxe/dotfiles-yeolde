@@ -50,10 +50,10 @@ $(targets):
 $(goal)/$(subtarget):
 	$(MAKE) -C $(goal) $(subtarget)
 
-test/clean:
-	rm -rf /tmp/test-home
-
 test/$(subtarget):
 	mkdir -p /tmp/test-home	
 	$(MAKE) $(subtarget) HOME=/tmp/test-home
+
+test/clean:
+	rm -rf /tmp/test-home
 
