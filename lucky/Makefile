@@ -7,7 +7,7 @@ TARGETS = $(HOME)/.gtkrc-2.0.mine $(HOME)/.irssi
 
 all: install
 
-install: common/shell-config common/psrc/all common/vim bash_aliases $(TARGETS) i3 autostart
+install: common/shell-config common/psrc/all $(HOME)/.psrc.d/conf common/vim bash_aliases $(TARGETS) i3 autostart
 
 i3: common/i3 $(HOME)/.config/i3/config $(HOME)/.config/i3/startup
 

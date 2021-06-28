@@ -1,0 +1,11 @@
+
+__psrc_prompt_command() {
+	local dir_length=10
+	local venv_color=215  # light goldenrod
+	#local venv_color=none
+	local venv_length=10
+	local venv_label="$(__psrc_try __virtualenv_label $venv_color)"
+	__git_ps1 "\u@\h:\$(__psrc_small_pwd)" "${venv_label}\\\$ "
+}
+
+# vim: filetype=sh:
