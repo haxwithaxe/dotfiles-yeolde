@@ -9,6 +9,7 @@ BASE_TARGETS = $(INSTALL_DIR)/battery \
 	$(INSTALL_DIR)/color-grep \
 	$(INSTALL_DIR)/color-ls \
 	$(INSTALL_DIR)/derp \
+	$(INSTALL_DIR)/needsreboot \
 	$(INSTALL_DIR)/python3 \
 	$(INSTALL_DIR)/screensaver \
 	$(INSTALL_DIR)/venv-activate
@@ -16,7 +17,6 @@ BASE_TARGETS = $(INSTALL_DIR)/battery \
 TARGETS = $(BASE_TARGETS) $(INSTALL_DIR)/pianobar-ctl
 
 all: install
-	echo "goal $(MAKECMDGOALS)"
 
 base: $(BASE_TARGETS)
 
