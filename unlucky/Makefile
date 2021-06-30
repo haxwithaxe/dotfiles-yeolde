@@ -3,14 +3,21 @@
 
 REPO ?= $(shell pwd)
 
-TARGETS = $(HOME)/.gtkrc-2.0.mine
+TARGETS = $(HOME)/.gtkrc-2.0.mine $(HOME)/.psrc.d/conf
 
 help:
 	@echo Targets: all install i3 autostart bash_aliases
 
 all: install
 
-install: common/shell-config common/psrc/all common/vim bash_aliases $(TARGETS) i3 autostart common/xsessionrc/xss-lock
+install: common/shell-config \
+    common/psrc/all \
+    common/vim \
+    bash_aliases \
+    $(TARGETS) \
+    i3 \
+    autostart \
+    common/xsessionrc/xss-lock
 
 i3: common/i3 $(HOME)/.config/i3/config $(HOME)/.config/i3/startup $(HOME)/.config/i3/i3bar.lua
 

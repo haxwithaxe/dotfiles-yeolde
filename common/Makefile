@@ -25,6 +25,7 @@ shell_targets = $(HOME)/.bashrc \
 	bash_aliases \
 	bash_completion \
 	$(HOME)/.profile \
+	$(HOME)/.psrc \
 	psrc \
 	neovim
 
@@ -65,7 +66,6 @@ clean: bash_aliases/clean pianobar/clean psrc/clean xsessionrc/clean
 bash_aliases: $(HOME)/.bash_aliases bash_aliases/base
 
 bash_aliases/%:
-	echo "target: bash_aliases/$* /// goals: $(MAKECMDGOALS) /// carret: $^"
 	$(MAKE) -C $(REPO)/.bash_aliases.d $*
 
 bash_completion: $(HOME)/.bash_completion
@@ -87,8 +87,8 @@ pianobar/%:
 
 psrc: psrc/base
 
-psrc/%:
-	$(MAKE) -C $(REPO)/.psrc.d $^
+psrc/%: $(HOME)/.psrc
+	$(MAKE) -C $(REPO)/.psrc.d $*
 
 screen-lock: $(xsessionrcd)/screen-lock-advanced
 
@@ -136,9 +136,5 @@ $(DIRS):
 	mkdir -p $@
 
 $(HOME)/%:
-	echo $@
 	ln -sf $(REPO)/$* $@
-
-#$(i3_repo)/% $(REPO)/%:
-	# In case $REPO is in the home directory don't link files to themselves
 
