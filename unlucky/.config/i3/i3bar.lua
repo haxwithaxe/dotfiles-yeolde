@@ -215,7 +215,7 @@ function conky_i3bar_main()
 	status = table.concat(
 			{
 				needs_reeboot(),
-				wired_state('ens1'),
+				wired_state('enp1s0'),
 				diskio('vda'),
 				disk_space('/', '/', 10),
 				disk_space('h', '/home', 10),
