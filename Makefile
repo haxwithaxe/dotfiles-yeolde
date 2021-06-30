@@ -1,7 +1,7 @@
 
 goals = all install load clean
 
-targets = common mega ckoepke lenny lucky
+targets = common mega ckoepke lenny lucky unlucky
 
 goal = $(firstword $(subst /, ,$(MAKECMDGOALS)))
 subtarget = $(subst $(goal)/,,$(MAKECMDGOALS))
@@ -50,10 +50,10 @@ $(targets):
 $(goal)/$(subtarget):
 	$(MAKE) -C $(goal) $(subtarget)
 
-test/clean:
-	rm -rf /tmp/test-home
-
 test/$(subtarget):
 	mkdir -p /tmp/test-home	
 	$(MAKE) $(subtarget) HOME=/tmp/test-home
+
+test/clean:
+	rm -rf /tmp/test-home
 

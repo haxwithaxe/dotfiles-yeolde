@@ -9,8 +9,10 @@ export xdg_user_prefix = $(HOME)/.local
 export xdg_repo_user_prefix = $(REPO)/.local
 export xdg_data_dir = $(HOME)/.config
 export xdg_data_repo = $(REPO)/.config
-export xdg_bin_dir = $(xdg_user_prefix)/.local/bin
-export xdg_bin_repo = $(xdg_repo_user_prefix)/.local/bin
+export xdg_bin_dir = $(xdg_user_prefix)/bin
+export xdg_bin_repo = $(xdg_repo_user_prefix)/bin
+
+xdg_dirs = $(xdg_user_prefix) $(xdg_data_dir) $(xdg_bin_dir)
 
 shell_profile_dir = $(HOME)/.profile.d
 shell_profile_repo = $(REPO)/.profile.d
@@ -37,7 +39,7 @@ clean_targets = $(HOME)/.muttrc
 INSTALL_TARGETS = $(shell_targets)
 TARGETS = $(HOME)/.playlists pianobar $(i3_targets) $(INSTALL_TARGETS)
 INSTALL_DIRS = $(xdg_data_dir) $(shell_dirs)
-DIRS = $(pianobar_dir) $(i3_dir) $(INSTALL_DIRS)
+DIRS = $(pianobar_dir) $(i3_dir) $(INSTALL_DIRS) $(xdg_dirs)
 # linked not created .playlists, .vim
 
 all: $(DIRS) $(TARGETS) install i3 pianobar
@@ -112,6 +114,9 @@ $(HOME)/.config/pianobar/%: $(REPO)/.config/pianobar/%
 $(HOME)/.psrc.d/%: $(REPO)/.psrc.d/%
 	$(MAKE) -C $(REPO)/.psrc.d $@
 
+$(i3_dir)/i3-conky-modules: $(i3_dir)
+	ln -sf $(i3_repo)/i3-conky-modules $(i3_dir)
+
 $(i3_dir)/%: $(i3_dir) $(i3_repo)/%
 	ln -sf $(i3_repo)/$* $@
 
@@ -133,3 +138,7 @@ $(DIRS):
 $(HOME)/%:
 	echo $@
 	ln -sf $(REPO)/$* $@
+
+#$(i3_repo)/% $(REPO)/%:
+	# In case $REPO is in the home directory don't link files to themselves
+
